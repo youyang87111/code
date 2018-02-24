@@ -1,0 +1,33 @@
+my: 
+ name: forezp
+ age: 12
+ number:  ${random.int}
+ uuid : ${random.uuid}
+ max: ${random.int(10)}
+ value: ${random.value}
+ greeting: hi,i'm  ${my.name}
+ 
+spring: 
+  profiles:
+    active: dev
+  datasource: 
+    name: test
+    url: jdbc:mysql://127.0.0.1:3306/springboot
+    username: root
+    password: root
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+        
+    
+mybatis: 
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.example.demo.domain
+  config-location: classpath:mybatis-config.xml
+  
+#pagehelper分页插件
+pagehelper: 
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql  

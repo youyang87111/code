@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>web_master</contextName>
+    <property name="LOG_DIR" value="${catalina.base}/logs"/>
+    
+    <!--控制台打印输出-->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</Pattern>
+        </layout>
+    </appender>
+    
+
+    <!-- ***************************************************日志输出配置***************************************************** -->
+    <root level="info">
+        <appender-ref ref="consoleAppender"/>
+    </root>
+
+    
+</configuration>

@@ -1,0 +1,4 @@
+D:\workspace-sts-3.9.1.RELEASE\spring-cloud-microservice-in-action\microservice-consumer-movie-feign\src\main\java\com\itmuch\cloud\controller\MovieController.java
+D:\workspace-sts-3.9.1.RELEASE\spring-cloud-microservice-in-action\microservice-consumer-movie-feign\src\main\java\com\itmuch\cloud\entity\User.java
+D:\workspace-sts-3.9.1.RELEASE\spring-cloud-microservice-in-action\microservice-consumer-movie-feign\src\main\java\com\itmuch\cloud\ConsumerMovieFeignApplication.java
+D:\workspace-sts-3.9.1.RELEASE\spring-cloud-microservice-in-action\microservice-consumer-movie-feign\src\main\java\com\itmuch\cloud\feign\UserFeignClient.java

@@ -1,0 +1,13 @@
+server:
+  port: 8080
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/youyang87111/simple
+          username: youyang87111
+          password: youyang127793
+          search-paths:
+            - foo   # foo路径
+            - bar   # bar路径

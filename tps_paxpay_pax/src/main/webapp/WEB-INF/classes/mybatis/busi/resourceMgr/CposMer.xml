@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.busi.resourcemgr.dao.CposMerDao">
+	
+	<resultMap type="CposMer" id="cposMerMap">
+		<id property="mcr" column="mcr"/>  
+        <id property="mid" column="mid"/>
+        <result property="mcrName" column="mcrname"/>
+    	<result property="name" column="name"/>
+    	<result property="depid" column="depid"/>
+    	<result property="orgName" column="orgname"/>
+    	<result property="status" column="status"/>
+    	<result property="auditstatus" column="auditstatus"/>
+	</resultMap>
+	<sql id="baseSql">
+		select t.*,t1.name as orgname,t2.name as mcrname
+        from t_b_cposmer t   
+        left join t_si_organization t1 on t.depid = t1.id
+        left join t_bi_mcr t2 on t.mcr = t2.id
+	</sql>
+	
+	<insert id="save" parameterType="CposMer">
+	insert 
+	into
+	    T_B_CPOSMER
+	      (auditstatus, builddatetime, buildoper,  status, name, depid, mcr, mid) 
+	values
+        (#{auditstatus}, #{builddatetime_short}, #{buildoper}, #{status}, #{name}, #{depid},  #{mcr}, #{mid})
+    </insert>
+    
+    <insert id="saveBySyn" parameterType="CposMer">
+	insert 
+	into
+	    T_B_CPOSMER
+	      (auditstatus, builddatetime, buildoper,  status, name, depid, mcr, mid,agent_id,storeid,storename,timezonenew,conv_currency,province,city,area,detail_address) 
+	values
+        (#{auditstatus}, #{builddatetime_short}, #{buildoper}, #{status}, #{name}, #{depid},  #{mcr}, #{mid},#{agent_id},#{storeid},#{storename},#{timeZoneNew},#{conv_currency},#{provincename},#{cityname},#{districtname},#{address})
+    </insert>
+    
+    <delete id="delete" parameterType="CposMer">
+		delete from t_b_cposmer where mcr = #{mcr} and mid = #{mid}
+	</delete>
+	
+    <update id="frozen" parameterType="CposMer">
+		update t_b_cposmer set status='1' where mcr = #{mcr} and mid = #{mid}
+	</update>
+	
+	<update id="unfrozen" parameterType="CposMer">
+		update t_b_cposmer set status='2' where mcr = #{mcr} and mid = #{mid}
+	</update>
+    
+    <update id="update" parameterType="CposMer">
+        update t_b_cposmer
+        <set>
+        modifydatetime=#{modifydatetime_short},
+        modifyoper=#{modifyoper},
+        name=#{name}
+        </set>
+        where mcr = #{mcr} and mid = #{mid}
+    </update>
+    
+    <update id="updateBySyn" parameterType="CposMer">
+        update t_b_cposmer
+        <set>
+        timeZoneNew = #{timeZoneNew},
+        conv_currency = #{conv_currency},
+        province = #{provincename},
+        city = #{cityname},
+        area = #{districtname},
+        detail_address = #{address},
+        status = #{status},
+        modifydatetime=#{modifydatetime_short},
+        modifyoper=#{modifyoper},
+        name=#{name},
+        storename=#{name},
+        depid=#{depid}
+        </set>
+        where mcr = #{mcr} and mid = #{mid}
+    </update>
+    
+    
+    <update id="audit" parameterType="CposMer">
+     update t_b_cposmer
+        <set>
+        auditdatetime=#{auditdatetime_short},
+        auditoper=#{auditoper},
+        auditstatus=#{auditstatus},
+        status = #{status}
+        </set>
+        where mcr = #{mcr} and mid = #{mid}
+    </update>
+    
+	<select id="get" parameterType="string" resultMap="cposMerMap">
+		<include refid="baseSql"/>
+		where mcr = #{arg0} and mid = #{arg1}
+	</select>
+	
+	<select id="list" parameterType="PageQueryParam" resultMap="cposMerMap">
+       <include refid="baseSql"/>
+        <where>
+        	<choose>
+        		<when test="filterMap.containsKey('orgId') and filterMap.orgId !=''.toString()">
+        			t.depid = #{filterMap.orgId}
+        		</when>
+        		<otherwise>
+        			<choose>
+	        			<when test="filterMap.containsKey('orgs')">
+		        			t.depid in 
+					        <foreach collection="filterMap.orgs" item="org" index="index"
+					            open="(" close=")" separator=",">
+					            #{org.id}
+					        </foreach>
+					 	</when>
+        			</choose>       
+        		</otherwise>
+	        </choose>
+            <if test="filterMap.containsKey('mcr') and  filterMap.mcr != ''.toString()">
+               and  t.mcr = #{filterMap.mcr}
+            </if>
+            <if test="filterMap.containsKey('mid') and  filterMap.mid != ''.toString()">
+                and t.mid like concat('%',#{filterMap.mid},'%')
+            </if>
+            <if test="filterMap.containsKey('name') and  filterMap.name != ''.toString()">
+                and t.name like concat('%',#{filterMap.name},'%')
+            </if>
+            <if test="filterMap.containsKey('auditstatus') and filterMap.auditstatus !=''.toString()">
+                and t.auditstatus =#{filterMap.auditstatus}
+            </if>
+            <if test="filterMap.containsKey('status') and filterMap.status !=''.toString()">
+                and t.status =#{filterMap.status}
+            </if>
+			and t.status != '3'
+        </where>
+        <choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key" item="val" open="order by " separator="," close="  ">
+                    #{key} #{val}
+                </foreach>
+                , t.builddatetime desc
+            </when>
+            <otherwise>
+                order by t.builddatetime desc
+            </otherwise>
+        </choose>
+    </select>
+</mapper>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.busi.mapmgr.dao.TermMapDao">
+
+    <select id="getTermMapMode" resultType="TermMapView">
+        select * from t_b_term_map_mode where lbid = #{arg0} and lmid = #{arg1} and rbid = #{arg2} and rmid = #{arg3}
+    </select>
+    
+    <insert id="saveTermMapMode" parameterType="TermMapView">
+        insert INTO t_b_term_map_mode(lbid,lmcr,lmid,rbid,rmcr,rmid,tmf,status,auditstatus,buildoper,builddatetime)
+        values(#{lbid},#{lmcr},#{lmid},#{rbid},#{rmcr},#{rmid},#{tmf},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    </insert>
+    
+    <insert id="save" parameterType="TermMapView">
+    	
+ 		insert INTO t_b_term_map(lbid,lmcr,lmid,ltid,rbid,rmcr,rmid,rtid,status,auditstatus,buildoper,builddatetime)
+        values(#{lbid},#{lmcr},#{lmid},#{ltid},#{rbid},#{rmcr},#{rmid},#{rtid},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		
+    </insert>
+    
+    <select id="list" resultType="TermMapView" parameterType="com.pax.core.model.PageQueryParam">
+    
+        select t.*,t2.name as lbid_name,t4.name as rbid_name,t5.name as tmf_name 
+        from 
+        V_B_TERMMAP t 
+        left outer join 
+        t_bi_branch t2 
+        on t.lbid = t2.id 
+        left outer join 
+        t_bi_branch t4 
+        on t.rbid = t4.id 
+        left outer join 
+        t_bi_tmf t5 
+        on t.tmf = t5.id 
+        
+        <where>
+        	<if test="filterMap.containsKey('tmf') and filterMap.tmf !=''.toString()"> and t.tmf = #{filterMap.tmf}</if>
+        	<if test="filterMap.containsKey('lbid') and filterMap.lbid !=''.toString()"> and t.lbid = #{filterMap.lbid}</if>
+			<if test="filterMap.containsKey('lmid') and filterMap.lmid !=''.toString()"> and t.lmid like concat('%',#{filterMap.lmid},'%')</if>
+			<if test="filterMap.containsKey('rbid') and filterMap.rbid !=''.toString()"> and t.rbid = #{filterMap.rbid}</if>
+			<if test="filterMap.containsKey('rmid') and filterMap.rmid !=''.toString()"> and t.rmid like concat('%',#{filterMap.rmid},'%')</if>
+			<if test="filterMap.containsKey('status') and filterMap.status !=''.toString()"> and t.status = #{filterMap.status}</if>
+			<if test="filterMap.containsKey('auditstatus') and filterMap.auditstatus !=''.toString()"> and t.auditstatus = #{filterMap.auditstatus}</if>
+		</where>
+		
+		<choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key"  item="val" open="order by " separator="," close="  ">
+	                #{key} #{val}
+	        	</foreach>
+	        	, builddatetime desc
+            </when>
+            <otherwise>
+                  order by builddatetime desc
+             </otherwise>
+         </choose>
+		
+    </select>
+    
+    <select id="getTermMaps" parameterType="map" resultType="TermMapView">
+    		
+  		select t.* 
+        from 
+        t_b_term_map t 
+        where 
+        lbid = #{lbid} and lmid = #{lmid} and  rbid = #{rbid} and rmid = #{rmid} 
+        
+    </select>
+    
+    <select id="get" parameterType="map" resultType="TermMapView">
+    	<choose>
+    		<when test="arg6=='01'">
+    			select t.*,t2.name as lbid_name,t4.name as rbid_name 
+    			from 
+		        t_b_term_map t 
+    			left outer join 
+		        t_bi_branch t2 
+		        on t.lbid = t2.id 
+		        left outer join 
+		        t_bi_branch t4 
+		        on t.rbid = t4.id 
+		       
+		        where 
+		        lbid = #{arg0} and lmid = #{arg1} and ltid = #{arg2} and rbid = #{arg3} and rmid = #{arg4} and rtid = #{arg5}	
+    		</when>
+    		<when test="arg6=='06'">
+    			select t.*,t2.name as lbid_name,t4.name as rbid_name,t5.name as tmf_name  
+    			from 
+		        t_b_term_map_mode t 
+    			left outer join 
+		        t_bi_branch t2 
+		        on t.lbid = t2.id 
+		        left outer join 
+		        t_bi_branch t4 
+		        on t.rbid = t4.id 
+		        left outer join 
+		        t_bi_tmf t5 
+		        on t.tmf = t5.id 
+		        where 
+		        lbid = #{arg0} and lmid = #{arg1} and rbid = #{arg3} and rmid = #{arg4}	
+    		</when>
+    	</choose>
+    </select>
+    
+    <select id="getTermMap" resultType="TermMapView">
+  		select t.* 
+        from 
+        t_b_term_map t 
+        where 
+        lbid = #{arg0} and lmid = #{arg2} and ltid = #{arg6} and rbid = #{arg3} and rmid = #{arg5} and rtid = #{arg7}
+    </select>
+    
+    <update id="frozen" parameterType="TermMapView">
+    	<choose>
+    		<when test="tmf=='01'">
+    			update t_b_term_map set status='1' 
+    			where lbid = #{lbid} and lmid = #{lmid} and ltid = #{ltid} and rbid = #{rbid} and rmid = #{rmid} and rtid = #{rtid}    		
+    		</when>
+    		<when test="tmf=='06'">
+    			update t_b_term_map_mode set status='1' 
+       			where lbid = #{lbid} and lmid = #{lmid} and rbid = #{rbid} and rmid = #{rmid} 
+    		</when>
+    	</choose>	
+    </update>
+    
+    <update id="unfrozen" parameterType="TermMapView">
+    	<choose>
+    		<when test="tmf=='01'">
+    			update t_b_term_map set status='2' 
+    			where lbid = #{lbid} and lmid = #{lmid} and ltid = #{ltid} and rbid = #{rbid} and rmid = #{rmid} and rtid = #{rtid}    		
+    		</when>
+    		<when test="tmf=='06'">
+    			update t_b_term_map_mode set status='2' 
+       			where lbid = #{lbid} and lmid = #{lmid} and rbid = #{rbid} and rmid = #{rmid} 
+    		</when>
+    	</choose>
+    </update>
+    
+    <delete id="delete" parameterType="TermMapView">
+    	<choose>
+    		<when test="tmf=='01'">
+    			delete from  t_b_term_map 
+    			where lbid = #{lbid} and lmid = #{lmid} and ltid = #{ltid} and rbid = #{rbid} and rmid = #{rmid} and rtid = #{rtid}     		
+    		</when>
+    		<when test="tmf=='06'">
+    			delete from  t_b_term_map_mode 
+       			where lbid = #{lbid} and lmid = #{lmid} and rbid = #{rbid} and rmid = #{rmid} 
+    		</when>
+    	</choose>
+    </delete>
+    
+    <delete id="deleteTermMapMode" parameterType="TermMapView">
+    	delete from  t_b_term_map_mode 
+       	where lbid = #{lbid} and lmid = #{lmid} and rbid = #{rbid} and rmid = #{rmid} 
+    </delete>
+    
+    <update id="audit" parameterType="map">
+    	<choose>
+    		<when test="tmf=='01'">
+    			update t_b_term_map 
+    			set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short} 
+    			where lbid = #{lbid} and lmid = #{lmid} and ltid = #{ltid} and rbid = #{rbid} and rmid = #{rmid} and rtid = #{rtid}  		
+    		</when>
+    		<when test="tmf=='06'">
+    			update t_b_term_map_mode 
+    			set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short} 
+       			where lbid = #{lbid} and lmid = #{lmid} and rbid = #{rbid} and rmid = #{rmid} 
+    		</when>
+    	</choose>
+    </update>
+</mapper>

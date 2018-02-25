@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress ALL -->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:cxf="http://cxf.apache.org/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-4.0.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+     http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+     http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+     http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd"
+       default-lazy-init="false" default-autowire="byName">
+       
+       <!--   
+		        枚举类型要想注入到类中，一定要先使用org.springframework.beans.factory.config.FieldRetrievingFactoryBean类将枚举类型进行转换  
+		        将DefaultHashAlgorithm.KETAMA_HASH转换为KETAMA_HASH这个bean，  
+		        然后在要注入的bean中使用<property name="hashAlg" ref="KETAMA_HASH" />引用即可。  
+     -->  
+    <bean id="KETAMA_HASH" class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">  
+        <property name="staticField" value="net.spy.memcached.DefaultHashAlgorithm.KETAMA_HASH" />  
+    </bean>  
+  
+    <bean id="memcachedClient" class="net.spy.memcached.spring.MemcachedClientFactoryBean">  
+  
+        <!-- 一个字符串，包括由空格或逗号分隔的主机或IP地址与端口号 -->  
+        <property name="servers" value="${memcachedClient.servers}"/>  
+        <!-- 指定要使用的协议(BINARY,TEXT),默认是TEXT -->  
+        <property name="protocol" value="TEXT" />  
+        <!-- 设置默认的转码器(默认以net.spy.memcached.transcoders.SerializingTranscoder) -->  
+        <property name="transcoder">  
+            <bean class="net.spy.memcached.transcoders.SerializingTranscoder">  
+                <property name="compressionThreshold" value="1024" />  
+            </bean>  
+        </property>  
+        <!-- 以毫秒为单位设置默认的操作超时时间 -->  
+        <property name="opTimeout" value="30000" />  
+        <property name="timeoutExceptionThreshold" value="1998" />  
+        <!-- 设置哈希算法 -->  
+        <property name="hashAlg" ref="KETAMA_HASH" />  
+        <!-- 设置定位器类型(ARRAY_MOD,CONSISTENT),默认是ARRAY_MOD -->  
+        <property name="locatorType" value="CONSISTENT" />  
+        <!-- 设置故障模式(取消，重新分配，重试)，默认是重新分配 -->  
+        <property name="failureMode" value="Redistribute" />  
+        <!-- 想使用Nagle算法，设置为true -->  
+        <property name="useNagleAlgorithm" value="false" />  
+  
+    </bean>
+    
+    <!-- 扩展缓存管理器 -->  
+    <bean id="simpleCacheManager" class="com.pax.auth.shiro.cache.SimpleCacheManagerImpl">  
+        <constructor-arg ref="memcachedClient" />  
+    </bean>  
+    
+    <!-- 安全框架缓存管理器 -->  
+    <bean id="shiroCacheManager" class="com.pax.auth.shiro.cache.ShiroCacheManager">  
+        <property name="simpleCacheManager" ref="simpleCacheManager" />  
+    </bean>  
+  
+  	<bean id="shiro-authorizationCache" class="com.pax.auth.shiro.cache.SimpleMapCache">
+  		<constructor-arg ref="memcachedClient" />  
+  	</bean>
+  	
+  	<bean id="shiro-authenticationCache" class="com.pax.auth.shiro.cache.SimpleMapCache">
+  		<constructor-arg ref="memcachedClient" />  
+  	</bean>
+    
+    <!-- 会话读写实现类 -->  
+    <bean id="sessionDAO" class="com.pax.auth.shiro.session.SessionDAO">  
+        <constructor-arg ref="memcachedClient" />  
+    </bean> 
+    
+    <!-- 会话管理器 -->  
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">  
+        <property name="deleteInvalidSessions" value="true"/>
+    	<property name="sessionValidationSchedulerEnabled" value="true"/>
+    	<property name="sessionValidationInterval" value="60000"/>
+        <property name="sessionDAO" ref="sessionDAO" />  
+        <property name="globalSessionTimeout" value="70000"/>  
+        <property name="sessionIdCookie.name" value="paxSid"/> 
+    </bean>  
+	
+	<bean id="hashMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+	 	<property name="hashAlgorithmName" value="md5"/>
+	 </bean>
+	 
+    <bean id="jdbcRealm" class="com.pax.auth.shiro.realm.JdbcRealm">
+	 	<property name="credentialsMatcher" ref="hashMatcher"/>
+	 	<property name="cachingEnabled" value="true"/>
+	 	<!-- 
+	 	<property name="authenticationCachingEnabled" value="true"/>
+	 	<property name="authorizationCachingEnabled" value="true"/>
+	 	<property name="authenticationCacheName" value="shiro-authenticationCache"/>
+	 	<property name="authorizationCacheName" value="shiro-authorizationCache"/>--> 
+	 	<property name="authenticationCache" ref="shiro-authenticationCache"></property>
+	 	<property name="authorizationCache" ref="shiro-authorizationCache"></property>
+	 </bean>
+	 
+	 <bean id="urlPermissionResolver" class="com.pax.auth.shiro.realm.UrlPermissionResovler"/>
+	 
+	 <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+	 	<property name="sessionManager" ref="sessionManager" />  
+	    <property name="realm" ref="jdbcRealm"/>
+	    <property name="authorizer.permissionResolver" ref="urlPermissionResolver"/>
+	    <!-- 
+	    <property name="cacheManager" ref="shiroCacheManager" /> -->
+	</bean>
+	
+	<bean id="kickoutSessionControlFilter"  class="com.pax.auth.shiro.filter.KickoutSessionControlFilter">    
+	    <property name="sessionManager" ref="sessionManager"/>    
+	    <property name="client" ref="memcachedClient"/>  
+	    <property name="kickoutAfter" value="false"/>    
+	    <property name="maxSession" value="10"/>    
+	    <property name="kickoutUrl" value="/?kickout=1"/>    
+	</bean>
+	
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+	    <property name="securityManager" ref="securityManager"/>
+	    <property name="loginUrl" value="/?timeout=1"/>
+	    <property name="successUrl" value="/"/>
+	    <property name="unauthorizedUrl" value="/WEB-INF/webpage/common/unauth.jsp"/>
+	    
+	    <!-- 过滤链定义 -->    
+         <property name="filters">    
+	         <map>    
+	             <entry key="kickout" value-ref="kickoutSessionControlFilter"/>    
+	         </map>
+         </property>
+         
+         <property name="filterChainDefinitions">    
+            <value>
+            	/css/** = anon
+            	/dist/** = anon 
+            	/fonts/** = anon
+            	/i18n/** = anon
+            	/img/** = anon
+            	/js/** = anon 
+            	/user/createRandomCode = anon 
+            	/common/locale/dropdown = anon 
+            	/common/locale/switch = anon
+            	/alipay/notify = anon
+
+            	/ =  anon 
+            	/user/main = anon 
+            	/user/login = anon
+				/user/updatePwd = anon
+				/user/firstUpdatePwd = anon
+				
+				/monitor/send = anon
+            	
+                /** = kickout,authc  
+             </value>    
+        </property>
+	</bean>
+    
+</beans>
+

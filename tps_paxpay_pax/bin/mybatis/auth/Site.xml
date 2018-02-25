@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.auth.dao.SiteDao">
+
+	<select id="getNextId" resultType="int">
+        select case when count(id)= 0 then 1 else max(id)+1 end from t_si_site;
+    </select>
+
+    <insert id="save" parameterType="map">
+        insert INTO t_si_site(id,name,tag,url,status,buildoper,builddatetime,notes)
+        values(#{id},#{name},#{tag},#{url},#{status},#{buildoper},#{builddatetime},#{notes});
+    </insert>
+    
+    <select id="list" resultType="Site" parameterType="com.pax.core.model.PageQueryParam">
+    
+        select t.* 
+        from t_si_site t
+        
+        <where>
+			<if test="filterMap.containsKey('name') and filterMap.name !=''.toString()">  t.name like concat('%',#{filterMap.name},'%')</if>
+			<if test="filterMap.containsKey('status') and filterMap.status !=''.toString()"> and t.status = #{filterMap.status}</if>
+		</where>
+		
+		<choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key"  item="val" open="order by " separator="," close="  ">
+	                #{key} #{val}
+	        	</foreach>
+	        	, builddatetime desc
+            </when>
+            <otherwise>
+                  order by builddatetime desc
+             </otherwise>
+         </choose>
+		
+    </select>
+    
+    <select id="listAll" resultType="Site">
+    	select t.* 
+        from t_si_site t
+    </select>
+    
+    <select id="get" resultType="Site" parameterType="string">
+        select t.* from t_si_site t where t.id = #{id};
+    </select>
+    
+    <update id="update" parameterType="map">
+		update t_si_site 
+		<set>
+			<if test="_parameter.containsKey('name') and name!=''.toString()">name=#{name},</if>
+			<if test="_parameter.containsKey('url') and url!=''.toString()">url=#{url},</if>
+			<if test="_parameter.containsKey('modifyoper') and modifyoper!=''.toString()">modifyoper=#{modifyoper},</if>
+			<if test="_parameter.containsKey('modifydatetime') and modifydatetime!=''.toString()">modifydatetime=#{modifydatetime},</if>
+		</set>
+		where id=#{id};
+	</update>
+	
+	<update id="frozen" parameterType="string">
+		update t_si_site set status='1' where id=#{id};
+	</update>
+	
+	<update id="unfrozen" parameterType="string">
+		update t_si_site set status='2' where id=#{id};
+	</update>
+	
+	<delete id="delete" parameterType="string">
+		delete from t_si_site where id=#{id};
+	</delete>
+
+</mapper>

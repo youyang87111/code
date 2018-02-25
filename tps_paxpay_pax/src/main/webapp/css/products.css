@@ -1,0 +1,413 @@
+.my-wrap{
+    margin:0 auto;
+
+    width:90%;
+    border: 2px solid #aaa;
+    padding: 1%;
+}
+.my-title-1{
+    margin-left: 30%;
+    font-size: 30px;
+
+}
+.span-wrap{
+    margin-left: 50px;
+    margin-top: 50px;
+    position: relative;
+}
+
+.span-1,.span-2{
+    background-color: #3CF;
+}
+.span-3,.span-4,.span-5,.span-6{
+    background-color: #f4f4f4;
+}
+.span-1,.span-3,.span-5{
+    width:285px;
+    height:20px;
+    border-radius: 10px;
+    position: absolute;
+}
+.span-1{
+    left:0;
+    top:0;
+}
+.span-2,.span-4,.span-6{
+    width: 40px;
+    height:40px;
+    border-radius: 50px;
+    position: absolute;
+    top:-10px;
+}
+.span-2{
+    z-index: 10;
+    left: 265px;
+
+}
+.span-3{
+    /*z-index: 9;*/
+    left:285px;
+    top:0;
+}
+.span-4{
+    z-index: 8;
+    left:550px;
+}
+.span-5{
+    z-index: 7;
+    left:570px;
+}
+.span-6{
+    left:835px;
+}
+.my-b{
+    display: inline-block;
+    clear: both;
+    margin-top: 20px;
+}
+.b1{
+    margin-left: 240px;
+}
+.b2{
+    margin-left: 200px;
+}
+.b3{
+    margin-left: 210px;
+}
+.hint{
+    color: red;
+}
+.display-none{
+    display: none;
+}
+.display-block{
+    display: block;
+}
+.upload-card{
+    margin-left: 30px;
+    margin-top: 10px;
+}
+#city>select{
+    padding: 4px;
+}
+.my-nav-top{
+    width: 96%;
+    margin: 10px auto;
+    padding-bottom: 10px;
+    border-bottom: 3px solid rgba(51, 204, 51, 1);
+}
+.contact_wrap{
+    width: 90%;
+    margin: 50px auto;
+    border: 1px solid #d4d4d4;
+    padding-bottom: 20px;
+}
+.contact-massage{
+   padding-left: 2%;
+    line-height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #dedede;
+    /*border-top: 1px solid #f4f4f4;*/
+    border-bottom: 1px solid #f4f4f4;
+}
+.basic-info{
+    padding-left: 4%;
+    line-height: 30px;
+    font-weight: bold;
+    font-size: 14px;
+}
+.divide-line{
+    width: 96%;
+    margin: 10px auto;
+    border-bottom: 4px solid #f4f4f4;
+}
+.select-sty{
+    width: 100%;
+   line-height: 30px;
+    height: 34px;
+    border: 1px solid #ccc;
+}
+.muti-select{
+    width: 20%;
+}
+/*.nav-wrap{*/
+    /*width: 100%;*/
+    /*border: 1px solid #f4f4f4;*/
+    /*/!*margin-bottom: -2px;*!/*/
+    /*position: relative;*/
+/*}*/
+/*.left-arrow-nav{*/
+    /*display: inline-block;*/
+    /*width: 20%;*/
+    /*/!*background-color: #0044cc;*!/*/
+    /*height: 0;*/
+    /*border: 16px solid transparent;*/
+    /*border-left-color: #0044cc;*/
+    /*position: absolute;*/
+    /*z-index: 50;*/
+
+/*}*/
+/*.left-arrow-nav-1{*/
+
+/*}*/
+/*.left-arrow-nav-2{*/
+    /*border-left-color: #f4f4f4;*/
+    /*left:20.3%;*/
+    /*z-index: 10;*/
+/*}*/
+/*.left-arrow-nav-3{*/
+    /*border-left-color: #f4f4f4;*/
+    /*left:45.3%;*/
+    /*z-index: 9;*/
+/*}*/
+/*.left-sq-nav{*/
+    /*display: inline-block;*/
+    /*width: 20%;*/
+    /*background-color: #0044cc;*/
+    /*height: 32px;*/
+    /*line-height: 32px;*/
+    /*/!*margin-bottom: -3px;*!/*/
+    /*color: #fff;*/
+    /*font-weight: normal;*/
+/*}*/
+/*.fill-info-1{*/
+    /*font-style: normal;*/
+    /*font-weight: normal;*/
+/*}*/
+/*.fill-info-2{*/
+    /*position: absolute;*/
+    /*display: inline-block;*/
+    /*bottom: -9px;*/
+/*}*/
+.my-label{
+    font-weight: normal;
+    position: relative;
+    padding-left: 20px;
+    /*line-height: 32px;*/
+    /*margin-top: -8px;*/
+}
+.my-label>input{
+    /*margin-bottom: -15px;*/
+    position: absolute;
+    top:6px;
+    left:0px;
+}
+.choose-plat{
+    width: 204px;
+    float: left;
+    height: 156px;
+    overflow-y: hidden;
+    margin-left: 20px;
+    border: 1px solid #ddd;
+    /*background-image:url(../images/alipay.jpg);*/
+}
+.choose-plat-tip{
+    line-height: 40px;
+    font-size: 20px;
+}
+.choose-plat>img{
+    width: 200px;
+    height: 160px;
+}
+.border-2{
+    border: 2px solid red;
+    outline: none;
+}
+.my-img{
+    /*border-right: 1px solid #ddd;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+
+}
+.ali-span{
+    position: absolute;
+    display: block;
+    width: 200px;
+    height: 160px;
+    top: 0;
+    left: 0;
+    /*z-index: 100;*/
+    background: url("../images/alipay.png") no-repeat 1px;
+}
+.we-span{
+    position: absolute;
+    display: block;
+    width: 200px;
+    height: 160px;
+    top: 0;
+    left: 0;
+    /*z-index: 100;*/
+    background: url("../images/wechat.png") no-repeat;
+}
+.ali-both{
+    position: absolute;
+    display: block;
+    width: 200px;
+    height: 160px;
+    top: 0;
+    left: 0;
+    /*z-index: 100;*/
+    background: url("../images/alipay.png") no-repeat;
+}
+.we-both{
+    position: absolute;
+    display: block;
+    width: 200px;
+    height: 160px;
+    top: 0;
+    left: 210px;
+    /*z-index: 100;*/
+    background: url("../images/wechat.png") no-repeat;
+}
+.choose-plat-width{
+    float: left;
+    margin-left: 20px;
+    border: 1px solid #ddd;
+    outline: 1px solid transparent;
+    width: 414px;
+    overflow-x: hidden;
+    height: 156px;
+    overflow-y: hidden;
+    position: relative;
+}
+.radio-box{
+    width: 200px;
+    height: 160px;
+    position: relative;
+}
+.ali-radio{
+    width: 200px;
+    height: 160px;
+    /*display: none;*/
+    position: absolute;
+    top:0px;
+    left: 0px;
+    z-index: -1;
+    overflow: hidden;
+    background: url("../images/alipay.png") no-repeat;
+}
+.ali-radio-width{
+    width: 430px;
+    height: 160px;
+    /*display: block;*/
+    display: none;
+    background-color: green;
+    /*background-image:url(../images/alipay.png);*/
+    position: absolute;
+    z-index: 800;
+}
+.lf{
+    float: left;
+}
+.ali-radio img{
+    position: absolute;
+    top:0px;
+    left: 0px;
+    position: absolute;
+    z-index: 20;
+}
+/*������������ʼ*/
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+.clearfix:after {
+    clear: both;
+}
+ol.steps{
+    display: inline-table;
+    list-style: none;
+    border: 1px solid #ccc;
+    background: #ccc;
+    width: 100%;
+    clear: both;
+}
+ol.steps li{
+    display: inline;
+    width:16.6666%;
+    box-sizing: border-box;
+    float: left;
+    position: relative;
+}
+ol.steps li a
+{
+    display: block;
+    text-decoration: none;
+    line-height: 20px;
+    background: #FFF;
+    font-size: 16px;
+    text-align: center;
+    color: #ccc;
+    padding: 9px;
+    background: #fff;
+}
+ol.steps a.active{
+    color: #fff;
+    background: #74DCEF !important;
+}
+ol.steps li a:before {
+    content: "";
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    border-left: 19px solid black;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+ol.steps li a:after {
+    content: "";
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    border-left: 19px solid #fff;
+    position: absolute; right: -19px; top: 0;
+    z-index: 1;
+}
+ol.steps li:first-child a:before {
+    display: none;
+}
+ol.steps li .active:after {
+    content: "";
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    border-left: 19px solid #74DCEF ;
+    position: absolute; right: -19px; top: 0;
+    z-index: 1;
+}
+ol.steps li .active:before {
+    content: "";
+    border-top: 19px solid transparent;
+    border-bottom: 19px solid transparent;
+    border-left: 19px solid black;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+ol.steps li:last-child a:after {
+    display: none;
+}
+/*��������������*/
+.sub-info{
+    line-height: 40px;
+    font-size: 20px;
+}
+/*������ʾ������ɫ*/
+.hint-color{
+    color: #999;
+}
+input[type="file"].display-file{
+    display: none;
+}
+.my-primary{
+    background-color: #fff;
+    color: #000;
+}
+.my-primary:hover{
+    background-color: #ccc;
+}
+/*.check-info{*/
+    /**/
+/*}*/

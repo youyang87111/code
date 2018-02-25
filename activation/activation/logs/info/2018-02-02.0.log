@@ -1,0 +1,2 @@
+2018-02-02 15:15:49 [INFO ] [org.springframework.boot.SpringApplication.logStartupProfileInfo:593] - No active profile set, falling back to default profiles: default
+2018-02-02 15:16:00 [INFO ] [org.springframework.boot.StartupInfoLogger.logStarted:57] - Started ActivationApplicationTests in 15.558 seconds (JVM running for 22.084)

@@ -1,0 +1,11 @@
+2018-02-24 09:15:58 [INFO ] [org.springframework.boot.SpringApplication.logStartupProfileInfo:593] - No active profile set, falling back to default profiles: default
+2018-02-24 09:20:51 [INFO ] [org.springframework.boot.SpringApplication.logStartupProfileInfo:593] - No active profile set, falling back to default profiles: default
+2018-02-24 09:21:06 [INFO ] [org.springframework.boot.StartupInfoLogger.logStarted:57] - Started ActivationApplicationTests in 17.669 seconds (JVM running for 20.151)
+2018-02-24 09:29:33 [INFO ] [org.springframework.boot.SpringApplication.logStartupProfileInfo:593] - No active profile set, falling back to default profiles: default
+2018-02-24 09:29:46 [INFO ] [org.springframework.boot.StartupInfoLogger.logStarted:57] - Started ActivationApplication in 18.176 seconds (JVM running for 20.13)
+2018-02-24 09:31:01 [INFO ] [com.pax.busi.web.ActivationController.activation:23] - 收到激活请求:ActivationReq[regCode=<null>,termType=<null>,termSn=<null>,appVer=<null>,requestId=<null>,requestTime=<null>]
+2018-02-24 16:07:08 [INFO ] [org.springframework.boot.SpringApplication.logStartupProfileInfo:593] - No active profile set, falling back to default profiles: default
+2018-02-24 16:09:24 [INFO ] [org.springframework.boot.SpringApplication.logStartupProfileInfo:593] - No active profile set, falling back to default profiles: default
+2018-02-24 16:11:34 [INFO ] [org.springframework.boot.SpringApplication.logStartupProfileInfo:593] - No active profile set, falling back to default profiles: default
+2018-02-24 16:11:44 [INFO ] [org.springframework.boot.StartupInfoLogger.logStarted:57] - Started ActivationApplication in 13.712 seconds (JVM running for 15.472)
+2018-02-24 16:13:26 [INFO ] [com.pax.busi.web.ActivationController.activation:23] - 收到激活请求:ActivationReq[regCode=<null>,termType=<null>,termSn=<null>,appVer=<null>,requestId=<null>,requestTime=<null>]

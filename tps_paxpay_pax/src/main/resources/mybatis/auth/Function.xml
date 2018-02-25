@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.auth.dao.FunctionDao">
+
+	<select id="getNextId" resultType="int">
+        select case when count(id)= 0 then 1 else max(id)+1 end from t_si_function
+    </select>
+    
+	<select id="getAuthsCount" resultType="int" parameterType="string">
+        select 
+        count(1) 
+        from t_si_authority a 
+        inner join t_si_authfunc af 
+        on a.id = af.auth_id 
+        inner join t_si_function f 
+        on af.func_id = f.id 
+        where f.id = #{id}
+    </select>
+
+    <insert id="save" parameterType="map">
+        insert INTO t_si_function(id,site_id,name,img,url,menu_id,buildoper,builddatetime,notes)
+        values(#{id},#{site_id},#{name},#{img},#{url},#{menu_id},#{buildoper},#{builddatetime},#{notes})
+    </insert>
+    
+    <resultMap type="Function" id="funcResult">
+    	
+    	<id property="id" column="id" />
+    	
+    	<result property="site.id" column="site_id" />
+    	<result property="site.name" column="site_name" />
+    	<result property="name" column="name"/>
+    	<result property="url" column="url"/>
+    	<result property="img" column="img"/>
+    	<result property="menu.id" column="menu_id"/>
+    	<result property="menu.name" column="menu_name"/>
+    </resultMap>
+    
+    <select id="list" resultMap="funcResult" parameterType="com.pax.core.model.PageQueryParam">
+    
+        select t.*,t2.name as site_name,t3.name as menu_name 
+        from t_si_function t left outer join t_si_site t2 
+        on t.site_id = t2.id 
+        left outer join t_si_menu t3 
+        on t.menu_id = t3.id
+        
+        <where>
+			<if test="filterMap.containsKey('name') and filterMap.name !=''.toString()">  t.name like concat('%',#{filterMap.name},'%')</if>
+			<if test="filterMap.containsKey('site_id') and filterMap.site_id !=''.toString()"> and t.site_id = #{filterMap.site_id}</if>
+			<if test="filterMap.containsKey('menu_id') and filterMap.menu_id !=''.toString()"> and t.menu_id = #{filterMap.menu_id}</if>
+		</where>
+		
+		<choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key"  item="val" open="order by " separator="," close="  ">
+	                #{key} #{val}
+	        	</foreach>
+	        	, builddatetime desc
+            </when>
+            <otherwise>
+                  order by builddatetime desc
+             </otherwise>
+         </choose>
+		
+    </select>
+    
+    <select id="get" resultMap="funcResult" parameterType="string">
+        select t.*,t2.name as site_name,t3.name as menu_name 
+        from t_si_function t left outer join t_si_site t2 
+        on t.site_id = t2.id 
+        left outer join t_si_menu t3 
+        on t.menu_id = t3.id 
+        where t.id = #{id};
+    </select>
+    
+    <update id="update" parameterType="map">
+		update t_si_function 
+		<set>
+			<if test="_parameter.containsKey('name') and name!=''.toString()">name=#{name},</if>
+			<if test="_parameter.containsKey('url') and url!=''.toString()">url=#{url},</if>
+			<if test="_parameter.containsKey('img') and img!=''.toString()">img=#{img},</if>
+			<if test="_parameter.containsKey('menu_id') and menu_id!=''.toString()">menu_id=#{menu_id},</if>
+			<if test="_parameter.containsKey('modifyoper') and modifyoper!=''.toString()">modifyoper=#{modifyoper},</if>
+			<if test="_parameter.containsKey('modifydatetime') and modifydatetime!=''.toString()">modifydatetime=#{modifydatetime},</if>
+		</set>
+		where id=#{id};
+	</update>
+	
+	<delete id="delete" parameterType="string">
+		delete from t_si_function where id=#{id};
+	</delete>
+	
+	<resultMap type="Function" id="funcResultForMenu">
+    	<id property="id" column="id" />
+    	<result property="site.id" column="site_id" />
+    	<result property="site.name" column="site_name" />
+    	<result property="name" column="name"/>
+    	<result property="url" column="url"/>
+    	<result property="img" column="img"/>
+    	<association property="menu" resultMap="menuResult"/>
+    </resultMap>
+    
+    <resultMap type="Menu" id="menuResult">
+    	<id property="id" column="menu_id" />
+    	<result property="name" column="menu_name"/>
+    	<result property="orderno" column="menu_orderno"/>
+    	<result property="url" column="menu_url"/>
+    	<result property="img" column="menu_img"/>
+    	<result property="pmenu.id" column="menu_pid"/>
+    </resultMap>
+	
+    <select id="getFuncsByAuth" resultMap="funcResult" parameterType="string">
+    
+        select 
+        f.*  
+        from 
+        t_si_authority a 
+        inner join 
+        t_si_authfunc ac 
+        on a.id = ac.auth_id 
+        inner join 
+        t_si_function f 
+        on ac.func_id = f.id 
+        where 
+        a.id = #{id}
+        
+    </select>
+
+</mapper>

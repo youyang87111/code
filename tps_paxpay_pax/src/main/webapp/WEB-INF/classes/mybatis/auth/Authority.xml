@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.auth.dao.AuthorityDao">
+
+	<select id="getNextId" resultType="int">
+        select case when count(id)= 0 then 1 else max(id)+1 end from t_si_authority
+    </select>
+    
+    <select id="getSiteId" resultType="int" parameterType="string">
+        select site_id from t_si_authority where id = #{id}
+    </select>
+
+    <insert id="save" parameterType="map">
+        insert INTO t_si_authority(id,site_id,name,tag,buildoper,builddatetime,notes)
+        values(#{id},#{site_id},#{name},#{tag},#{buildoper},#{builddatetime},#{notes})
+    </insert>
+    
+    <resultMap type="Authority" id="autResult">
+    	
+    	<id property="id" column="id" />
+    	
+    	<result property="site.id" column="site_id" />
+    	<result property="site.name" column="site_name" />
+    	<result property="name" column="name"/>
+    	<result property="tag" column="tag"/>
+    	
+    	
+    </resultMap>
+    
+    <select id="list" resultMap="autResult" parameterType="com.pax.core.model.PageQueryParam">
+    
+        select t.*,t2.name as site_name  
+        from t_si_authority t left outer join t_si_site t2 
+        on t.site_id = t2.id 
+        
+        <where>
+			<if test="filterMap.containsKey('name') and filterMap.name !=''.toString()">  t.name like concat('%',#{filterMap.name},'%')</if>
+			<if test="filterMap.containsKey('site_id') and filterMap.site_id !=''.toString()"> and t.site_id = #{filterMap.site_id}</if>
+		</where>
+		
+		<choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key"  item="val" open="order by " separator="," close="  ">
+	                #{key} #{val}
+	        	</foreach>
+	        	, builddatetime desc
+            </when>
+            <otherwise>
+                  order by builddatetime desc
+             </otherwise>
+         </choose>
+		
+    </select>
+    
+    <select id="get" resultMap="autResult" parameterType="string">
+        select t.*,t2.name as site_name  
+        from t_si_authority t left outer join t_si_site t2 
+        on t.site_id = t2.id 
+        where t.id = #{id}
+    </select>
+    
+    <update id="update" parameterType="map">
+		update t_si_authority 
+		<set>
+			<if test="_parameter.containsKey('name') and name!=''.toString()">name=#{name},</if>
+			<if test="_parameter.containsKey('tag') and tag!=''.toString()">tag=#{tag},</if>
+			<if test="_parameter.containsKey('modifyoper') and modifyoper!=''.toString()">modifyoper=#{modifyoper},</if>
+			<if test="_parameter.containsKey('modifydatetime') and modifydatetime!=''.toString()">modifydatetime=#{modifydatetime},</if>
+		</set>
+		where id=#{id};
+	</update>
+	
+	<delete id="delete" parameterType="string">
+		delete from t_si_authority where id=#{id};
+	</delete>
+	
+	<insert id="grantFuncs" parameterType="map">
+        insert ignore into t_si_authfunc(auth_id,func_id) 
+        values
+        <foreach collection="funcs" item="funcId" index="index" separator=",">
+            (
+            #{id},#{funcId}
+            )
+        </foreach>
+    </insert>
+    
+    <delete id="deleteAuthFuncs" parameterType="string">
+		delete from t_si_authfunc where auth_id=#{id};
+	</delete>
+
+	<delete id="deleteAllResources" parameterType="string">
+		delete from t_si_authres where auth_id=#{id};
+	</delete>
+	
+	<insert id="grantResources" parameterType="map">
+        insert ignore into t_si_authres(auth_id,res_id) 
+        values
+        <foreach collection="resources" item="resourceId" index="index" separator=",">
+            (
+            #{authId},#{resourceId}
+            )
+        </foreach>
+    </insert>
+    
+    <resultMap type="Authority" id="autResultForMenu">
+    	<id property="id" column="id" />
+    	
+    	<result property="site.id" column="site_id" />
+    	<result property="site.name" column="site_name" />
+    	<result property="name" column="name"/>
+    	<result property="tag" column="tag"/>
+    	<association property="menu" resultMap="menuResult"/>
+    </resultMap>
+    
+    <resultMap type="Menu" id="menuResult">
+    	<id property="id" column="menu_id" />
+    	<result property="name" column="menu_name"/>
+    	<result property="orderno" column="menu_orderno"/>
+    	<result property="url" column="menu_url"/>
+    	<result property="img" column="menu_img"/>
+    	<result property="pmenu.id" column="menu_pid"/>
+    </resultMap>
+    
+    <select id="getAuthsToUseByUser" resultMap="autResultForMenu" parameterType="int">
+        			select 
+			        a.*,
+			        m.id as menu_id,
+			        m.name as menu_name,
+			        m.orderno as menu_orderno,
+			        m.url as menu_url,
+			        m.img as menu_img,
+			        m.pid as menu_pid 
+    	<choose>
+            <when test="_parameter==1">
+			        
+			        from 
+			        
+			        t_si_authority a 
+			        inner join 
+			        t_si_authfunc af on af.auth_id = a.id 
+			        inner join 
+			        t_si_function f on af.func_id = f.id 
+			        inner join 
+			        t_si_menu m on f.menu_id = m.id 
+            </when>
+            <otherwise>
+			        
+			        from 
+			        
+			        t_si_user u 
+			        inner join 
+			        t_si_userrole ur on u.id = ur.user_id 
+			        inner join 
+			        t_si_role r on ur.role_id = r.id 
+			        inner join 
+			        t_si_roleauth ra on r.id = ra.role_id 
+			        inner join 
+			        t_si_authority a on ra.auth_id = a.id 
+			        inner join 
+			        t_si_authfunc af on af.auth_id = a.id 
+			        inner join 
+			        t_si_function f on af.func_id = f.id 
+			        inner join 
+			        t_si_menu m on f.menu_id = m.id 
+			        
+			        where u.id = #{userId}
+             </otherwise>		
+    	</choose>
+            
+    </select>
+    
+    <select id="getAuthsOutofSite" resultMap="autResultForMenu" parameterType="int">
+     	select 
+        a.*,
+        m.id as menu_id,
+        m.name as menu_name,
+        m.orderno as menu_orderno,
+        m.url as menu_url,
+        m.img as menu_img,
+        m.pid as menu_pid,
+        s.name as site_name 
+        
+        from 
+        
+        t_si_authority a 
+        inner join 
+        t_si_authfunc af on af.auth_id = a.id 
+        inner join 
+        t_si_function f on af.func_id = f.id 
+        inner join 
+        t_si_menu m on f.menu_id = m.id 
+        
+        left outer join 
+        t_si_site s on a.site_id = s.id 
+        where a.site_id != #{siteId}
+    	
+            
+    </select>
+    
+    
+    <select id="getAuthsOfSite" resultMap="autResultForMenu" parameterType="int">
+     	select 
+        a.*,
+        m.id as menu_id,
+        m.name as menu_name,
+        m.orderno as menu_orderno,
+        m.url as menu_url,
+        m.img as menu_img,
+        m.pid as menu_pid,
+        s.name as site_name 
+        
+        from 
+        
+        t_si_authority a 
+        inner join 
+        t_si_authfunc af on af.auth_id = a.id 
+        inner join 
+        t_si_function f on af.func_id = f.id 
+        inner join 
+        t_si_menu m on f.menu_id = m.id 
+        
+        left outer join 
+        t_si_site s on a.site_id = s.id 
+        where a.site_id = #{siteId}
+    	
+            
+    </select>
+    
+    <select id="getAuthsByRole" resultMap="autResult" parameterType="string">
+        select 
+        a.*   
+        from 
+        t_si_role r 
+        inner join 
+        t_si_roleauth ra 
+        on r.id = ra.role_id 
+        inner join 
+        t_si_authority a 
+        on ra.auth_id = a.id 
+        where r.id = #{id};
+    </select>
+    
+    <select id="getAuthsByRoleModel" resultMap="autResult" parameterType="string">
+        select 
+        a.*   
+        from 
+        t_si_rolemodel r 
+        inner join 
+        t_si_rolemodelauth ra 
+        on r.id = ra.role_id 
+        inner join 
+        t_si_authority a 
+        on ra.auth_id = a.id 
+        where r.id = #{id};
+    </select>
+    
+    <select id="getAuthsByUser" resultMap="autResult" parameterType="int">
+        select 
+        DISTINCT(a.id) as auth_id,
+        a.*   
+        from 
+        t_si_user u 
+        inner join 
+        t_si_userrole ur on u.id = ur.user_id 
+        inner join 
+        t_si_role r 
+        on ur.role_id = r.id 
+        inner join 
+        t_si_roleauth ra 
+        on r.id = ra.role_id 
+        inner join 
+        t_si_authority a 
+        on ra.auth_id = a.id 
+        where u.id = #{userId};
+    </select>
+    
+    <select id="getAuthsByUserByRoelModel" resultMap="autResult" parameterType="int">
+        select 
+        DISTINCT(a.id) as auth_id,
+        a.*   
+        from 
+        t_si_user u 
+        inner join 
+        t_si_userrolemodel ur on u.id = ur.user_id 
+        inner join 
+        t_si_rolemodel r 
+        on ur.role_id = r.id 
+        inner join 
+        t_si_rolemodelauth ra 
+        on r.id = ra.role_id 
+        inner join 
+        t_si_authority a 
+        on ra.auth_id = a.id 
+        where u.id = #{userId};
+    </select>
+    
+    <select id="getRolesCount" resultType="int" parameterType="string">
+        select 
+        count(*)  
+        from t_si_roleauth   
+        where auth_id = #{id};
+    </select>
+    
+</mapper>

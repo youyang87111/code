@@ -1,0 +1,112 @@
+ul.messenger.messenger-fixed.messenger-on-center{
+  width: 320px;
+  left:50%;
+  top:40%;
+  word-wrap:break-word;
+}
+.modal-primary .modal-body {
+  color:#000000 !important;
+  background-color: #FFFFFF !important;
+  
+}
+.select2-container--default .select2-selection--multiple{
+	height:auto !important;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+	background-color:#3C8DBC;	
+}
+
+.pax-datatable-cls { table-layout: fixed;radius: 0px; }
+.pax-datatable-cls th{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap;text-align:center;background-color:#78D3E3 ;color:white; }
+.pax-datatable-cls td.center { overflow: hidden; text-overflow: ellipsis; white-space: nowrap;text-align:center;vertical-align:middle; }
+.pax-datatable-cls td.center2 { text-align:center; vertical-align:middle;}
+
+.pax-div-detail{
+   	padding-top: 7px;
+}
+.pax-modal{
+	word-wrap:break-word;
+}
+div.oper_bg{
+	background:url(slice/oper_bg.png) no-repeat !important;
+	height:30px;
+	width:30px;
+	float:left;
+	display:block;
+	margin:auto 2px;
+}
+div.oper_bg:hover{	
+	background:url(slice/oper_bg_on.png) no-repeat !important;
+}
+a.oper{
+	height:30px;
+	width:30px;
+	display:block;
+}
+a.oper_view{
+	background:url(slice/oper_view.png) no-repeat center !important;	
+}
+a.oper_modify{
+	background:url(slice/oper_modify.png) no-repeat center !important;
+}
+a.oper_audit{
+	background:url(slice/oper_auth.png) no-repeat center !important;
+}
+a.oper_lock{
+	background:url(slice/oper_lock.png) no-repeat center !important;
+}
+a.oper_unlock{
+	background:url(slice/oper_unlock.png) no-repeat center !important;
+}
+a.oper_delete{
+	background:url(slice/oper_delete.png) no-repeat center !important;
+}
+a.oper_isupdate{
+	background:url(slice/oper_isupdate.png) no-repeat center !important;
+}
+a.oper_copy{
+	background:url(slice/oper_copy.png) no-repeat center !important;
+}
+a.oper_getauth{
+	background:url(slice/oper_getauth.png) no-repeat center !important;
+}
+a.oper_reset{
+	background:url(slice/oper_reset.png) no-repeat center !important;
+}
+a.oper_active{
+	background:url(slice/oper_active.png) no-repeat center !important;
+}
+a.oper_actived{
+	background:url(slice/oper_actived.png) no-repeat center !important;
+}
+/*门店操作*/
+a.oper_store{
+	background:url(slice/oper_store.png) no-repeat center !important;
+}
+/*添加查看*/
+a.oper_look{
+	background:url(slice/oper_look.png) no-repeat center !important;
+}
+/*添加修改*/
+a.oper_modify2{
+	background:url(slice/oper_modify2.png) no-repeat center !important;
+}
+
+a.oper_add{
+	background:url(slice/oper_add.png) no-repeat center 8px !important;
+}
+
+a.oper_download{
+	background:url(slice/oper_down.png) no-repeat center 5px !important;
+}
+
+a.oper_restart{
+	background:url(slice/oper_refresh.png) no-repeat center 6px !important;
+}
+
+.up-file-box{
+	position:relative;
+}
+.up-file{
+	position:absolute; right:0px; top:0px; opacity:0;
+}

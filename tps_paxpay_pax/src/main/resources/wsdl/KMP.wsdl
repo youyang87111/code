@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="Service"
+ targetNamespace="http://tempuri.org/KMP.xsd/Service.wsdl"
+ xmlns:tns="http://tempuri.org/KMP.xsd/Service.wsdl"
+ xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+ xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+ xmlns:KMP="http://tempuri.org/KMP.xsd"
+ xmlns:SOAP="http://schemas.xmlsoap.org/wsdl/soap/"
+ xmlns:HTTP="http://schemas.xmlsoap.org/wsdl/http/"
+ xmlns:MIME="http://schemas.xmlsoap.org/wsdl/mime/"
+ xmlns:DIME="http://schemas.xmlsoap.org/ws/2002/04/dime/wsdl/"
+ xmlns:WSDL="http://schemas.xmlsoap.org/wsdl/"
+ xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+<types>
+
+ <schema targetNamespace="http://tempuri.org/KMP.xsd"
+  xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:KMP="http://tempuri.org/KMP.xsd"
+  xmlns="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="unqualified"
+  attributeFormDefault="unqualified">
+  <import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+  <complexType name="REQELEM"><!-- KMP__REQELEM -->
+   <sequence>
+     <element name="szTid" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/><!-- KMP__REQELEM::szTid -->
+     <element name="szMcr" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/><!-- KMP__REQELEM::szMcr -->
+     <element name="szMid" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/><!-- KMP__REQELEM::szMid -->
+     <element name="szSerialNo" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/><!-- KMP__REQELEM::szSerialNo -->
+   </sequence>
+  </complexType>
+  <complexType name="RESELEM"><!-- KMP__RESELEM -->
+   <sequence>
+     <element name="iResCode" type="xsd:int" minOccurs="1" maxOccurs="1"/><!-- KMP__RESELEM::iResCode -->
+     <element name="szResInfo" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/><!-- KMP__RESELEM::szResInfo -->
+   </sequence>
+  </complexType>
+  <complexType name="STUPDATETMKRES"><!-- KMP__STUPDATETMKRES -->
+   <sequence>
+    <element name="item" type="KMP:RESELEM" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+   </sequence>
+  </complexType>
+  <complexType name="STUPDATETMKREQ"><!-- KMP__STUPDATETMKREQ -->
+   <sequence>
+    <element name="item" type="KMP:REQELEM" minOccurs="0" maxOccurs="unbounded" nillable="false"/>
+   </sequence>
+  </complexType>
+  <!-- operation request element -->
+  <element name="UpdateTMK">
+   <complexType>
+    <sequence>
+     <element name="req" type="KMP:STUPDATETMKREQ" minOccurs="1" maxOccurs="1" nillable="true"/><!-- KMP__UpdateTMK::req -->
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="UpdateTMKResponse">
+   <complexType>
+    <sequence>
+     <element name="res" type="KMP:STUPDATETMKRES" minOccurs="0" maxOccurs="1" nillable="true"/><!-- KMP__UpdateTMK::res -->
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation request element -->
+  <element name="TmkCvt">
+   <complexType>
+    <sequence>
+     <element name="cmd" type="xsd:int" minOccurs="1" maxOccurs="1"/><!-- KMP__TmkCvt::cmd -->
+    </sequence>
+   </complexType>
+  </element>
+  <!-- operation response element -->
+  <element name="STCVTRES">
+   <complexType>
+    <sequence>
+     <element name="iResCode" type="xsd:int" minOccurs="1" maxOccurs="1"/><!-- KMP__STCVTRES::iResCode -->
+     <element name="szResInfo" type="xsd:string" minOccurs="1" maxOccurs="1" nillable="true"/><!-- KMP__STCVTRES::szResInfo -->
+    </sequence>
+   </complexType>
+  </element>
+ </schema>
+
+</types>
+
+<message name="UpdateTMKRequest">
+ <part name="Body" element="KMP:UpdateTMK"/><!-- KMP__UpdateTMK::KMP__UpdateTMK -->
+</message>
+
+<message name="UpdateTMKResponse">
+ <part name="Body" element="KMP:UpdateTMKResponse"/>
+</message>
+
+<message name="TmkCvt">
+ <part name="Body" element="KMP:TmkCvt"/><!-- KMP__TmkCvt::KMP__TmkCvt -->
+</message>
+
+<message name="STCVTRES">
+ <part name="Body" element="KMP:STCVTRES"/><!-- KMP__TmkCvt::rescode -->
+</message>
+
+<portType name="ServicePortType">
+ <operation name="UpdateTMK">
+  <documentation>Service definition of function KMP__UpdateTMK</documentation>
+  <input message="tns:UpdateTMKRequest"/>
+  <output message="tns:UpdateTMKResponse"/>
+ </operation>
+ <operation name="TmkCvt">
+  <documentation>Service definition of function KMP__TmkCvt</documentation>
+  <input message="tns:TmkCvt"/>
+  <output message="tns:STCVTRES"/>
+ </operation>
+</portType>
+
+<binding name="Service" type="tns:ServicePortType">
+ <SOAP:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+ <operation name="UpdateTMK">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="Body" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="Body" use="literal"/>
+  </output>
+ </operation>
+ <operation name="TmkCvt">
+  <SOAP:operation soapAction=""/>
+  <input>
+     <SOAP:body parts="Body" use="literal"/>
+  </input>
+  <output>
+     <SOAP:body parts="Body" use="literal"/>
+  </output>
+ </operation>
+</binding>
+
+<service name="Service">
+ <documentation>gSOAP 2.8.24 generated service definition</documentation>
+ <port name="Service" binding="tns:Service">
+  <SOAP:address location="http://192.168.13.101:29039/"/>
+ </port>
+</service>
+
+</definitions>

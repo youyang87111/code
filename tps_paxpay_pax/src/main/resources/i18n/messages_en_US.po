@@ -1,0 +1,1512 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "用户已被冻结"
+msgstr "The user has been frozened"
+
+msgid "用户已被注销"
+msgstr "The user does not exist"
+
+msgid "系统维护中"
+msgstr "System in maintenance"
+
+msgid "验证码错误"
+msgstr "Incorrect verification code"
+
+msgid "用户名不能为空"
+msgstr "Username cannot not be empty"
+
+msgid "密码不能为空"
+msgstr "Password cannot not be empty"
+
+msgid "用户名或密码错误"
+msgstr "Incorrect user name or password"
+
+msgid "密码输入次数超过5次，已被冻结"
+msgstr "The user name is frozen for entering wrong password 5 times"
+
+msgid "密码错误，还剩"
+msgstr "Incorrect password;   "
+
+msgid "次输入机会"
+msgstr " times to try"
+
+msgid "你被强制退出登录"
+msgstr "You are forced to log out"
+
+msgid "导入总数："
+msgstr " total imported records:"
+
+msgid ", 导入成功："
+msgstr ",imported successfully:"
+
+msgid "有角色引用该权限，不能删除"
+msgstr "Using authority can not be deleted"
+
+msgid "有权限引用该功能，不能删除"
+msgstr "Using function can not be deleted"
+
+msgid "该菜单下面有子菜单，不能删除"
+msgstr "This menu can not be deleted; it has some submenus "
+
+msgid "有功能引用该菜单，不能删除"
+msgstr "This menu can not be deleted; it is included in some functions"
+
+msgid "站点不存在"
+msgstr "The site does not exist"
+
+msgid "角色模板只能由平台管理员创建"
+msgstr "Role templates can only be created by administrator"
+
+msgid "权限站点和角色站点不匹配"
+msgstr "Authority site and role site do not match"
+
+msgid "所指定的权限中包含你无权使用的权限"
+msgstr " It contains some authority that you are not legal to use."
+
+msgid "只能创建自己所属站点的角色"
+msgstr "You can only create roles of your own site"
+
+msgid "机构不存在"
+msgstr "Organization does not exist"
+
+msgid "机构所属站点和当前选择的站点不匹配"
+msgstr "The organization site does not match the current selected site"
+
+msgid "你不能新增所选机构的角色"
+msgstr "You can't add the role of the selected organization"
+
+msgid "你没有权限操作该记录"
+msgstr "You do not have permission to do this operation "
+
+msgid "有用户引用该角色，不能删除"
+msgstr "Using role cannot be deleted"
+
+msgid "登录名已经存在"
+msgstr "The login name already exists"
+
+msgid "该用户不能重置密码"
+msgstr "The user cannot reset password"
+
+msgid "不能删除自己"
+msgstr "Cannot delete yourself"
+
+msgid "不能为该用户分配指定的角色"
+msgstr "The role cannot be assigned for this user"
+
+msgid "新旧密码不能相同"
+msgstr "The old and new passwords cannot be the same"
+
+msgid "新密码与确认密码不一致"
+msgstr "The new password and confirmed password do not match"
+
+msgid "旧密码不正确"
+msgstr "The old password is incorrect"
+
+msgid "菜单id不能为空"
+msgstr "The menu ID cannot be empty"
+
+msgid "站点id不能为空"
+msgstr "The site ID cannot be empty"
+
+msgid "查询机构信息失败"
+msgstr "Query organization information failed"
+
+msgid "第"
+msgstr "The"
+
+msgid "操作成功"
+msgstr "Operation succeed"
+
+msgid "操作失败"
+msgstr "Operation failed"
+
+msgid "商户来源不存在"
+msgstr "Merchant source does not exist"
+
+msgid "商户号重复"
+msgstr "The merchant number repeated"
+
+msgid "商户号不存在"
+msgstr "The Merchant number does not exist"
+
+msgid "该记录处于启用状态，不能被修改"
+msgstr "Enabled record cannot be modified"
+
+msgid "该记录已经是审核通过状态"
+msgstr "The record is already audited"
+
+msgid "该记录已经是审核不通过状态"
+msgstr "The record is already in audited failed status"
+
+msgid "商户记录不能为空"
+msgstr "The merchant record cannot be empty"
+
+msgid "请上传excel表格文件"
+msgstr "Please upload the excel file"
+
+msgid "系统异常！"
+msgstr "System error!"
+
+msgid "该记录不能冻结"
+msgstr "The record cannot be frozen"
+
+msgid "该记录不能解冻"
+msgstr "The record cannot be unfrozen"
+
+msgid "只能删除未启用的记录"
+msgstr "You can only delete disabled records "
+
+msgid "该记录不能修改"
+msgstr "The record cannot be modified"
+
+msgid "接入商户不存在"
+msgstr "The merchant does not exist"
+
+
+msgid "条记录的格式不正确"
+msgstr "record's format is incorrect"
+
+msgid "条记录的商户号为空"
+msgstr "record's merchant number is empty"
+
+msgid "条记录的商户号格式不正确"
+msgstr "record's merchant number format is incorrect"
+
+msgid "条记录的商户名称为空"
+msgstr "record's merchant name is empty "
+
+msgid "条记录的商户名称格式不正确"
+msgstr "record's merchant name format is incorrect"
+
+msgid "条记录商户来源不存在"
+msgstr "record's merchant source does not exist"
+
+msgid "条记录的商户号已经存在"
+msgstr "record's merchant number already exists."
+
+msgid "条记录的终端号为空"
+msgstr "record's terminal number is empty"
+
+msgid "条记录的终端号格式不正确"
+msgstr "record's terminal number format is incorrect"
+
+msgid "条记录的商户号不存在"
+msgstr "record's merchant number does not exist"
+
+msgid "条记录的终端号已经存在"
+msgstr "record's terminal number already exists"
+
+msgid "终端号重复"
+msgstr "Terminal number repeated"
+
+msgid "接入终端不存在"
+msgstr "The terminal does not exist"
+
+msgid "转出终端不存在"
+msgstr "The transfer terminal does not exist"
+
+msgid "只有启用状态的终端才能生成密钥"
+msgstr "You can only generate key for the enabled terminal"
+
+msgid "商户未启用，不能进行审核"
+msgstr "Merchant is not enabled, so can not be audited"
+
+msgid "文件下载失败："
+msgstr "File download failed:"
+
+msgid "转换未成功,请联系管理员"
+msgstr "The conversion failed. Please contact the administrator"
+
+msgid "导出成功"
+msgstr "Export succeed"
+
+msgid "接入渠道不存在"
+msgstr "The channel does not exis"
+
+msgid "交易类别不存在"
+msgstr "Payment type does not exist"
+
+msgid "接入商户号不能为空"
+msgstr "The merchant number cannot be empty"
+
+msgid "映射模式不存在"
+msgstr "Mapping mode does not exist"
+
+msgid "转出渠道不能为空"
+msgstr "The transfer channel cannot be empty"
+
+msgid "转出渠道不存在"
+msgstr "The transfer channel does not exist"
+
+msgid "映射已经存在"
+msgstr "Mapping already exists"
+
+msgid "卡片类型不能为空"
+msgstr "Card type cannot be empty"
+
+msgid "卡片类型不存在"
+msgstr "Card type does not exist"
+
+msgid "已经有其他卡类型映射存在，不能选择所有类型卡进行映射"
+msgstr "There are already other card type mappings, so cannot select all types of cards to map"
+
+msgid "已经有所有类型卡映射存在，不能选择其他卡类型进行映射"
+msgstr "All types of card mappings already exist, so cannot select other type of cards to map"
+
+msgid "开始金额不能为空"
+msgstr "The initial amount cannot be empty"
+
+msgid "结束金额不能为空"
+msgstr "The end amount cannot be empty"
+
+msgid "开始金额格式不正确"
+msgstr "Incorrect format for initial amount"
+
+msgid "结束金额格式不正确"
+msgstr "Incorrect format for end amount"
+
+msgid "结束金额必须大于开始金额"
+msgstr "The end amount must be larger than the initial amount"
+
+msgid "金额分段中有交集"
+msgstr "There is intersection between different amount sections "
+
+msgid "金额分段中必须包含开始金额0"
+msgstr "The amount section must include the initial amount 0"
+
+msgid "金额分段不连续"
+msgstr "The amount sections are discontinuous"
+
+msgid "发卡行不能为空"
+msgstr "Card issuing bank cannot be empty"
+
+msgid "的记录已经是审核通过状态"
+msgstr "record is already audited"
+
+
+msgid "的记录已经是审核不通过状态"
+msgstr "record is already in audited failed status"
+
+msgid "渠道映射不存在，请先添加渠道映射"
+msgstr " channel mapping does not exist. Please add channel mapping first"
+
+msgid "渠道映射未启用"
+msgstr "Channel mapping is not enabled"
+
+msgid "转出商户号不能为空"
+msgstr "The transfer number cannot be empty"
+
+msgid "映射1中的元素不能为空"
+msgstr "The element in the mapping 1 cannot be empty"
+
+msgid "卡不能重复"
+msgstr "Card cannot be repeated"
+
+msgid "所有类型卡和其他卡类型不能同时存在"
+msgstr "All type cards and other types card cannot exist at the same time"
+
+msgid "开始金额格式不正确，格式：最多7位正整数"
+msgstr "Incorrect format for initial amount; correct format:7 positive integer at most "
+
+msgid "结束金额格式不正确，格式：最多7位正整数"
+msgstr "Incorrect format for end amount; correct format:7 positive integer at most"
+
+msgid "同一种卡的金额分段中有交集"
+msgstr "There is an intersection of amount section in the same card"
+
+msgid "同一种卡，金额分段中必须包含开始金额0"
+msgstr "In the same card, the amount section must start with 0"
+
+msgid "同一种卡的金额分段不连续"
+msgstr "The amount section of the same card is discontinuous"
+
+msgid "发卡行不存在"
+msgstr "The issuing bank does not exist"
+
+msgid "同一个发卡行中的卡不能重复"
+msgstr "The card from the same issuing bank cannot be repeated"
+
+msgid "所选记录中包含已经是审核通过状态"
+msgstr "The selected records contain audited status"
+
+msgid "所选记录中包含已经是审核不通过状态"
+msgstr "The selected records contain audit failed status"
+
+msgid "商户映射不存在，请先添加商户映射"
+msgstr "Merchant mapping does not exist. Please add merchant mappings first"
+
+msgid "商户映射未启用"
+msgstr "Merchant mapping is not enabled"
+
+msgid "接入终端不能为空"
+msgstr "The terminal cannot be empty"
+
+msgid "转出终端不能为空"
+msgstr "The transfer terminal cannot be empty"
+
+msgid "未启用"
+msgstr "Disabled"
+
+msgid "冻结"
+msgstr "Frozen"
+
+msgid "启用"
+msgstr "Enabled"
+
+msgid "已删除"
+msgstr "Deleted"
+
+msgid "注销"
+msgstr "Log out"
+
+msgid "审核通过"
+msgstr "Audited"
+
+msgid "审核中"
+msgstr "Auditing"
+
+msgid "审核不通过"
+msgstr "Audited failed"
+
+msgid "需要生成密钥"
+msgstr "Need"
+
+msgid "不需要生成密钥"
+msgstr "Need Not"
+
+msgid "未撤销"
+msgstr "Voidable"
+
+msgid "已撤销"
+msgstr "Voided"
+
+msgid "用户90天未登录"
+msgstr "Hasn't logged in for more than 90 days"
+
+msgid "密码输入次数超过五次"
+msgstr "Password entered more than five times"
+
+msgid "接入渠道（"
+msgstr "channel("
+
+msgid "）+商户号（"
+msgstr ")+ merchant number("
+
+msgid "）+交易类别（"
+msgstr ")+payment type("
+
+msgid "）已经映射成"
+msgstr ")has already mapped as "
+
+msgid "模式，不能再映射成"
+msgstr "mode,can't be mapped "
+
+msgid "模式"
+msgstr " mode"
+
+msgid "转出渠道:"
+msgstr "Transfer channel:"
+
+msgid ",商户号"
+msgstr "merchant No. "
+
+msgid "的组合不存在"
+msgstr " combination does not exist"
+
+msgid "交易系统ID"
+msgstr "System ID"
+
+msgid "流水号"
+msgstr "Voucher No."
+
+msgid "机构"
+msgstr "Organization"
+
+msgid "接入渠道"
+msgstr "Channel"
+
+msgid "接入商户号"
+msgstr "Merchant No."
+
+msgid "接入终端号"
+msgstr "Terminal No."
+
+msgid "交易名称"
+msgstr "Transaction Name"
+
+msgid "金额"
+msgstr "Amount"
+
+msgid "转出渠道"
+msgstr "Transfer Channel"
+
+msgid "转出商户号"
+msgstr "Transfer Merchant No."
+
+msgid "转出终端号"
+msgstr "Transfer Terminal No."
+
+msgid "卡号"
+msgstr "Card No."
+
+msgid "交易日期"
+msgstr "Date"
+
+msgid "交易时间"
+msgstr "Time"
+
+msgid "参考号"
+msgstr "Reference No."
+
+msgid "授权码"
+msgstr "Auth Code"
+
+msgid "批次号"
+msgstr "Batch No."
+
+msgid "商户订单号"
+msgstr "Merchant Order No."
+
+msgid "支付订单号"
+msgstr "Payment Order No."
+
+msgid "冲正标志"
+msgstr "Reversal Flag"
+
+msgid "撤销标志"
+msgstr "Void Flag"
+
+msgid "接入终端交易历史流水"
+msgstr "  Terminal Transacation Historical Record"
+
+msgid "接入终端交易流水"
+msgstr "Terminal Transaction Record"
+
+msgid "CPOS本地交易"
+msgstr "CPOS Local Transaction"
+
+msgid "脚本结果上送"
+msgstr "Script results upload"
+
+msgid "IC卡批上送通知"
+msgstr "IC card batch upload notificaion"
+
+msgid "支付宝条码支付"
+msgstr "Alipay Quick Pay "
+
+msgid "支付宝查询订单"
+msgstr "Alipay order inquiry "
+
+msgid "查询订单"
+msgstr "Order inquiry "
+
+msgid "签退"
+msgstr "Sign out"
+
+msgid "支付宝撤销订单"
+msgstr "Alipay order cancellation "
+
+msgid "支付宝申请退款"
+msgstr "Alipay refund"
+
+msgid "支付宝数据同步"
+msgstr "Alipay data synchronization"
+
+msgid "支付宝扫码支付"
+msgstr "Alipay QR code Pay "
+
+msgid "支付宝退款查询"
+msgstr "Alipay refund inquiry"
+
+msgid "APP支付"
+msgstr "In-App pay"
+
+msgid "支付宝服务窗支付"
+msgstr "Alipay lifestyle pay"
+
+msgid "支付宝订单取消"
+msgstr "Alipay order cancellation"
+
+msgid "签到"
+msgstr "Sign in"
+
+msgid "IC参数下载"
+msgstr "IC Parameter download"
+
+msgid "CAPK下载"
+msgstr "CAPK download"
+
+msgid "AID下载"
+msgstr "AID download"
+
+msgid "百度钱包条码支付"
+msgstr " Baidu Wallet Quick pay"
+
+msgid "百度钱包订单撤销"
+msgstr "Baidu Wallet Order Cancellation"
+
+msgid "百度钱包退款"
+msgstr "Baidu Wallet refund"
+
+msgid "百度钱包订单查询"
+msgstr "Baidu wallet order inquiry"
+
+msgid "百度钱包退款查询"
+msgstr "Baidu Wallet refund inquiry"
+
+msgid "百度钱包扫码支付"
+msgstr "Baidu wallet QR code Pay "
+
+msgid "重置密钥申请"
+msgstr "Reset key application"
+
+msgid "便捷付重置密钥申请"
+msgstr "Reset key application of convenient payment"
+
+msgid "便捷付重置密钥"
+msgstr "Reset key of convenient payment"
+
+msgid "建行二维码消费"
+msgstr "CBC QR code purchase"
+
+msgid "建行二维码退货"
+msgstr "CBC QR code return"
+
+msgid "建行二维码消费查询 "
+msgstr "CBC QR code query"
+
+msgid "建行二维码消费撤消"
+msgstr "CBC QR code void"
+
+msgid "冲正"
+msgstr "Reversal"
+
+msgid "查余额"
+msgstr "Balance inquiry "
+
+msgid "消费"
+msgstr "Purchase"
+
+msgid "预授权"
+msgstr "Pre-auth"
+
+msgid "预授权完成通知"
+msgstr "Pre-auth completion advice"
+
+msgid "预授权完成"
+msgstr "Pre-auth completion"
+
+msgid "退货"
+msgstr "Refund"
+
+msgid "小费调整"
+msgstr "Tip adjustment"
+
+msgid "预授权撤销"
+msgstr "Pre-auth void"
+
+msgid "预授权完成撤销"
+msgstr "Pre-auth completion void "
+
+msgid "调整"
+msgstr "Adjustment"
+
+msgid "外卡离线"
+msgstr "Foreign card offline"
+
+msgid "脱机上送"
+msgstr "Upload(offline)"
+
+msgid "TC脚本结果上送"
+msgstr "TC script results upload"
+
+msgid "结算"
+msgstr "Settlement"
+
+msgid "EC指定账户圈存"
+msgstr "EC designated account load"
+
+msgid "EC非指定账户圈存"
+msgstr "EC non-designated account load"
+
+msgid "银联撤销"
+msgstr "UnionPay void"
+
+msgid "银联冲正"
+msgstr "UnionPay reversal"
+
+msgid "银联退货"
+msgstr "UnionPay refund"
+
+msgid "银联交易查询"
+msgstr "UnionPay transaction query"
+
+msgid "条码支付"
+msgstr "Quick pay"
+
+msgid "查询"
+msgstr "Query"
+
+msgid "退款"
+msgstr "Refund"
+
+msgid "撤销"
+msgstr "Void"
+
+msgid "取消"
+msgstr "Cancel"
+
+msgid "统一下单"
+msgstr "Unified order"
+
+msgid "微信条码支付"
+msgstr "WeChat quick pay"
+
+msgid "微信订单撤销"
+msgstr "WeChat void"
+
+msgid "微信退款"
+msgstr "WeChat refund"
+
+msgid "微信订单查询"
+msgstr "WeChat order query"
+
+msgid "微信退款查询"
+msgstr "WeChat refund query"
+
+msgid "微信文件下载"
+msgstr "WeChat file download "
+
+msgid "微信扫码支付"
+msgstr "WeChat QR code pay"
+
+msgid "微信取消订单"
+msgstr "WeChat cancel order"
+
+msgid "取消订单"
+msgstr "Cancel order"
+
+msgid "微信公众号支付"
+msgstr "WeChat Official Account pay"
+
+msgid "全渠道条码支付"
+msgstr "CUP omni-channel quick pay"
+
+msgid "全渠道扫码支付"
+msgstr "CUP omni-channel QR code pay"
+
+msgid "交易查询"
+msgstr "Transaction query"
+
+msgid "文件下载"
+msgstr "File download"
+
+msgid "境外支付宝"
+msgstr "Alipay overseas"
+
+msgid "微信支付(直联)"
+msgstr "WeChat pay (direct)"
+
+msgid "支付宝2.0"
+msgstr "Alipay 2.0"
+
+msgid "全渠道二维码"
+msgstr "CUP omni-channel QR code"
+
+msgid "境外微信"
+msgstr "WeChat overseas"
+
+msgid "自主收银支付宝"
+msgstr "Alipay ISV（direct）"
+
+msgid "自主收银"
+msgstr "ISV（direct）"
+
+msgid "自主收银微信"
+msgstr "WeChat ISV(direct)"
+
+msgid "百度钱包平台"
+msgstr "Baidu Wallet"
+
+msgid "百富通"
+msgstr "PAXPASS"
+
+msgid "百富"
+msgstr "PAX"
+
+msgid "微赢家"
+msgstr "Weiyingjia"
+
+msgid "中信银行"
+msgstr "CITIC Bank"
+
+msgid "CPOS商户管理平台"
+msgstr "CPOS"
+
+msgid "CUPC接入渠道"
+msgstr "CUPC"
+
+msgid "CUPP渠道"
+msgstr "CUPP"
+
+msgid "直连银行"
+msgstr "Bank (Direct)"
+
+msgid "银行微信"
+msgstr "WeChat bank"
+
+msgid "银联扫码"
+msgstr "UnionPay QR code"
+
+msgid "民生移动"
+msgstr "Minsheng Mobile"
+
+msgid "民生银行"
+msgstr "Minsheng Bank"
+
+msgid "PPCC渠道"
+msgstr "PPCC"
+
+msgid "威富通"
+msgstr "Swiftpass"
+
+msgid "微众支付"
+msgstr "WeBank Pay"
+
+msgid "PAXP TEST"
+msgstr "PAXP TEST"
+
+msgid "一一映射"
+msgstr "One-to-one mapping"
+
+msgid "卡借贷记映射"
+msgstr "Debit credit card mapping"
+
+msgid "金额分段映射"
+msgstr "Amount section mapping"
+
+msgid "卡借贷记+金额分段映射"
+msgstr "Debit credit card & Amount section mapping"
+
+msgid "发卡行+借贷记映射"
+msgstr "Issuing bank & Debit credit card mapping"
+
+msgid "循环选择映射"
+msgstr "Cycle mapping"
+
+msgid "第一行必须为标题行，不能为空"
+msgstr "The first line must be the head line and cannot be empty"
+
+msgid "请选择导入office的excel表格"
+msgstr "Please select the EXCEL form"
+
+msgid "贷记卡"
+msgstr "Credit card"
+
+msgid "借记卡"
+msgstr "Debit Card"
+
+msgid "所有类别"
+msgstr "All types"
+
+msgid "银行卡类"
+msgstr "The bank card"
+
+msgid "百度钱包"
+msgstr "Baidu Wallet"
+
+msgid "支付宝扫码"
+msgstr "Alipay QR code pay"
+
+msgid "支付宝小额支付"
+msgstr "Alipay Quick pay"
+
+msgid "银联小额"
+msgstr "UnionPay Quick pay"
+
+msgid "建行二维码"
+msgstr "CBC QR code pay"
+
+msgid "建行小额支付"
+msgstr "CCB Quick pay"
+
+msgid "微信小额支付"
+msgstr "WeChat Quick pay"
+
+msgid "邮政储汇"
+msgstr "The postal savings"
+
+msgid "工商银行"
+msgstr "ICBC"
+
+msgid "农业银行"
+msgstr "ABC"
+
+msgid "中国银行"
+msgstr "Bank of China"
+
+msgid "建设银行"
+msgstr "CCB"
+
+msgid "交通银行"
+msgstr "BOCOM"
+
+msgid "光大银行"
+msgstr "Everbright Bank"
+
+msgid "华夏银行"
+msgstr "Huaxia Bank"
+
+msgid "广发银行"
+msgstr "Guangfa Bank"
+
+msgid "深发银行"
+msgstr "Shenfa Bank"
+
+msgid "招商银行"
+msgstr "Merchants Bank"
+
+msgid "兴业银行"
+msgstr "Industrial Bank"
+
+msgid "浦发银行"
+msgstr "Pudong Development Bank"
+
+msgid "恒丰银行"
+msgstr "Hengfeng Bank"
+
+msgid "浙商银行"
+msgstr "Zhejiang Merchants Bank"
+
+msgid "渤海银行"
+msgstr "Bank of Bohai"
+
+msgid "上海银行"
+msgstr "Bank of Shanghai"
+
+msgid "建行银联条码支付"
+msgstr "CCB UnionPay quick payment"
+
+msgid "微信支付(直联)平台"
+msgstr "WeChat pay(direct) platform"
+
+msgid "路由类别组"
+msgstr "Routing category group"
+
+msgid "风控类别组"
+msgstr "Risk control category group"
+
+msgid "其他类型卡"
+msgstr "Other types of cards"
+
+msgid "修改用户"
+msgstr "Modify user"
+
+msgid "修改角色"
+msgstr "Modify role"
+
+msgid "修改权限"
+msgstr "Modify authority"
+
+msgid "修改菜单"
+msgstr "Modify menu"
+
+msgid "修改功能"
+msgstr "Modify function"
+
+msgid "修改站点"
+msgstr "Modify site"
+
+msgid "新增站点"
+msgstr "Add site"
+
+msgid "用户页面查看"
+msgstr "View user page"
+
+msgid "新增用户"
+msgstr "Add user"
+
+msgid "批量删除用户"
+msgstr "Batch delete user"
+
+msgid "查看用户信息"
+msgstr "View user info"
+
+msgid "删除用户"
+msgstr "Delete user"
+
+msgid "获取用户列表"
+msgstr "Get user list"
+
+msgid "查看角色列表"
+msgstr "View role list"
+
+msgid "新增角色"
+msgstr "Add role"
+
+msgid "批量删除角色"
+msgstr "Batch delete role"
+
+msgid "查看角色信息"
+msgstr "View role info"
+
+msgid "删除角色"
+msgstr "Delete role"
+
+msgid "分配角色权限"
+msgstr "Assign role authority"
+
+msgid "获取角色列表"
+msgstr "Get role list"
+
+msgid "查看权限页面"
+msgstr "View authority page"
+
+msgid "新增权限"
+msgstr "Add authority"
+
+msgid "批量删除权限"
+msgstr "Batch delete authority"
+
+msgid "查看权限信息"
+msgstr "View authority info"
+
+msgid "分配权限功能"
+msgstr "Assign authority function"
+
+msgid "删除权限"
+msgstr "Delete authority"
+
+msgid "获取权限列表"
+msgstr "Get authority list"
+
+msgid "查看菜单页面"
+msgstr "View menu page"
+
+msgid "查看菜单信息"
+msgstr "View menu info"
+
+msgid "新增菜单"
+msgstr "Add menu"
+
+msgid "删除菜单"
+msgstr "Delete menu"
+
+msgid "获取菜单列表"
+msgstr "Get menu list"
+
+msgid "查看功能页面"
+msgstr "View function info"
+
+msgid "新增功能"
+msgstr "Add function"
+
+msgid "批量删除功能"
+msgstr "Batch delete function"
+
+msgid "查看功能信息"
+msgstr "View function info"
+
+msgid "删除功能"
+msgstr "Delete function"
+
+msgid "获取功能列表"
+msgstr "Get function list"
+
+msgid "查看站点页面"
+msgstr "View site page"
+
+msgid "查看站点信息"
+msgstr "View site info"
+
+msgid "冻结站点"
+msgstr "Frozen site"
+
+msgid "解冻站点"
+msgstr "Unfrozen site"
+
+msgid "冻结用户"
+msgstr "Frozen user"
+
+msgid "解冻用户"
+msgstr "Unfrozen user"
+
+msgid "分配用户角色"
+msgstr "Assign user role"
+
+msgid "获取站点列表"
+msgstr "Get site list"
+
+msgid "查看角色模板管理页面"
+msgstr "View role template management page"
+
+msgid "新增角色模板"
+msgstr "Add role template"
+
+msgid "获取角色模板列表"
+msgstr "Get role template list"
+
+msgid "查看角色模板信息"
+msgstr "View role template info"
+
+msgid "修改角色模板"
+msgstr "Modify role template"
+
+msgid "分配角色模板权限"
+msgstr "Assign authority of role template"
+
+msgid "修改密码"
+msgstr "Modify password"
+
+msgid "重置密码"
+msgstr "Reset password"
+
+msgid "查看终端映射页面"
+msgstr "View terminal mapping page"
+
+msgid "查看接入商户页面"
+msgstr "View merchant page"
+
+msgid "查看接入终端页面"
+msgstr "View terminal page"
+
+msgid "查看转出商户页面"
+msgstr "View transfer merchant page"
+
+msgid "查看转出终端页面"
+msgstr "View transfer terminal page"
+
+msgid "查看接入流水报表页面"
+msgstr "View record page"
+
+msgid "查看接入流水历史报表页面"
+msgstr "View historical record page"
+
+msgid "获取接入商户列表"
+msgstr "Get merchant list"
+
+msgid "获取接入终端列表"
+msgstr "Get terminal list"
+
+msgid "获取转出商户列表"
+msgstr "Get transfer merchant list"
+
+msgid "获取转出终端列表"
+msgstr "Get transfer terminal list"
+
+msgid "查看接入商户详情页面"
+msgstr "View merchant info"
+
+msgid "查看接入终端详情页面"
+msgstr "View  terminal info"
+
+msgid "查看转出商户详情页面"
+msgstr "View transfer merchant info"
+
+msgid "查看转出终端详情页面"
+msgstr "Get transfer terminal info"
+
+msgid "新增接入商户"
+msgstr "Add merchant"
+
+msgid "新增接入终端"
+msgstr "Add terminal"
+
+msgid "新增转出商户"
+msgstr "Add transfer merchant"
+
+msgid "新增转出终端"
+msgstr "Add transfer terminal"
+
+msgid "修改接入商户"
+msgstr "Modify  merchant"
+
+msgid "修改转出商户"
+msgstr "Modify transfer merchant"
+
+msgid "冻结接入商户"
+msgstr "Frozen merchant"
+
+msgid "冻结接入终端"
+msgstr "Frozen terminal"
+
+msgid "冻结转出商户"
+msgstr "Frozen transfer merchant"
+
+msgid "冻结转出终端"
+msgstr "Frozen transfer terminal"
+
+msgid "解冻接入商户"
+msgstr "Unfrozen merchant"
+
+msgid "解冻接入终端"
+msgstr "Unfrozen terminal"
+
+msgid "解冻转出商户"
+msgstr "Unfrozen transfer merchant"
+
+msgid "解冻转出终端"
+msgstr "Unfrozen transfer terminal"
+
+msgid "审核接入商户"
+msgstr "Audit merchant"
+
+msgid "审核接入终端"
+msgstr "Audit terminal"
+
+msgid "审核转出商户"
+msgstr "Audit transfer merchant"
+
+msgid "审核转出终端"
+msgstr "Audit transfer terminal"
+
+msgid "删除接入商户"
+msgstr "Delete merchant"
+
+msgid "删除接入终端"
+msgstr "Delete terminal"
+
+msgid "删除转出商户"
+msgstr "Delete transfer merchant"
+
+msgid "删除转出终端"
+msgstr "Delete transfer terminal"
+
+msgid "批量删除接入商户"
+msgstr "Batch delete merchant"
+
+msgid "批量删除接入终端"
+msgstr "Batch delete terminal"
+
+msgid "批量删除转出商户"
+msgstr "Batch delete transfer merchant"
+
+msgid "批量删除转出终端"
+msgstr "Batch delete transfer terminal"
+
+msgid "导入接入商户"
+msgstr "Import merchant"
+
+msgid "导入接入终端"
+msgstr "Import terminal"
+
+msgid "导入转出商户"
+msgstr "Import transfer merchant"
+
+msgid "导入转出终端"
+msgstr "Import transfer terminal"
+
+msgid "查看接入流水报表列表页面"
+msgstr "View record list "
+
+msgid "查看接入流水历史报表列表页面"
+msgstr "Get historical record list "
+
+msgid "导出流水报表"
+msgstr "Export transaction record"
+
+msgid "导出流水历史报表"
+msgstr "Export historical transaction record"
+
+msgid "生成密钥"
+msgstr "Create key"
+
+msgid "导出密钥"
+msgstr "Export key"
+
+msgid "重置密钥"
+msgstr "Reset key"
+
+msgid "转换第三方密钥"
+msgstr "Convert key"
+
+msgid "导入密钥"
+msgstr "Import key"
+
+msgid "管理平台"
+msgstr "Management System"
+
+msgid "查看交易监控页面"
+msgstr "View transaction monitoring page"
+
+msgid "所有菜单"
+msgstr "All menus"
+
+msgid "系统管理"
+msgstr "System Management"
+
+msgid "用户管理"
+msgstr "User"
+
+msgid "角色管理"
+msgstr "Role"
+
+msgid "菜单管理"
+msgstr "Menu"
+
+msgid "权限管理"
+msgstr "Authority"
+
+msgid "功能管理"
+msgstr "Function"
+
+msgid "报表管理"
+msgstr "Report Management"
+
+msgid "日志管理"
+msgstr "Log"
+
+msgid "站点管理"
+msgstr "Site"
+
+msgid "角色模板管理"
+msgstr "Role Template"
+
+msgid "资源管理"
+msgstr "Resource Management"
+
+msgid "映射管理"
+msgstr "Mapping Management"
+
+msgid "渠道映射"
+msgstr "Channel Mapping"
+
+msgid "商户映射"
+msgstr "Merchant Mapping"
+
+msgid "终端映射"
+msgstr "Terminal Mapping"
+
+msgid "接入商户管理"
+msgstr "Access Merchant"
+
+msgid "接入终端管理"
+msgstr "Access Terminal"
+
+msgid "转出商户管理"
+msgstr "Transfer Merchant"
+
+msgid "转出终端管理"
+msgstr "Transfer Terminal"
+
+msgid "接入流水报表"
+msgstr "TXN Record"
+
+msgid "接入流水历史报表"
+msgstr "Transaction Record "
+
+msgid "超级管理员角色"
+msgstr "Super administrator role"
+
+msgid "交易日志报表"
+msgstr "TXN Log"
+
+msgid "获取交易日志列表"
+msgstr "Get trans log list"
+
+msgid "查看交易日志页面"
+msgstr "View trans log page"
+
+msgid "交易同步状态"
+msgstr "TXN Notify"
+
+msgid "获取同步状态列表"
+msgstr "Get Trans syn status list"
+
+msgid "查看同步状态页面"
+msgstr "View Trans syn status page"
+
+msgid "请选择日期"
+msgstr "Choose the date"
+
+msgid "所要导出数据已经超出65535条，请通过过滤条件，缩小导出范围。"
+msgstr "The data to be exported has exceeded 65535. Please narrow the export range by filter "
+
+msgid "日期转换失败"
+msgstr "Date conversion failed"
+
+msgid "查看日志页面"
+msgstr "View log page"
+
+msgid "获取日志列表"
+msgstr "Get log list"
+
+msgid "查看日志信息"
+msgstr "View log info"
+
+msgid "接入终端交易监控"
+msgstr " TXN Monitor"
+
+msgid "监控管理"
+msgstr "Monitor"
+
+msgid "新增渠道映射"
+msgstr "Add channel mapping"
+
+msgid "修改渠道映射"
+msgstr "Modify channel mapping"
+
+msgid "审核渠道映射"
+msgstr "Audit channel mapping"
+
+msgid "冻结渠道映射"
+msgstr "Frozen channel mapping"
+
+msgid "解冻渠道映射"
+msgstr "Unfrozen channel mapping"
+
+msgid "删除渠道映射"
+msgstr "Delete channel mapping"
+
+msgid "批量删除渠道映射"
+msgstr "Batch delete channel mapping"
+
+msgid "获取渠道映射列表"
+msgstr "Get channel mapping list"
+
+msgid "查看渠道映射详情"
+msgstr "View channel mapping info"
+
+msgid "查看渠道映射页面"
+msgstr "View channel mapping page"
+
+msgid "新增商户映射"
+msgstr "Add merchant mapping"
+
+msgid "修改商户映射"
+msgstr "Modify merchant mapping"
+
+msgid "审核商户映射"
+msgstr "Audit merchant mapping"
+
+msgid "冻结商户映射"
+msgstr "Frozen merchant mapping"
+
+msgid "解冻商户映射"
+msgstr "Unfrozen merchant mapping"
+
+msgid "删除商户映射"
+msgstr "Delete merchant mapping"
+
+msgid "批量删除商户映射"
+msgstr "Batch delete merchant mapping"
+
+msgid "获取商户映射列表"
+msgstr "Get merchant mapping list"
+
+msgid "查看商户映射详情"
+msgstr "View merchant mapping info"
+
+msgid "查看商户映射页面"
+msgstr "View merchant mapping page"
+
+msgid "新增终端映射"
+msgstr "Add terminal mapping"
+
+msgid "修改终端映射"
+msgstr "Modify terminal mapping"
+
+msgid "审核终端映射"
+msgstr "Audit terminal mapping"
+
+msgid "冻结终端映射"
+msgstr "Frozen terminal mapping"
+
+msgid "解冻终端映射"
+msgstr "Unfrozen terminal mapping"
+
+msgid "删除终端映射"
+msgstr "Delete terminal mapping"
+
+msgid "批量删除终端映射"
+msgstr "Batch delete terminal mapping"
+
+msgid "获取终端映射列表"
+msgstr "Get terminal mapping list"
+
+msgid "查看终端映射详情"
+msgstr "View terminal mapping info"
+
+msgid "查看角色页面"
+msgstr "View role page"
+
+msgid "渠道映射管理"
+msgstr "Channel Mapping"
+
+msgid "终端映射管理"
+msgstr "Terminal Mapping"
+
+msgid "商户映射管理"
+msgstr "Merchant Mapping"
+
+msgid "银行支付宝"
+msgstr "Alipay bank"
+
+msgid "微众银行支付"
+msgstr "WeBank pay"
+
+msgid "支付宝服务窗"
+msgstr "Alipay lifestyle"
+
+msgid "全渠道小额支付"
+msgstr "CUP omni-channel quick pay"
+
+msgid "结束日期不能早于开始日期"
+msgstr "The end date shouldn't earlier than start date"
+
+msgid "重发"
+msgstr "Resend"
+
+msgid "导出交易日志"
+msgstr "Export trans log"
+
+msgid "适配层"
+msgstr "Adaptation Layer"
+
+msgid "适配层接入"
+msgstr "Adaptation Layer Acess"
+
+msgid "核心层"
+msgstr "Core Layer"
+
+msgid "微信境外"
+msgstr "WeChat Overseas"
+
+msgid "支付宝境外"
+msgstr "Alipay Overseas"
+
+msgid "币种"
+msgstr "Currency"
+
+msgid "批结算"
+msgstr "Batch Settlement"
+
+msgid "支付宝撤销"
+msgstr "Alipay void"
+
+msgid "主密钥下载"
+msgstr "Downlaod master key"
+
+msgid "交易结果"
+msgstr "Transaction result"
+
+msgid "异步通知"
+msgstr "Asynchronous notification"
+
+msgid "微信H5支付"
+msgstr "WeChat H5 pay"
+
+msgid "支付宝H5支付"
+msgstr "Alipay H5 pay"
+
+msgid "银联扫码支付"
+msgstr "UnionPay QR code"
+
+msgid "银联小额支付"
+msgstr "UnionPay Quick pay"
+
+msgid "建行扫码支付"
+msgstr "CBC QR code pay"

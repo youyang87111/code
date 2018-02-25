@@ -1,0 +1,502 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.busi.transreport.dao.CposhistransDao">
+	<resultMap type="Cposhistrans" id="CposhistransMap">
+		<id property="sysid" column="sysid"/>  
+    	<result property="amount" column="amount"/>
+    	<result property="batchno" column="batchno"/>
+    	<result property="lbid.id" column="lbid" />
+    	<result property="lbid.name" column="bid_name" />
+    	<result property="innid.id" column="innid"/>
+    	<result property="innidName" column="innidname"/>
+    	<result property="mcr" column="mcr"/>
+    	<result property="mid" column="mid"/>
+    	<result property="notes1" column="notes1"/>
+    	<result property="notes2" column="notes2"/>
+		<result property="rbid.id" column="rbid" />
+    	<result property="rbid.name" column="rbid_name" />
+		<result property="revflag" column="revflag"/>
+		<result property="rtid" column="rtid"/>
+    	<result property="rmid" column="rmid"/>
+    	<result property="tid" column="tid"/>
+    	<result property="traceno" column="traceno"/>   	
+    	<result property="transdate" column="transdate"/>
+    	<result property="traceno" column="traceno"/>
+    	<result property="transtime" column="transtime"/>
+    	<result property="currency" column="currency"/>
+    	<result property="voidflag" column="voidflag"/>
+        <association property="cposMer" resultMap="com.pax.busi.resourcemgr.dao.CposMerDao.cposMerMap"/>
+	</resultMap>
+	
+	<resultMap type="CpostransForExcel" id="cpostransForExcelMap">
+		<id property="sysid" column="sysid"/>  
+    	<result property="amount" column="amount"/>
+    	<result property="batchno" column="batchno"/>
+    	<result property="innid" column="innidname"/>
+    	<result property="bid" column="bid_name" />
+    	<result property="mcr" column="mcr"/>
+    	<result property="mid" column="mid"/>
+    	<result property="notes1" column="notes1"/>
+    	<result property="notes2" column="notes2"/>
+		<result property="rbid" column="rbid_name" />
+		<result property="revflag" column="revflag"/>
+		<result property="rtid" column="rtid"/>
+    	<result property="rmid" column="rmid"/>
+    	<result property="tid" column="tid"/>
+    	<result property="traceno" column="traceno"/>   	
+    	<result property="transdate" column="transdate"/>
+    	<result property="traceno" column="traceno"/>
+    	<result property="transtime" column="transtime"/>
+    	<result property="voidflag" column="voidflag"/>
+    	<result property="currency" column="currency"/>
+    	<result property="org" column="orgname"/>
+        <association property="cposMer" resultMap="com.pax.busi.resourcemgr.dao.CposMerDao.cposMerMap"/>
+	</resultMap>
+	
+	<sql id="basecount">
+		left join t_b_cposmer t1 
+		on t.mid = t1.mid and t.MCR = t1.MCR
+		<where>
+            <choose>
+        		<when test="filterMap.containsKey('orgId') and filterMap.orgId !=''.toString()">
+        			and t1.depid = #{filterMap.orgId}
+        		</when>
+        		<otherwise>
+        			<choose>
+	        			<when test="filterMap.containsKey('orgs')">
+		        			t1.depid in 
+					        <foreach collection="filterMap.orgs" item="org" index="index"
+					            open="(" close=")" separator=",">
+					            #{org.id}
+					        </foreach>
+					 	</when>
+        			</choose>       
+        		</otherwise>
+	        </choose>
+	        <if test="filterMap.containsKey('sysid') and filterMap.sysid !=''.toString()">
+                and t.sysid  like concat("%",#{filterMap.sysid},'%') 
+            </if>
+            <if test="filterMap.containsKey('bid') and filterMap.bid !=''.toString()">
+               and t.bid = #{filterMap.bid} 
+            </if>
+            <if test="filterMap.containsKey('mid') and filterMap.mid !=''.toString() and  filterMap.mid !=null">
+                and t.mid like concat("%",#{filterMap.mid},'%')
+            </if>
+            <if test="filterMap.containsKey('rbid') and filterMap.rbid !=''.toString() ">
+                and  t.rbid = #{filterMap.rbid} 
+            </if>
+            <if test="filterMap.containsKey('rmid') and filterMap.rmid !=''.toString() and filterMap.rmid !=null">
+                and t.rmid like concat("%",#{filterMap.rmid},'%')
+            </if>
+            <if test="filterMap.containsKey('tid') and filterMap.tid !=''.toString() and filterMap.tid !=null">
+                and t.tid like concat("%",#{filterMap.tid},'%')
+            </if>
+            <if test="filterMap.containsKey('rtid') and filterMap.rtid !=''.toString() and  filterMap.rtid !=null">
+                and t.rtid like concat("%",#{filterMap.rtid},'%')
+            </if>
+            
+            <if test="filterMap.containsKey('innid') and filterMap.innid !=''.toString()">
+                and t.innid =#{filterMap.innid}
+            </if>
+            <if test="filterMap.containsKey('amountb') and filterMap.amountb !=''.toString()">
+                and t.amount &gt;=floor(#{filterMap.amountb}*100)
+            </if>
+            <if test="filterMap.containsKey('amounte') and filterMap.amounte !=''.toString()">
+                and t.amount &lt;= floor(#{filterMap.amounte}*100)
+            </if>
+            <if test="filterMap.containsKey('transdateb') and filterMap.transdateb !=''.toString()">
+                and t.transdate &gt;=#{filterMap.transdateb}
+            </if>
+            <if test="filterMap.containsKey('transdatee') and filterMap.transdatee !=''.toString()">
+                and t.transdate &lt;= #{filterMap.transdatee}
+            </if>
+        </where>
+	</sql>
+	
+	<sql id="baselist">
+		left join t_b_cposmer t1 
+		on t.mid = t1.mid and t.MCR = t1.MCR  
+		left join t_si_organization t2 
+		on t2.id = t1.DEPID
+		left join t_bi_inntransdef t4 
+		on t4.id = t.innid
+	    left join  t_bi_branch t5 
+	    on t5.id = t.bid
+		left join  t_bi_branch t6 
+	    on t6.id = t.rbid 
+		left join t_bi_mcr t7 
+		on t1.mcr =t7.ID
+		<where>
+			<choose>
+		 		<when test="filterMap.containsKey('orgId') and filterMap.orgId !=''.toString()">
+		 			and t2.Id = #{filterMap.orgId}
+		 		</when>
+		 		<otherwise>
+		 			<choose>
+		  			<when test="filterMap.containsKey('orgs')">
+		   			t2.Id in 
+				      <foreach collection="filterMap.orgs" item="org" index="index"
+				          open="(" close=")" separator=",">
+				          #{org.id}
+				      </foreach>
+					</when>
+		 			</choose>       
+		 		</otherwise>
+	    	</choose>
+	    	<if test="filterMap.containsKey('sysid') and filterMap.sysid !=''.toString()">
+                and t.sysid  like concat("%",#{filterMap.sysid},'%') 
+            </if>
+            <if test="filterMap.containsKey('bid') and filterMap.bid !=''.toString()">
+                and t.bid = #{filterMap.bid} 
+            </if>
+            <if test="filterMap.containsKey('mid') and filterMap.mid !=''.toString() and  filterMap.mid !=null">
+                and t.mid like concat('%',#{filterMap.mid},'%')
+            </if>
+            <if test="filterMap.containsKey('rbid') and filterMap.rbid !=''.toString() ">
+                and  t.rbid = #{filterMap.rbid} 
+            </if>
+            <if test="filterMap.containsKey('rmid') and filterMap.rmid !=''.toString() and filterMap.rmid !=null">
+                and t.rmid like concat('%',#{filterMap.rmid},'%')
+            </if>
+            <if test="filterMap.containsKey('tid') and filterMap.tid !=''.toString() and filterMap.tid !=null">
+                and t.tid like concat('%',#{filterMap.tid},'%')
+            </if>
+            <if test="filterMap.containsKey('rtid') and filterMap.rtid !=''.toString() and  filterMap.rtid !=null">
+                and t.rtid like concat('%',#{filterMap.rtid},'%')
+            </if>
+            
+            <if test="filterMap.containsKey('innid') and filterMap.innid !=''.toString()">
+                and t.innid =#{filterMap.innid}
+            </if>
+            <if test="filterMap.containsKey('amountb') and filterMap.amountb !=''.toString()">
+                and t.amount &gt;=floor(#{filterMap.amountb}*100)
+            </if>
+            <if test="filterMap.containsKey('amounte') and filterMap.amounte !=''.toString()">
+                and t.amount &lt;= floor(#{filterMap.amounte}*100)
+            </if>
+            <if test="filterMap.containsKey('transdateb') and filterMap.transdateb !=''.toString()">
+                and t.transdate &gt;=#{filterMap.transdateb}
+            </if>
+            <if test="filterMap.containsKey('transdatee') and filterMap.transdatee !=''.toString()">
+                and t.transdate &lt;= #{filterMap.transdatee}
+            </if>
+        </where>
+         <choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key" item="val" open="order by " separator="," close="  ">
+                    #{key} #{val}
+                </foreach>
+                , t.transdate,t.transtime desc
+            </when>
+            <otherwise>
+                order by t.transdate,t.transtime desc
+            </otherwise>
+        </choose>
+	</sql>
+    
+    <sql id="basesql">
+		  select t.currency,t.sysid,t.amount,t.mid,t.tid,t.batchno,t.notes1,t.notes2,t.notes8,t.rtid,t.rmid,t.traceno,t.TRANSDATE,t.transtime,t.VOIDFLAG ,t7.name as mcrname,t4.name as innidname,t5.name as bid_name,t6.name as rbid_name ,t2.name as orgname,t2.orgId as orgId
+    </sql>
+    
+    <sql id="sql1">
+    	left join t_b_cposmer t1 
+		  on t.mid = t1.mid and t.MCR = t1.MCR  
+		  left join t_si_organization t2 
+		  on t2.id = t1.DEPID
+		  left join t_bi_inntransdef t4 
+		  on t4.id = t.innid
+		  left join  t_bi_branch t5 
+		  on t5.id = t.bid
+		  left join  t_bi_branch t6 
+		  on t6.id = t.rbid 
+		  left join t_bi_mcr t7 
+		  on t1.mcr =t7.ID
+		  inner join (select SYSID from 
+    </sql>
+    
+    <sql id="sql2">
+	    left join t_b_cposmer t1 
+		on tt.mid = t1.mid and tt.MCR = t1.MCR 
+		left join t_si_organization t2 
+		on t2.id = t1.DEPID
+        <where>
+			<choose>
+        		<when test="filterMap.containsKey('orgId') and filterMap.orgId !=''.toString()">
+        			and t2.Id = #{filterMap.orgId}
+        		</when>
+        		<otherwise>
+        			<choose>
+	        			<when test="filterMap.containsKey('orgs')">
+		        			t2.Id in 
+					        <foreach collection="filterMap.orgs" item="org" index="index"
+					            open="(" close=")" separator=",">
+					            #{org.id}
+					        </foreach>
+					 	</when>
+        			</choose>       
+        		</otherwise>
+	        </choose>
+	        <if test="filterMap.containsKey('sysid') and filterMap.sysid !=''.toString()">
+               and  tt.sysid  like concat("%",#{filterMap.sysid},'%') 
+            </if>
+            <if test="filterMap.containsKey('bid') and filterMap.bid !=''.toString()">
+               and tt.bid = #{filterMap.bid} 
+            </if>
+            <if test="filterMap.containsKey('mid') and filterMap.mid !=''.toString() and  filterMap.mid !=null">
+               and tt.mid like concat("%",#{filterMap.mid},'%')
+            </if>
+            <if test="filterMap.containsKey('rbid') and filterMap.rbid !=''.toString() ">
+               and  tt.rbid = #{filterMap.rbid} 
+            </if>
+            <if test="filterMap.containsKey('rmid') and filterMap.rmid !=''.toString() and filterMap.rmid !=null">
+               and tt.rmid like concat("%",#{filterMap.rmid},'%')
+            </if>
+            <if test="filterMap.containsKey('tid') and filterMap.tid !=''.toString() and filterMap.tid !=null">
+               and tt.tid like concat("%",#{filterMap.tid},'%')
+            </if>
+            <if test="filterMap.containsKey('rtid') and filterMap.rtid !=''.toString() and  filterMap.rtid !=null">
+               and tt.rtid like concat("%",#{filterMap.rtid},'%')
+            </if>
+            <if test="filterMap.containsKey('innid') and filterMap.innid !=''.toString()">
+               and tt.innid =#{filterMap.innid}
+            </if>
+            <if test="filterMap.containsKey('amountb') and filterMap.amountb !=''.toString()">
+               and tt.amount &gt;=floor(#{filterMap.amountb}*100)
+            </if>
+            <if test="filterMap.containsKey('amounte') and filterMap.amounte !=''.toString()">
+               and tt.amount &lt;= floor(#{filterMap.amounte}*100)
+            </if>
+            <if test="filterMap.containsKey('transdateb') and filterMap.transdateb !=''.toString()">
+               and tt.transdate &gt;=#{filterMap.transdateb}
+            </if>
+            <if test="filterMap.containsKey('transdatee') and filterMap.transdatee !=''.toString()">
+               and tt.transdate &lt;= #{filterMap.transdatee}
+            </if>
+        </where>
+    </sql>
+    
+    <sql id="sql3">
+    	on t.SYSID = t8.SYSID) t0
+		<choose>
+			<when test="sortMap!=null">
+			<foreach collection="sortMap" index="key" item="val" open="order by " separator="," close="  ">
+			#{key} #{val}
+			</foreach>
+			, t0.transdate,t0.transtime desc
+			</when>
+			<otherwise>
+			order by t0.transdate,t0.transtime desc
+			</otherwise>
+		</choose>
+    </sql>
+    
+    <select id="count0" parameterType="PageQueryParam" resultType="long">
+	    select count(t.SYSID) from t_b_cpostrans t 
+	    <include refid="basecount"></include>
+    </select>
+    
+    <select id="count1" parameterType="PageQueryParam" resultType="long">
+	    select count(t.SYSID) from t_b_cposhistrans t 
+	    <include refid="basecount"></include>
+    </select>
+    
+    <select id="count2" parameterType="PageQueryParam" resultType="long">
+	    select count(t.SYSID) from t_b_cposhistrans2 t 
+	    <include refid="basecount"></include>
+    </select>
+	
+	<select id="list1" parameterType="PageQueryParam" resultMap="CposhistransMap">
+		<include refid="basesql"></include>
+		from t_b_cpostrans t
+		<include refid="baselist"></include>
+        limit #{filterMap.startrow},#{filterMap.pagesize}
+	</select>
+	
+	<select id="list2" parameterType="PageQueryParam" resultMap="CposhistransMap">
+		<include refid="basesql"></include>
+		from t_b_cposhistrans t
+		<include refid="baselist"></include>
+        limit #{filterMap.startrow},#{filterMap.pagesize}
+	</select>
+	
+	<select id="list3" parameterType="PageQueryParam" resultMap="CposhistransMap">
+		<include refid="basesql"></include>
+		from t_b_cposhistrans2 t
+		<include refid="baselist"></include>
+        limit #{filterMap.startrow},#{filterMap.pagesize}
+	</select>
+ 	
+ 	<select id="list4" parameterType="PageQueryParam" resultMap="CposhistransMap">
+		select * from (
+	 	<include refid="basesql"></include>
+		from t_b_cposhistrans t
+		<include refid="sql1"></include>
+		(select SYSID from t_b_cposhistrans tt 
+		<include refid="sql2"></include>
+		union ALL
+		select SYSID from t_b_cpostrans tt
+		<include refid="sql2"></include>
+		) a 
+		limit #{filterMap.startrow},#{filterMap.pagesize} ) t8
+	    on t.SYSID = t8.SYSID
+	    union all
+	    <include refid="basesql"></include>
+		from t_b_cpostrans t
+		<include refid="sql1"></include>
+	    (select SYSID from t_b_cposhistrans tt 
+	    <include refid="sql2"></include>
+	    union ALL
+		select SYSID from t_b_cpostrans tt
+		<include refid="sql2"></include>
+		) a
+		limit #{filterMap.startrow},#{filterMap.pagesize} ) t8
+	    <include refid="sql3"></include>
+ 	</select>
+ 	
+ 	<select id="list5" parameterType="PageQueryParam" resultMap="CposhistransMap">
+		select * from (
+		<include refid="basesql"></include>
+		from t_b_cposhistrans t
+		<include refid="sql1"></include> 
+		(select SYSID from t_b_cposhistrans tt 
+		<include refid="sql2"></include>
+		union ALL
+		select SYSID from t_b_cposhistrans2 tt
+		<include refid="sql2"></include>
+		) a 
+		limit #{filterMap.startrow},#{filterMap.pagesize} ) t8
+	    on t.SYSID = t8.SYSID	
+	    union all
+	    <include refid="basesql"></include>
+		from t_b_cposhistrans2 t
+		<include refid="sql1"></include>
+		(select SYSID from t_b_cposhistrans tt 
+		<include refid="sql2"></include>
+		union ALL
+		select SYSID from t_b_cposhistrans2 tt
+		<include refid="sql2"></include>
+		) a
+		limit #{filterMap.startrow},#{filterMap.pagesize} ) t8
+	    <include refid="sql3"></include>
+    </select> 
+
+	<select id="export1" parameterType="PageQueryParam" resultMap="cpostransForExcelMap">
+		<include refid="basesql"></include>
+		from t_b_cpostrans t
+		<include refid="baselist"></include>
+	</select>
+	
+	<select id="export2" parameterType="PageQueryParam" resultMap="cpostransForExcelMap">
+		<include refid="basesql"></include>
+		from t_b_cposhistrans t
+		<include refid="baselist"></include>
+	</select>
+	
+	<select id="export3" parameterType="PageQueryParam" resultMap="cpostransForExcelMap">
+		<include refid="basesql"></include>
+		from t_b_cposhistrans2 t
+		<include refid="baselist"></include>
+	</select>
+	
+	<select id="export4" parameterType="PageQueryParam" resultMap="cpostransForExcelMap">
+		select * from (
+	 	<include refid="basesql"></include>
+		from t_b_cposhistrans t
+		<include refid="sql1"></include>
+		(select SYSID from t_b_cposhistrans tt 
+		<include refid="sql2"></include>
+		union ALL
+		select SYSID from t_b_cpostrans tt
+		<include refid="sql2"></include>
+		) a 
+		) t8
+	    on t.SYSID = t8.SYSID
+	    union all
+	    <include refid="basesql"></include>
+		from t_b_cpostrans t
+		<include refid="sql1"></include>
+	    (select SYSID from t_b_cposhistrans tt 
+	    <include refid="sql2"></include>
+	    union ALL
+		select SYSID from t_b_cpostrans tt
+		<include refid="sql2"></include>
+		) a
+		) t8
+	    <include refid="sql3"></include>
+ 	</select>
+	
+	<select id="export5" parameterType="PageQueryParam" resultMap="cpostransForExcelMap">
+		select * from (
+		<include refid="basesql"></include>
+		from t_b_cposhistrans t
+		<include refid="sql1"></include> 
+		(select SYSID from t_b_cposhistrans tt 
+		<include refid="sql2"></include>
+		union ALL
+		select SYSID from t_b_cposhistrans2 tt
+		<include refid="sql2"></include>
+		) a 
+		) t8
+	    on t.SYSID = t8.SYSID	
+	    union all
+	    <include refid="basesql"></include>
+		from t_b_cposhistrans2 t
+		<include refid="sql1"></include>
+		(select SYSID from t_b_cposhistrans tt 
+		<include refid="sql2"></include>
+		union ALL
+		select SYSID from t_b_cposhistrans2 tt
+		<include refid="sql2"></include>
+		) a
+		) t8
+	    <include refid="sql3"></include>
+    </select>
+    
+    <select id="export6" parameterType="PageQueryParam" resultMap="cpostransForExcelMap">
+		select * from (
+		<include refid="basesql"></include>
+		from t_b_cpostrans t
+		<include refid="sql1"></include> 
+		(select SYSID from t_b_cposhistrans tt 
+		<include refid="sql2"></include>
+		union ALL
+		select SYSID from t_b_cposhistrans2 tt
+		<include refid="sql2"></include>
+		select SYSID from t_b_cpostrans tt
+		<include refid="sql2"></include>
+		) a 
+		) t8
+	    on t.SYSID = t8.SYSID	
+	    union all
+		<include refid="basesql"></include>
+		from t_b_cposhistrans t
+		<include refid="sql1"></include> 
+		(select SYSID from t_b_cposhistrans tt 
+		<include refid="sql2"></include>
+		union ALL
+		select SYSID from t_b_cposhistrans2 tt
+		<include refid="sql2"></include>
+		select SYSID from t_b_cpostrans tt
+		<include refid="sql2"></include>
+		) a 
+		) t8
+	    on t.SYSID = t8.SYSID	
+	    union all
+	    <include refid="basesql"></include>
+		from t_b_cposhistrans2 t
+		<include refid="sql1"></include>
+		(select SYSID from t_b_cposhistrans tt 
+		<include refid="sql2"></include>
+		union ALL
+		select SYSID from t_b_cposhistrans2 tt
+		<include refid="sql2"></include>
+		select SYSID from t_b_cpostrans tt
+		<include refid="sql2"></include>
+		) a
+		) t8
+	    <include refid="sql3"></include>
+    </select>
+
+</mapper>

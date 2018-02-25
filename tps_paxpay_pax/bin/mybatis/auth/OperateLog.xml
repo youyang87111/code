@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.auth.dao.OperateLogDao">
+
+	<resultMap type="OperateLog" id="operateLogMap">
+		<id property="id" column="id"/>
+		<result property="operator" column="operator"/>
+		<result property="name" column="name"/>
+		<result property="description" column="description"/>
+		<result property="operatetime" column="operatetime"/>
+		<!-- <collection property="params" javaType="ArrayList" column="id"
+				ofType="OperateLogParam" select="getOperateLogParamByOperatelogid">
+		</collection> -->
+	</resultMap>
+
+    <insert id="save" parameterType="OperateLog">
+        insert INTO t_si_operatelog(id,operatetime,operator,name,description,flag)
+        values(#{id},#{operatetime},#{operator},#{name},#{description},#{flag})
+    </insert>
+    
+    <delete id="delete" parameterType="int">
+    	delete from t_si_operatelog t where t.id = #{id}
+    </delete>
+    
+	<select id="getNextId" resultType="int">
+        select case when count(id)= 0 then 1 else max(id)+1 end from t_si_operatelog
+    </select>
+   
+	<select id="list" resultType="OperateLog" parameterType="PageQueryParam">
+		select * from t_si_operatelog t
+		<where>
+			<if test="filterMap.containsKey('operator') and  filterMap.operator != ''.toString()">
+                and t.operator like concat('%',#{filterMap.operator},'%')
+            </if>
+			<if test="filterMap.containsKey('name') and  filterMap.name != ''.toString()">
+                and t.name like concat('%',#{filterMap.name},'%')
+            </if>
+			<if test="filterMap.containsKey('operatedate')">
+                and t.operatetime like concat('%',#{filterMap.operatedate},'%')
+            </if>
+			<if test="filterMap.containsKey('flag') and  filterMap.flag != ''.toString()">
+                and t.flag = #{filterMap.flag}
+            </if>
+		</where>
+		<choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key" item="val" open="order by " separator="," close="  ">
+                    #{key} #{val}
+                </foreach>
+                , t.id desc
+            </when>
+            <otherwise>
+                order by t.id desc
+            </otherwise>
+        </choose>
+	</select>
+    
+    <select id="get" parameterType="int" resultType="OperateLog">
+    	select * from t_si_operatelog t where t.id = #{id}
+    </select>
+    
+   <!--  <select id="getOperateLogParamByOperatelogid" resultType="OperateLogParam">
+    	select * from t_si_operatelogparam t where t.operatelogid = #{id}
+    </select> -->
+
+    
+
+</mapper>

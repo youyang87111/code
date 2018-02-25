@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.auth.dao.MenuDao">
+
+	<select id="getNextId" resultType="int">
+        select case when count(id)= 0 then 1 else max(id)+1 end from t_si_menu
+    </select>
+    
+    <select id="getSiteId" resultType="int" parameterType="string">
+        select site_id from t_si_menu where id = #{id}
+    </select>
+
+    <insert id="save" parameterType="map">
+        insert INTO t_si_menu(id,site_id,name,orderno,url,pid,img,buildoper,builddatetime,notes)
+        values(#{id},#{site_id},#{name},#{orderno},#{url},#{pid},#{img},#{buildoper},#{builddatetime},#{notes})
+    </insert>
+    
+    <resultMap type="Menu" id="menuResult">
+    	
+    	<id property="id" column="id" />
+    	
+    	<result property="name" column="name"/>
+    	<result property="orderno" column="orderno"/>
+    	<result property="url" column="url"/>
+    	<result property="img" column="img"/>
+    	<result property="pmenu.id" column="pid"/>
+    </resultMap>
+    
+    <select id="list" resultMap="menuResult" parameterType="map">
+    
+        select * 
+        from  t_si_menu t 
+        where t.site_id = #{site_id};
+		
+    </select>
+    
+    <select id="get" resultMap="menuResult" parameterType="string">
+        select t.*,t2.name as site_name 
+        from t_si_menu t left outer join t_si_site t2 on t.site_id = t2.id where t.id = #{id};
+    </select>
+    
+    <update id="update" parameterType="map">
+		update t_si_menu 
+		<set>
+			<if test="_parameter.containsKey('name') and name!=''.toString()">name=#{name},</if>
+			url=#{url},
+			<if test="_parameter.containsKey('orderno') and orderno!=''.toString()">orderno=#{orderno},</if>
+			<if test="_parameter.containsKey('modifyoper') and modifyoper!=''.toString()">modifyoper=#{modifyoper},</if>
+			<if test="_parameter.containsKey('modifydatetime') and modifydatetime!=''.toString()">modifydatetime=#{modifydatetime},</if>
+		</set>
+		where id=#{id};
+	</update>
+	
+	<delete id="delete" parameterType="string">
+		delete from t_si_menu where id=#{id};
+	</delete>
+	
+	<select id="getSubMenusCount" resultType="int" parameterType="string">
+        select 
+        count(*)  
+        from t_si_menu 
+        where pid = #{id};
+    </select>
+    
+    <select id="getFuncsCount" resultType="int" parameterType="string">
+        select 
+        count(*)  
+        from t_si_function 
+        where menu_id = #{id};
+    </select>
+	
+	<resultMap type="Menu" id="menuResultForFunc">
+    	
+    	<id property="id" column="id" />
+    	
+    	<result property="name" column="name"/>
+    	<result property="orderno" column="orderno"/>
+    	<result property="url" column="url"/>
+    	<result property="img" column="img"/>
+    	<result property="pmenu.id" column="pid"/>
+    	
+    	<collection property="funcs" ofType="Function">
+    		<id property="id" column="func_id" />
+    		<result property="name" column="func_name"/>
+    		<result property="url" column="func_url"/>
+    		<result property="img" column="func_img"/>
+    	</collection>
+    </resultMap>
+	
+	<select id="getFuncsToUseByAuth" resultMap="menuResultForFunc" parameterType="map">
+        select 
+		
+        m.*,
+		f.id as func_id,
+        f.name as func_name,
+        f.url as func_url,
+        f.img as func_img
+        
+        from 
+       	t_si_menu m 
+       	left outer join 
+       	t_si_function f 
+       	on m.id = f.menu_id 
+        
+        
+        left outer join 
+        t_si_site s on m.site_id = s.id
+        
+        where s.id = #{site_id}
+    </select>
+    
+    <select id="getMenusByUser" resultMap="menuResult" parameterType="int">
+        select 
+        distinct(m.id) as menu_id,
+        m.* 
+        
+        from 
+        
+        t_si_user u 
+        inner join 
+        t_si_userrole ur on u.id = ur.user_id 
+        inner join 
+        t_si_role r on ur.role_id = r.id 
+        inner join 
+        t_si_roleauth ra on r.id = ra.role_id 
+        inner join 
+        t_si_authority a on ra.auth_id = a.id 
+        inner join 
+        t_si_authfunc af on af.auth_id = a.id 
+        inner join 
+        t_si_function f on af.func_id = f.id 
+        inner join 
+        t_si_menu m on f.menu_id = m.id 
+        
+        left outer join 
+        t_si_site s on a.site_id = s.id 
+        
+        where u.id = #{userId}
+    </select>
+    
+    <select id="getMenusByUserByRolemode" resultMap="menuResult" parameterType="int">
+        select 
+        distinct(m.id) as menu_id,
+        m.* 
+        
+        from 
+        
+        t_si_user u 
+        inner join 
+        t_si_userrolemodel ur on u.id = ur.user_id 
+        inner join 
+        t_si_rolemodel r on ur.role_id = r.id 
+        inner join 
+        t_si_rolemodelauth ra on r.id = ra.role_id 
+        inner join 
+        t_si_authority a on ra.auth_id = a.id 
+        inner join 
+        t_si_authfunc af on af.auth_id = a.id 
+        inner join 
+        t_si_function f on af.func_id = f.id 
+        inner join 
+        t_si_menu m on f.menu_id = m.id 
+        
+        left outer join 
+        t_si_site s on a.site_id = s.id 
+        
+        where u.id = #{userId}
+    </select>
+
+</mapper>

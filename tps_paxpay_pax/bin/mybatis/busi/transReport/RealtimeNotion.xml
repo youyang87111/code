@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.busi.transreport.dao.RealtimeNotionDao">
+	
+	<resultMap type="RealtimeNotion" id="realtimeNotionMap">
+		<id property="transactionNo" column="transaction_no"/>
+		<result property="agentId" column="agent_id"/>
+		<result property="mchId" column="mch_id"/>
+		<result property="mchName" column="mch_name"/>
+		<result property="msg" column="msg"/>
+		<result property="sendTimes" column="send_times"/>
+		<result property="status1" column="status"/>
+		<result property="terId" column="ter_id"/>
+		<result property="paymentTime" column="payment_time"/>
+		<result property="totalAmount" column="total_amount"/>
+		<result property="tradeType" column="trade_type"/>
+	</resultMap>
+	<resultMap type="RealtimeNotion" id="realtimeNotionSuccessMap">
+		<id property="transactionNo" column="transaction_no"/>
+		<result property="agentId" column="agent_id"/>
+		<result property="mchId" column="mch_id"/>
+		<result property="mchName" column="mch_name"/>
+		<result property="msg" column="msg"/>
+		<result property="sendTimes" column="send_times"/>
+		<result property="terId" column="ter_id"/>
+		<result property="paymentTime" column="payment_time"/>
+		<result property="totalAmount" column="total_amount"/>
+		<result property="tradeType" column="trade_type"/>
+	</resultMap>
+	
+	<sql id="basesql">
+		<where>
+			<if test="filterMap.containsKey('transactionNo') and filterMap.transactionNo !=''.toString()">
+                t.transaction_no like concat("%",#{filterMap.transactionNo},'%') 
+            </if>
+            <if test="filterMap.containsKey('mchId') and filterMap.mchId !=''.toString()">
+                and t.mch_id like concat("%",#{filterMap.mchId},'%') 
+            </if> 
+            <if test="filterMap.containsKey('terId') and filterMap.terId !=''.toString()">
+                and t.ter_id like concat("%",#{filterMap.terId},'%') 
+            </if>
+            <if test="filterMap.containsKey('transactionNo') and filterMap.transactionNo !=''.toString() and  filterMap.transactionNo !=null">
+                and t.transaction_no like concat("%",#{filterMap.transactionNo},'%')
+            </if>
+            <if test="filterMap.containsKey('mchName') and filterMap.mchName !=''.toString() and  filterMap.mchName !=null">
+                and t.mch_name like concat("%",#{filterMap.mchName},'%')
+            </if>
+            <if test="filterMap.containsKey('status') and filterMap.status !=''.toString() and  filterMap.status !=null">
+                and t.status = #{filterMap.status}
+            </if>
+        </where>
+        <choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key" item="val" open="order by " separator="," close="  ">
+                    #{key} #{val}
+                </foreach>
+            </when>
+        </choose>
+         order by t.trade_time desc
+	</sql>
+	
+	<select id="list1" parameterType="PageQueryParam" resultMap="realtimeNotionSuccessMap">
+		select * from t_b_realtime_notion_suc t
+		<include refid="basesql"></include>
+		limit #{filterMap.startrow},#{filterMap.pagesize}
+	</select>
+	
+	<select id="list2" parameterType="PageQueryParam" resultMap="realtimeNotionMap">
+		select * from t_b_realtime_notion t
+		<include refid="basesql"></include>
+		limit #{filterMap.startrow},#{filterMap.pagesize}
+	</select>
+	
+	<select id="count1" parameterType="PageQueryParam" resultType="long">
+		select count(*) from t_b_realtime_notion_suc t
+		<include refid="basesql"></include>
+	</select>
+	
+	<select id="list3" parameterType="PageQueryParam" resultMap="realtimeNotionMap">
+		select * from t_b_realtime_notion t
+		<include refid="basesql"></include>
+		limit #{filterMap.startrow},#{filterMap.pagesize}
+	</select>
+	
+	<select id="count2" parameterType="PageQueryParam" resultType="long">
+		select count(*) from t_b_realtime_notion t
+		<include refid="basesql"></include>
+	</select>
+	
+	<select id="count3" parameterType="PageQueryParam" resultType="long">
+		select count(*) from t_b_realtime_notion t
+		<include refid="basesql"></include>
+	</select>
+	
+	<update id="resend" parameterType="string">
+		update t_b_realtime_notion set send_times=1,send_next_time=1,status='0' where transaction_no=#{transactionNo}
+	</update>
+	
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress ALL -->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+     http://www.springframework.org/schema/aop
+     http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-4.0.xsd
+     http://www.springframework.org/schema/tx
+     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+     http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.0.xsd
+     http://www.springframework.org/schema/mvc
+     http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+     http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd"
+       default-lazy-init="false" default-autowire="byName">
+       
+    <context:component-scan base-package="com.pax.auth.web,com.pax.busi.**.web">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+    
+    <!-- 处理静态资源 -->
+    <mvc:default-servlet-handler />
+
+	<mvc:annotation-driven/>
+
+    <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
+    <bean id="defaultViewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="viewClass"
+                  value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="contentType" value="text/html"/>
+        <property name="prefix" value="/WEB-INF/webpage/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+	
+	
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+          p:defaultEncoding="UTF-8">
+        <property name="maxUploadSize">
+            <value>104857600</value>
+        </property>
+        <property name="maxInMemorySize">
+            <value>4096</value>
+        </property>
+    </bean>
+    
+
+    <!-- 异常处理类 -->
+    <bean id="exceptionHandler"
+          class="com.pax.core.exception.GlobalExceptionResolver"/>
+
+    <!-- 拦截器 -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.pax.core.interceptors.LogInterceptor">
+				<property name="operateLogService" ref="operateLogService"></property>
+				<property name="ignores">
+					<list>
+						<value>OperateLogController.*</value>
+						<value>*.list*</value>
+						<value>*.query*</value>
+						<value>*.load*</value>
+						<value>*.show*</value>
+						<value>*.get*</value>
+						<value>*.get*</value>
+						<value>*.detail*</value>
+						<value>*.sel*</value>
+						<value>*.enter*</value>
+						<value>UserController.createRandomCode</value>
+						<value>UserController.main</value>
+						<value>UserController.logout</value>
+					</list>
+				</property>
+				<property name="ignoreParameters">
+					<list>
+						<value>password</value>
+						<value>oldPwd</value>
+						<value>newPwd1</value>
+						<value>newPwd2</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:interceptor>
+    </mvc:interceptors>
+    
+    <!-- 开启shiro注解（一定要写在最先加载的xml中，写在后面加载的xml中也不起作用）难道springMvc配置是最先加载的？目前必须放在这里 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+	
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+		<property name="proxyTargetClass" value="true" />
+	</bean>
+	
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+	    <property name="securityManager" ref="securityManager"/>
+	</bean>
+	<!-- 开启shiro注解（一定要写在最先加载的xml中，写在后面加载的xml中也不起作用）难道springMvc配置是最先加载的？目前必须放在这里 -->
+    
+</beans>

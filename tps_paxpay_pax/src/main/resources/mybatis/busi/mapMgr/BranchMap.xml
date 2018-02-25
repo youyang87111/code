@@ -1,0 +1,615 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.busi.mapmgr.dao.BranchMapDao">
+
+	<insert id="save" parameterType="BranchMapView">
+		<choose>
+    		<when test="bmf=='01'">
+        		insert INTO t_b_branchmap(rid,lbid,lmcr,lmid,class,rbid,status,auditstatus,buildoper,builddatetime)
+       			values(#{rid},#{lbid},#{lmcr},#{lmid},#{cls},#{rbid},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    		<when test="bmf=='02'">
+    			insert INTO t_b_branchmap_cardtype(rid,lbid,lmcr,lmid,class,cardtype,rbid,status,auditstatus,buildoper,builddatetime)
+        		values(#{rid},#{lbid},#{lmcr},#{lmid},#{cls},#{cardtype},#{rbid},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    		<when test="bmf=='03'">
+    			insert INTO t_b_branchmap_amt(rid,lbid,lmcr,lmid,class,amt1,amt2,rbid,status,auditstatus,buildoper,builddatetime)
+        		values(#{rid},#{lbid},#{lmcr},#{lmid},#{cls},#{amt1},#{amt2},#{rbid},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    		<when test="bmf=='04'">
+    			insert INTO t_b_branchmap_cardtype_amt(rid,lbid,lmcr,lmid,class,cardtype,amt1,amt2,rbid,status,auditstatus,buildoper,builddatetime)
+        		values(#{rid},#{lbid},#{lmcr},#{lmid},#{cls},#{cardtype},#{amt1},#{amt2},#{rbid},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    		<when test="bmf=='05'">
+    			insert INTO t_b_branchmap_issuer_cardtype(rid,lbid,lmcr,lmid,class,issuerid,cardtype,rbid,status,auditstatus,buildoper,builddatetime)
+        		values(#{rid},#{lbid},#{lmcr},#{lmid},#{cls},#{issuerid},#{cardtype},#{rbid},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    		<when test="bmf=='06'">
+    			insert INTO t_b_branchmap_issuer(rid,lbid,lmcr,lmid,class,issuerid,rbid,status,auditstatus,buildoper,builddatetime)
+        		values(#{rid},#{lbid},#{lmcr},#{lmid},#{cls},#{issuerid},#{rbid},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    	</choose>	
+        
+    </insert>
+    
+    <insert id="saveBranchMapMode" parameterType="BranchMapView">
+		insert INTO t_b_branchmap_mode(rid,lbid,lmcr,lmid,class,bmf,status,auditstatus,buildoper,builddatetime)
+       	values(#{rid},#{lbid},#{lmcr},#{lmid},#{cls},#{bmf},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})	
+        
+    </insert>
+    
+    <select id="list" resultType="BranchMapView" parameterType="com.pax.core.model.PageQueryParam">
+    
+        select t.*,t2.name as lbid_name,t.class as cls,t3.name as cls_name,t4.name as rbid_name,
+        t5.name as bmf_name,t6.name as cardtype_name,t7.name as issuerid_name    
+        from 
+        v_b_branchmap t 
+        left outer join 
+        t_bi_branch t2 
+        on t.lbid = t2.id 
+        left outer join 
+        t_bi_appclass t3 
+        on t.class = t3.id 
+        left outer join 
+        t_bi_branch t4 
+        on t.rbid = t4.id 
+        left outer join 
+        t_bi_bmf t5 
+        on t.bmf = t5.id 
+        left outer join 
+        t_bi_cardtype t6 
+        on t.cardtype = t6.id 
+        left outer join 
+        t_bi_bankinfo t7 
+        on t.issuerid = t7.id 
+        
+        <where>
+        	<if test="filterMap.containsKey('bmf') and filterMap.bmf !=''.toString()"> and t.bmf = #{filterMap.bmf}</if>
+        	<if test="filterMap.containsKey('lbid') and filterMap.lbid !=''.toString()"> and t.lbid = #{filterMap.lbid}</if>
+			<if test="filterMap.containsKey('lmid') and filterMap.lmid !=''.toString()"> and t.lmid like concat('%',#{filterMap.lmid},'%')</if>
+			<if test="filterMap.containsKey('cls') and filterMap.cls !=''.toString()"> and t.class = #{filterMap.cls}</if>
+			<if test="filterMap.containsKey('rbid') and filterMap.rbid !=''.toString()"> and t.rbid = #{filterMap.rbid}</if>
+			<if test="filterMap.containsKey('status') and filterMap.status !=''.toString()"> and t.status = #{filterMap.status}</if>
+			<if test="filterMap.containsKey('auditstatus') and filterMap.auditstatus !=''.toString()"> and t.auditstatus = #{filterMap.auditstatus}</if>
+		</where>
+		
+		<choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key"  item="val" open="order by " separator="," close="  ">
+	                #{key} #{val}
+	        	</foreach>
+	        	, builddatetime desc
+            </when>
+            <otherwise>
+                  order by builddatetime desc
+             </otherwise>
+         </choose>
+		
+    </select>
+    
+    <select id="get" resultType="BranchMapView" parameterType="string">
+        select t.*,t2.name as lbid_name,t.class as cls,t3.name as cls_name,t4.name as rbid_name,
+        t5.name as bmf_name,t6.name as cardtype_name,t7.name as issuerid_name     
+        from 
+        v_b_branchmap t 
+        left outer join 
+        t_bi_branch t2 
+        on t.lbid = t2.id 
+        left outer join 
+        t_bi_appclass t3 
+        on t.class = t3.id 
+        left outer join 
+        t_bi_branch t4 
+        on t.rbid = t4.id 
+        left outer join 
+        t_bi_bmf t5 
+        on t.bmf = t5.id 
+        left outer join 
+        t_bi_cardtype t6 
+        on t.cardtype = t6.id 
+        left outer join 
+        t_bi_bankinfo t7 
+        on t.issuerid = t7.id 
+        where t.rid = #{id}
+    </select>
+    
+    <select id="getBranchMaps" resultType="BranchMapView">
+        select t.*      
+        from 
+        v_b_branchmap t 
+        where 
+        t.lbid = #{arg0} and t.class = #{arg2} 
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and t.lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (t.lmid is null or t.lmid = '')         
+       		</otherwise>
+       	</choose>
+    </select>
+    
+    <select id="getBranchMapsByRbid" resultType="BranchMapView">
+        select t.*      
+        from 
+        v_b_branchmap t 
+        where 
+        t.lbid = #{arg0} and t.class = #{arg2} and t.rbid = #{arg3} 
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and t.lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (t.lmid is null or t.lmid = '')      
+       		</otherwise>
+       	</choose>
+    </select>
+    
+    <update id="frozen">
+		<choose>
+    		<when test="arg0=='01'">
+        		update 
+				t_b_branchmap 
+				set 
+				status='1' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='02'">
+    			update 
+				t_b_branchmap_cardtype 
+				set 
+				status='1' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='03'">
+    			update 
+				t_b_branchmap_amt 
+				set 
+				status='1' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='04'">
+    			update 
+				t_b_branchmap_cardtype_amt 
+				set 
+				status='1' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='05'">
+    			update 
+				t_b_branchmap_issuer_cardtype 
+				set 
+				status='1' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='06'">
+    			update 
+				t_b_branchmap_issuer 
+				set 
+				status='1' 
+				where rid=#{arg1}
+    		</when>
+    	</choose>	
+    </update>
+    
+    <update id="unfrozen">
+		<choose>
+    		<when test="arg0=='01'">
+        		update 
+				t_b_branchmap 
+				set 
+				status='2' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='02'">
+    			update 
+				t_b_branchmap_cardtype 
+				set 
+				status='2' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='03'">
+    			update 
+				t_b_branchmap_amt 
+				set 
+				status='2' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='04'">
+    			update 
+				t_b_branchmap_cardtype_amt 
+				set 
+				status='2' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='05'">
+    			update 
+				t_b_branchmap_issuer_cardtype 
+				set 
+				status='2' 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='06'">
+    			update 
+				t_b_branchmap_issuer 
+				set 
+				status='2' 
+				where rid=#{arg1}
+    		</when>
+    	</choose>	
+    </update>
+	
+	<delete id="delete">
+		<choose>
+    		<when test="arg0=='01'">
+        		delete from 
+				t_b_branchmap 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='02'">
+    			delete from 
+				t_b_branchmap_cardtype 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='03'">
+    			delete from 
+				t_b_branchmap_amt 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='04'">
+    			delete from 
+				t_b_branchmap_cardtype_amt 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='05'">
+    			delete from 
+				t_b_branchmap_issuer_cardtype 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='06'">
+    			delete from 
+				t_b_branchmap_issuer 
+				where rid=#{arg1}
+    		</when>
+    	</choose>	
+    </delete>
+    
+    <delete id="deleteBranchMapMode" >
+    	delete from t_b_branchmap_mode where lbid = #{arg0} and class = #{arg2} 
+    	<choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (lmid is null or lmid = '')     
+       		</otherwise>
+       	</choose>
+    </delete>
+    
+    <delete id="deleteO2O" >
+    	delete from t_b_branchmap where lbid = #{arg0} and class = #{arg2} 
+    	<choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (lmid is null or lmid = '')     
+       		</otherwise>
+       	</choose>
+    </delete>
+	
+	<update id="audit" parameterType="map">
+		<choose>
+    		<when test="bmf=='01'">
+        		update 
+				t_b_branchmap 
+				set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short}
+				where rid=#{id};
+    		</when>
+    		<when test="bmf=='02'">
+    			update 
+				t_b_branchmap_cardtype 
+				set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short}
+				where rid=#{id};
+    		</when>
+    		<when test="bmf=='03'">
+    			update 
+				t_b_branchmap_amt 
+				set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short}
+				where rid=#{id};
+    		</when>
+    		<when test="bmf=='04'">
+    			update 
+				t_b_branchmap_cardtype_amt 
+				set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short}
+				where rid=#{id};
+    		</when>
+    		<when test="bmf=='05'">
+    			update 
+				t_b_branchmap_issuer_cardtype 
+				set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short}
+				where rid=#{id};
+    		</when>
+    		<when test="bmf=='06'">
+    			update 
+				t_b_branchmap_issuer 
+				set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short}
+				where rid=#{id};
+    		</when>
+    	</choose>	
+    </update>
+	
+	<update id="update" parameterType="map">
+		<choose>
+    		<when test="arg0=='01'">
+        		update 
+				t_b_branchmap 
+				set 
+				rbid = #{arg2} 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='02'">
+    			update 
+				t_b_branchmap_cardtype 
+				set 
+				rbid = #{arg2} 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='03'">
+    			update 
+				t_b_branchmap_amt 
+				set 
+				rbid = #{arg2} 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='04'">
+    			update 
+				t_b_branchmap_cardtype_amt 
+				set 
+				rbid = #{arg2} 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='05'">
+    			update 
+				t_b_branchmap_issuer_cardtype 
+				set 
+				rbid = #{arg2} 
+				where rid=#{arg1}
+    		</when>
+    		<when test="arg0=='06'">
+    			update 
+				t_b_branchmap_issuer 
+				set 
+				rbid = #{arg2} 
+				where rid=#{arg1}
+    		</when>
+    	</choose>	
+    </update>
+	
+	<select id="getBranchMapMode" resultType="BranchMapView">
+        select t.*,t.class as cls,t2.name as bmf_name  
+        
+        from 
+        t_b_branchmap_mode t 
+        left outer join 
+        t_bi_bmf t2 
+        on t.bmf = t2.id 
+        where t.lbid = #{arg0} and t.class = #{arg2} 
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and t.lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (t.lmid is null or t.lmid = '')      
+       		</otherwise>
+       	</choose>
+    </select>
+    
+	<select id="getBranchMapView" resultType="BranchMapView">
+		<choose>
+    		<when test="arg0=='01'">
+    			select * from t_b_branchmap where lbid = #{arg1} and class = #{arg3} 
+		        <choose>
+		       		<when test="arg2!=null and arg2!=''">
+		       			and lmid = #{arg2} 
+		       		</when>
+		       		<otherwise>
+		       			and (lmid is null or lmid = '')      
+		       		</otherwise>
+		       	</choose>
+    		</when>
+    		<when test="arg0=='02'">
+    			select * from t_b_branchmap_cardtype where lbid = #{arg1} and class = #{arg3} and cardtype = #{arg4} 
+		        <choose>
+		       		<when test="arg2!=null and arg2!=''">
+		       			and lmid = #{arg2} 
+		       		</when>
+		       		<otherwise>
+		       			and (lmid is null or lmid = '')       
+		       		</otherwise>
+		       	</choose>
+    		</when>
+    		<when test="arg0=='03'">
+    			select * from t_b_branchmap_amt where lbid = #{arg1} and class = #{arg3} and amt1 = #{arg5} and amt2 = #{arg6} 
+		        <choose>
+		       		<when test="arg2!=null and arg2!=''">
+		       			and lmid = #{arg2} 
+		       		</when>
+		       		<otherwise>
+		       			and (lmid is null or lmid = '')     
+		       		</otherwise>
+		       	</choose>
+    		</when>
+    		<when test="arg0=='04'">
+    			select * from t_b_branchmap_cardtype_amt where lbid = #{arg1} and class = #{arg3} and cardtype = #{arg4} and amt1 = #{arg5} and amt2 = #{arg6} 
+		        <choose>
+		       		<when test="arg2!=null and arg2!=''">
+		       			and lmid = #{arg2} 
+		       		</when>
+		       		<otherwise>
+		       			and (lmid is null or lmid = '')   
+		       		</otherwise>
+		       	</choose>
+    		</when>
+    		<when test="arg0=='05'">
+    			select * from t_b_branchmap_issuer where lbid = #{arg1} and class = #{arg3} and issuerid = #{arg7}  
+		        <choose>
+		       		<when test="arg2!=null and arg2!=''">
+		       			and lmid = #{arg2} 
+		       		</when>
+		       		<otherwise>
+		       			and (lmid is null or lmid = '')      
+		       		</otherwise>
+		       	</choose>
+    		</when>
+    		<when test="arg0=='06'">
+    		
+    		</when>
+    		
+    	</choose>	
+        
+    </select>
+    
+    
+    <select id="getMaxRidFromMode" resultType="string">
+       select max(SUBSTR(rid,13,6)) from t_b_branchmap_mode where rid like #{arg0}
+    </select>
+    
+    <select id="getMaxRid" resultType="string">
+		<choose>
+    		<when test="arg0=='01'">
+    			select max(SUBSTR(rid,13,6)) from t_b_branchmap where rid like #{arg1}
+    		</when>
+    		<when test="arg0=='02'">
+    			select max(SUBSTR(rid,13,6)) from t_b_branchmap_cardtype where rid like #{arg1}
+    		</when>
+    		<when test="arg0=='03'">
+    			select max(SUBSTR(rid,13,6)) from t_b_branchmap_amt where rid like #{arg1}
+    		</when>
+    		<when test="arg0=='04'">
+    			select max(SUBSTR(rid,13,6)) from t_b_branchmap_cardtype_amt where rid like #{arg1}
+    		</when>
+    		<when test="arg0=='05'">
+    			select max(SUBSTR(rid,13,6)) from t_b_branchmap_issuer_cardtype where rid like #{arg1}
+    		</when>
+    		<when test="arg0=='06'">
+    			select max(SUBSTR(rid,13,6)) from t_b_branchmap_issuer where rid like #{arg1}
+    		</when>
+    		
+    	</choose>	
+        
+    </select>
+    
+    
+    <select id="getBranchMapCardTypesNotEq" resultType="BranchMapView">
+        select * from t_b_branchmap_cardtype where lbid = #{arg0} and class = #{arg2} and cardtype != #{arg3} 
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (lmid is null or lmid = '')         
+       		</otherwise>
+       	</choose>
+    </select>
+    
+    <select id="getBranchMapCardTypesEq" resultType="BranchMapView">
+        select * from t_b_branchmap_cardtype where lbid = #{arg0} and class = #{arg2} and cardtype = #{arg3} 
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (lmid is null or lmid = '')        
+       		</otherwise>
+       	</choose>
+    </select>
+    
+    <select id="getBranchMapAmts" resultType="BranchMapView">
+        select * from t_b_branchmap_amt where lbid = #{arg0} and class = #{arg2} 
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (lmid is null or lmid = '')          
+       		</otherwise>
+       	</choose>
+    </select>
+    
+    
+    <select id="getBranchMapCardTypeAmtsNotEq" resultType="BranchMapView">
+        select * from t_b_branchmap_cardtype_amt where lbid = #{arg0} and class = #{arg2} and cardtype != #{arg3} 
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (lmid is null or lmid = '')     
+       		</otherwise>
+       	</choose>
+    </select>
+    
+    <select id="getBranchMapCardTypeAmtsEq" resultType="BranchMapView">
+        select * from t_b_branchmap_cardtype_amt where lbid = #{arg0} and class = #{arg2} and cardtype = #{arg3} 
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (lmid is null or lmid = '')        
+       		</otherwise>
+       	</choose>
+    </select>
+    
+    <select id="getBranchMapIssuerCardTypesNotEq" resultType="BranchMapView">
+        select * from t_b_branchmap_issuer_cardtype where lbid = #{arg0} and class = #{arg2} and issuerid = #{arg3} and cardtype != #{arg4}  
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (lmid is null or lmid = '')     
+       		</otherwise>
+       	</choose>
+    </select>
+    
+    <select id="getBranchMapIssuerCardTypesEq" resultType="BranchMapView">
+        select * from t_b_branchmap_issuer_cardtype where lbid = #{arg0} and class = #{arg2} and issuerid = #{arg3} and cardtype = #{arg4}  
+        <choose>
+       		<when test="arg1!=null and arg1!=''">
+       			and lmid = #{arg1} 
+       		</when>
+       		<otherwise>
+       			and (lmid is null or lmid = '')        
+       		</otherwise>
+       	</choose>
+    </select>
+    
+</mapper>

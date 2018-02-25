@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.busi.mapmgr.dao.MerMapDao">
+
+    <select id="getMerMapMode" resultType="MerMap">
+        select * from t_b_mermap_mode where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3} 
+    </select>
+    
+    <insert id="saveMerMapMode" parameterType="MerMap">
+        insert INTO t_b_mermap_mode(lbid,lmcr,lmid,class,rbid,mmf,status,auditstatus,buildoper,builddatetime) 
+        values(#{lbid},#{lmcr},#{lmid},#{cls},#{rbid},#{mmf},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    </insert>
+    
+    <insert id="save" parameterType="MerMap">
+    	<choose>
+    		<when test="mmf=='01'">
+    			insert INTO t_b_mermap(lbid,lmcr,lmid,class,rbid,rmcr,rmid,status,auditstatus,buildoper,builddatetime) 
+       			values(#{lbid},#{lmcr},#{lmid},#{cls},#{rbid},#{rmcr},#{rmid},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    		<when test="mmf=='02'">
+    			insert INTO t_b_mermap_cardtype(lbid,lmcr,lmid,class,rbid,rmcr,cardtype1,rmid1,cardtype2,rmid2,cardtype3,rmid3,cardtype4,rmid4,cardtype5,rmid5,status,auditstatus,buildoper,builddatetime) 
+       			values(#{lbid},#{lmcr},#{lmid},#{cls},#{rbid},#{rmcr},#{cardtype1},#{rmid1},#{cardtype2},#{rmid2},#{cardtype3},#{rmid3},#{cardtype4},#{rmid4},#{cardtype5},#{rmid5},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    		<when test="mmf=='03'">
+    			insert INTO t_b_mermap_amt(lbid,lmcr,lmid,class,rbid,rmcr,amt11,amt12,rmid1,amt21,amt22,rmid2,amt31,amt32,rmid3,amt41,amt42,rmid4,amt51,amt52,rmid5,status,auditstatus,buildoper,builddatetime) 
+       			values(#{lbid},#{lmcr},#{lmid},#{cls},#{rbid},#{rmcr},#{amt11},#{amt12},#{rmid1},#{amt21},#{amt22},#{rmid2},#{amt31},#{amt32},#{rmid3},#{amt41},#{amt42},#{rmid4},#{amt51},#{amt52},#{rmid5},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    		<when test="mmf=='04'">
+    			insert INTO t_b_mermap_cardtype_amt(lbid,lmcr,lmid,class,rbid,rmcr,cardtype1,amt11,amt12,rmid1,cardtype2,amt21,amt22,rmid2,cardtype3,amt31,amt32,rmid3,cardtype4,amt41,amt42,rmid4,cardtype5,amt51,amt52,rmid5,status,auditstatus,buildoper,builddatetime) 
+       			values(#{lbid},#{lmcr},#{lmid},#{cls},#{rbid},#{rmcr},#{cardtype1},#{amt11},#{amt12},#{rmid1},#{cardtype2},#{amt21},#{amt22},#{rmid2},#{cardtype3},#{amt31},#{amt32},#{rmid3},#{cardtype4},#{amt41},#{amt42},#{rmid4},#{cardtype5},#{amt51},#{amt52},#{rmid5},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    		<when test="mmf=='05'">
+    			insert INTO t_b_mermap_issuer_cardtype(lbid,lmcr,lmid,class,rbid,rmcr,issuerid1,cardtype1,rmid1,issuerid2,cardtype2,rmid2,issuerid3,cardtype3,rmid3,issuerid4,cardtype4,rmid4,issuerid5,cardtype5,rmid5,status,auditstatus,buildoper,builddatetime) 
+       			values(#{lbid},#{lmcr},#{lmid},#{cls},#{rbid},#{rmcr},#{issuerid1},#{cardtype1},#{rmid1},#{issuerid2},#{cardtype2},#{rmid2},#{issuerid3},#{cardtype3},#{rmid3},#{issuerid4},#{cardtype4},#{rmid4},#{issuerid5},#{cardtype5},#{rmid5},#{status},#{auditstatus},#{buildoper},#{builddatetime_short})
+    		</when>
+    	</choose>
+    </insert>
+    
+    <select id="list" resultType="MerMap" parameterType="com.pax.core.model.PageQueryParam">
+    
+        select t.*,t2.name as lbid_name,t.class as cls,t3.name as cls_name,t4.name as rbid_name,t5.name as mmf_name 
+        from 
+        t_b_mermap_mode t 
+        left outer join 
+        t_bi_branch t2 
+        on t.lbid = t2.id 
+        left outer join 
+        t_bi_appclass t3 
+        on t.class = t3.id 
+        left outer join 
+        t_bi_branch t4 
+        on t.rbid = t4.id 
+        left outer join 
+        t_bi_mmf t5 
+        on t.mmf = t5.id 
+        
+        <where>
+        	<if test="filterMap.containsKey('mmf') and filterMap.mmf !=''.toString()"> and t.mmf = #{filterMap.mmf}</if>
+        	<if test="filterMap.containsKey('lbid') and filterMap.lbid !=''.toString()"> and t.lbid = #{filterMap.lbid}</if>
+			<if test="filterMap.containsKey('lmid') and filterMap.lmid !=''.toString()"> and t.lmid like concat('%',#{filterMap.lmid},'%')</if>
+			<if test="filterMap.containsKey('cls') and filterMap.cls !=''.toString()"> and t.class = #{filterMap.cls}</if>
+			<if test="filterMap.containsKey('rbid') and filterMap.rbid !=''.toString()"> and t.rbid = #{filterMap.rbid}</if>
+			<if test="filterMap.containsKey('status') and filterMap.status !=''.toString()"> and t.status = #{filterMap.status}</if>
+			<if test="filterMap.containsKey('auditstatus') and filterMap.auditstatus !=''.toString()"> and t.auditstatus = #{filterMap.auditstatus}</if>
+		</where>
+		
+		<choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key"  item="val" open="order by " separator="," close="  ">
+	                #{key} #{val}
+	        	</foreach>
+	        	, builddatetime desc
+            </when>
+            <otherwise>
+                  order by builddatetime desc
+             </otherwise>
+         </choose>
+		
+    </select>
+    
+    <select id="get" parameterType="map" resultType="MerMap">
+    	<choose>
+    		<when test="arg4=='01'">
+    			select t.*,t2.name as lbid_name,t.class as cls,t3.name as cls_name,t4.name as rbid_name
+		        from 
+		        t_b_mermap t 
+		        left outer join 
+		        t_bi_branch t2 
+		        on t.lbid = t2.id 
+		        left outer join 
+		        t_bi_appclass t3 
+		        on t.class = t3.id 
+		        left outer join 
+		        t_bi_branch t4 
+		        on t.rbid = t4.id 
+		        where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}
+    		</when>
+    		<when test="arg4=='02'">
+    			select t.*,t2.name as lbid_name,t.class as cls,t3.name as cls_name,t4.name as rbid_name,
+    			t6.name as cardtype1_name,t7.name as cardtype2_name,t8.name as cardtype3_name,
+    			t9.name as cardtype4_name,t10.name as cardtype5_name    
+		        from 
+		        t_b_mermap_cardtype t 
+		        left outer join 
+		        t_bi_branch t2 
+		        on t.lbid = t2.id 
+		        left outer join 
+		        t_bi_appclass t3 
+		        on t.class = t3.id 
+		        left outer join 
+		        t_bi_branch t4 
+		        on t.rbid = t4.id 
+		        left outer join 
+		        t_bi_cardtype t6 
+		        on t.cardtype1 = t6.id 
+		        left outer join 
+		        t_bi_cardtype t7 
+		        on t.cardtype2 = t7.id 
+		        left outer join 
+		        t_bi_cardtype t8 
+		        on t.cardtype3 = t8.id 
+		        left outer join 
+		        t_bi_cardtype t9 
+		        on t.cardtype4 = t9.id 
+		        left outer join 
+		        t_bi_cardtype t10 
+		        on t.cardtype5 = t10.id 
+		        where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}
+    		</when>
+    		
+    		<when test="arg4=='03'">
+    			select t.*,t2.name as lbid_name,t.class as cls,t3.name as cls_name,t4.name as rbid_name 
+		        from 
+		        t_b_mermap_amt t 
+		        left outer join 
+		        t_bi_branch t2 
+		        on t.lbid = t2.id 
+		        left outer join 
+		        t_bi_appclass t3 
+		        on t.class = t3.id 
+		        left outer join 
+		        t_bi_branch t4 
+		        on t.rbid = t4.id 
+		        where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}
+    		</when>
+    		
+    		<when test="arg4=='04'">
+    			select t.*,t2.name as lbid_name,t.class as cls,t3.name as cls_name,t4.name as rbid_name, 
+    			t6.name as cardtype1_name,t7.name as cardtype2_name,t8.name as cardtype3_name,
+    			t9.name as cardtype4_name,t10.name as cardtype5_name    
+		        from 
+		        t_b_mermap_cardtype_amt t 
+		        left outer join 
+		        t_bi_branch t2 
+		        on t.lbid = t2.id 
+		        left outer join 
+		        t_bi_appclass t3 
+		        on t.class = t3.id 
+		        left outer join 
+		        t_bi_branch t4 
+		        on t.rbid = t4.id 
+		        left outer join 
+		        t_bi_cardtype t6 
+		        on t.cardtype1 = t6.id 
+		        left outer join 
+		        t_bi_cardtype t7 
+		        on t.cardtype2 = t7.id 
+		        left outer join 
+		        t_bi_cardtype t8 
+		        on t.cardtype3 = t8.id 
+		        left outer join 
+		        t_bi_cardtype t9 
+		        on t.cardtype4 = t9.id 
+		        left outer join 
+		        t_bi_cardtype t10 
+		        on t.cardtype5 = t10.id 
+		        where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}
+    		</when>
+    		
+    		<when test="arg4=='05'">
+    			select t.*,t2.name as lbid_name,t.class as cls,t3.name as cls_name,t4.name as rbid_name,
+    			t6.name as cardtype1_name,t7.name as cardtype2_name,
+    			t8.name as cardtype3_name,t9.name as cardtype4_name,t10.name as cardtype5_name,
+    			t11.name as issuerid1_name,t12.name as issuerid2_name, 
+    			t13.name as issuerid3_name,t14.name as issuerid4_name,t15.name as issuerid5_name     
+		        from 
+		        t_b_mermap_issuer_cardtype t 
+		        left outer join 
+		        t_bi_branch t2 
+		        on t.lbid = t2.id 
+		        left outer join 
+		        t_bi_appclass t3 
+		        on t.class = t3.id 
+		        left outer join 
+		        t_bi_branch t4 
+		        on t.rbid = t4.id 
+		        left outer join 
+		        t_bi_cardtype t6 
+		        on t.cardtype1 = t6.id 
+		        left outer join 
+		        t_bi_cardtype t7 
+		        on t.cardtype2 = t7.id 
+		        left outer join 
+		        t_bi_cardtype t8 
+		        on t.cardtype3 = t8.id 
+		        left outer join 
+		        t_bi_cardtype t9 
+		        on t.cardtype4 = t9.id 
+		        left outer join 
+		        t_bi_cardtype t10 
+		        on t.cardtype5 = t10.id 
+		        left outer join 
+		        t_bi_bankinfo t11 
+		        on t.issuerid1 = t11.id 
+		        left outer join 
+		        t_bi_bankinfo t12 
+		        on t.issuerid2 = t12.id 
+		        left outer join 
+		        t_bi_bankinfo t13 
+		        on t.issuerid3 = t13.id 
+		        left outer join 
+		        t_bi_bankinfo t14 
+		        on t.issuerid4 = t14.id 
+		        left outer join 
+		        t_bi_bankinfo t15 
+		        on t.issuerid5 = t15.id 
+		        where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}
+    		</when>
+    	</choose>
+    </select>
+    
+    <update id="update" parameterType="MerMap">
+    	<choose>
+    		<when test="mmf=='01'">
+    			update t_b_mermap set rmid = #{rmid},modifyoper = #{modifyoper},modifydatetime = #{modifydatetime_short} 
+    			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid}    		
+    		</when>
+    		<when test="mmf=='02'">
+    			update t_b_mermap_cardtype set cardtype1 = #{cardtype1},rmid1 = #{rmid1},cardtype2 = #{cardtype2},rmid2 = #{rmid2},cardtype3 = #{cardtype3},rmid3 = #{rmid3},cardtype4 = #{cardtype4},rmid4 = #{rmid4},cardtype5 = #{cardtype5},rmid5 = #{rmid5},modifyoper = #{modifyoper},modifydatetime = #{modifydatetime_short}  
+       			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid} 
+    		</when>
+    		<when test="mmf=='03'">
+    			update t_b_mermap_amt set amt11 = #{amt11},amt12 = #{amt12},rmid1 = #{rmid1},amt21 = #{amt21},amt22 = #{amt22},rmid2 = #{rmid2},amt31 = #{amt31},amt32 = #{amt32},rmid3 = #{rmid3},amt41 = #{amt41},amt42 = #{amt42},rmid4 = #{rmid4},amt51 = #{amt51},amt52 = #{amt52},rmid5 = #{rmid5},modifyoper = #{modifyoper},modifydatetime = #{modifydatetime_short}  
+       			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid} 
+    		</when>
+    		<when test="mmf=='04'">
+    			update t_b_mermap_cardtype_amt set cardtype1 = #{cardtype1},amt11 = #{amt11},amt12 = #{amt12},rmid1 = #{rmid1},cardtype2 = #{cardtype2},amt21 = #{amt21},amt22 = #{amt22},rmid2 = #{rmid2},cardtype3 = #{cardtype3},amt31 = #{amt31},amt32 = #{amt32},rmid3 = #{rmid3},cardtype4 = #{cardtype4},amt41 = #{amt41},amt42 = #{amt42},rmid4 = #{rmid4},cardtype5 = #{cardtype5},amt51 = #{amt51},amt52= #{amt52},rmid5 = #{rmid5}, modifyoper = #{modifyoper},modifydatetime = #{modifydatetime_short}  
+       			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid} 
+    		</when>
+    		<when test="mmf=='05'">
+    			update t_b_mermap_issuer_cardtype set issuerid1 = #{issuerid1},cardtype1 = #{cardtype1},rmid1 = #{rmid1},issuerid2 = #{issuerid2},cardtype2 = #{cardtype2},rmid2 = #{rmid2},issuerid3 = #{issuerid3},cardtype3 = #{cardtype3},rmid3 = #{rmid3},issuerid4 = #{issuerid4},cardtype4 = #{cardtype4},rmid4 = #{rmid4},issuerid5 = #{issuerid5},cardtype5 = #{cardtype5},rmid5 = #{rmid5},modifyoper = #{modifyoper},modifydatetime = #{modifydatetime_short}  
+       			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid} 
+    		</when>
+    	</choose>
+    </update>
+    
+    <update id="frozenMerMapMode">
+  		update t_b_mermap_mode set status='1' 
+  		where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}    		
+    </update>
+    
+    <update id="frozen">
+    	<choose>
+    		<when test="arg4=='01'">
+    			update t_b_mermap set status='1' 
+    			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}    		
+    		</when>
+    		<when test="arg4=='02'">
+    			update t_b_mermap_cardtype set status='1' 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3} 
+    		</when>
+    		<when test="arg4=='03'">
+    			update t_b_mermap_amt set status='1' 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}  
+    		</when>
+    		<when test="arg4=='04'">
+    			update t_b_mermap_cardtype_amt set status='1' 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}  
+    		</when>
+    		<when test="arg4=='05'">
+    			update t_b_mermap_issuer_cardtype set status='1' 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}  
+    		</when>
+    	</choose>
+    </update>
+    
+     <update id="unfrozenMerMapMode">
+     	update t_b_mermap_mode set status='2' 
+  		where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}    
+     </update>
+    
+    <update id="unfrozen">
+    	<choose>
+    		<when test="arg4=='01'">
+    			update t_b_mermap set status='2' 
+    			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}    		
+    		</when>
+    		<when test="arg4=='02'">
+    			update t_b_mermap_cardtype set status='2' 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}  
+    		</when>
+    		<when test="arg4=='03'">
+    			update t_b_mermap_amt set status='2' 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}  
+    		</when>
+    		<when test="arg4=='04'">
+    			update t_b_mermap_cardtype_amt set status='2' 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}    
+    		</when>
+    		<when test="arg4=='05'">
+    			update t_b_mermap_issuer_cardtype set status='2' 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}   
+    		</when>
+    	</choose>
+    </update>
+    
+    <delete id="deleteMerMapMode">
+    	delete from  t_b_mermap_mode 
+    	where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}  
+    </delete>
+    
+    <delete id="delete">
+    	<choose>
+    		<when test="arg4=='01'">
+    			delete from  t_b_mermap 
+    			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}    		
+    		</when>
+    		<when test="arg4=='02'">
+    			delete from  t_b_mermap_cardtype 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}  
+    		</when>
+    		<when test="arg4=='03'">
+    			delete from  t_b_mermap_amt 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}   
+    		</when>
+    		<when test="arg4=='04'">
+    			delete from  t_b_mermap_cardtype_amt 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}  
+    		</when>
+    		<when test="arg4=='05'">
+    			delete from  t_b_mermap_issuer_cardtype 
+       			where lbid = #{arg0} and lmid = #{arg1} and class = #{arg2} and rbid = #{arg3}  
+    		</when>
+    	</choose>
+    </delete>
+    
+    <update id="auditMerMapMode" parameterType="map">
+  		update t_b_mermap_mode 
+  		set 
+		status = #{status},
+		auditstatus = #{auditstatus},
+		auditoper = #{auditoper},
+		auditdatetime = #{auditdatetime_short} 
+  		where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid}    		
+    </update>
+    
+    <update id="audit" parameterType="map">
+    	<choose>
+    		<when test="mmf=='01'">
+    			update t_b_mermap 
+    			set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short} 
+    			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid}    		
+    		</when>
+    		<when test="mmf=='02'">
+    			update t_b_mermap_cardtype 
+    			set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short} 
+       			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid} 
+    		</when>
+    		<when test="mmf=='03'">
+    			update t_b_mermap_amt 
+    			set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short} 
+       			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid}  
+    		</when>
+    		<when test="mmf=='04'">
+    			update t_b_mermap_cardtype_amt 
+    			set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short} 
+       			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid}  
+    		</when>
+    		<when test="mmf=='05'">
+    			update t_b_mermap_issuer_cardtype 
+    			set 
+				status = #{status},
+				auditstatus = #{auditstatus},
+				auditoper = #{auditoper},
+				auditdatetime = #{auditdatetime_short} 
+       			where lbid = #{lbid} and lmid = #{lmid} and class = #{cls} and rbid = #{rbid}  
+    		</when>
+    	</choose>
+    </update>
+    
+    <select id="getMerMapModes" resultType="MerMap">
+        select *,t.class as cls from t_b_mermap_mode t where t.lbid = #{arg0} and t.lmid = #{arg1} and t.rbid = #{arg2} 
+    </select>
+    
+</mapper>

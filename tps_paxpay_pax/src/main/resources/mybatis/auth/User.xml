@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.auth.dao.UserDao">
+
+    <select id="getNextId" resultType="int">
+        select case when count(id)= 0 then 1 else max(id)+1 end from t_si_User
+    </select>
+    
+    <select id="getSiteId" resultType="int" parameterType="string">
+        select site_id from t_si_user where id = #{id}
+    </select>
+
+    <insert id="save" parameterType="map">
+        insert INTO t_si_User(id,site_id,name,loginname,salt,password,email,phoneno,status,org_id,buildoper,builddatetime,notes)
+        values(#{id},#{site_id},#{name},#{loginname},#{salt},#{password},#{email},#{phoneno},#{status},#{org_id},#{buildoper},#{builddatetime},#{notes})
+    </insert>
+    
+    <resultMap type="User" id="userResult">
+    	
+    	<id property="id" column="id" />
+    	
+    	<result property="site.id" column="site_id" />
+    	<result property="site.name" column="site_name" />
+    	<result property="site.tag" column="site_tag" />
+    	<result property="site.status" column="site_status" />
+    	<result property="name" column="name"/>
+    	<result property="loginname" column="loginname"/>
+    	<result property="email" column="email"/>
+    	<result property="phoneno" column="phoneno"/>
+    	<result property="lastlogintime" column="lastlogintime"/>
+    	<result property="lastupdatepwdtime" column="lastupdatepwdtime"/>
+    	<result property="frozentime" column="frozentime"/>
+    	<result property="frozenreason" column="frozenreason"/>
+    	<result property="errortimes" column="errortimes"/>
+    	<result property="org.id" column="org_id"/>
+    	<result property="org.name" column="org_name"/>
+    	<result property="org.orgId" column="orgId"/>
+    	<result property="org.parent.id" column="pid"/>
+    </resultMap>
+    <resultMap type="User" id="userResult1">
+    	
+    	<id property="id" column="id" />
+    	
+    	<result property="name" column="name"/>
+    	<result property="loginname" column="loginname"/>
+    	<result property="email" column="email"/>
+    	<result property="phoneno" column="phoneno"/>
+    	<result property="lastlogintime" column="lastlogintime"/>
+    	<result property="lastupdatepwdtime" column="lastupdatepwdtime"/>
+    	<result property="frozentime" column="frozentime"/>
+    	<result property="frozenreason" column="frozenreason"/>
+    </resultMap>
+    
+    <select id="list" resultMap="userResult" parameterType="com.pax.core.model.PageQueryParam">
+    
+        select t.*,t2.name as site_name,t3.name as org_name   
+        from t_si_User t left outer join t_si_site t2 
+        on t.site_id = t2.id 
+        left outer join t_si_organization t3 
+        on t.org_id = t3.id 
+        
+        <where>
+        	
+        	<choose>
+        		<when test="filterMap.containsKey('org_id') and filterMap.org_id !=''.toString()">
+        			t.org_id = #{filterMap.org_id}
+        		</when>
+        		<otherwise>
+        			<choose>
+	        			<when test="filterMap.containsKey('orgs')">
+		        			t.org_id in 
+					        <foreach collection="filterMap.orgs" item="org" index="index"
+					            open="(" close=")" separator=",">
+					            #{org.id}
+					        </foreach>
+					 	</when>
+        			</choose>       
+        		</otherwise>
+        	</choose>
+        	
+			<if test="filterMap.containsKey('name') and filterMap.name !=''.toString()"> and t.name like concat('%',#{filterMap.name},'%')</if>
+			<if test="filterMap.containsKey('site_id') and filterMap.site_id !=''.toString()"> and t.site_id = #{filterMap.site_id}</if>
+			and t.id != 1 
+		</where>
+		
+		
+		
+		<choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key"  item="val" open="order by " separator="," close="  ">
+	                #{key} #{val}
+	        	</foreach>
+	        	, builddatetime desc
+            </when>
+            <otherwise>
+                  order by builddatetime desc
+             </otherwise>
+         </choose>
+		
+    </select>
+    
+    <select id="get" resultMap="userResult" parameterType="string">
+        select t.*,t2.id as site_id,t2.name as site_name,t2.tag as site_tag,t3.name as org_name ,t3.orgId
+        from t_si_User t left outer join t_si_site t2 
+        on t.site_id = t2.id 
+        left outer join t_si_organization t3 
+        on t.org_id = t3.id 
+        where t.id = #{id} and t.id != 1;
+    </select>
+    
+    <select id="login" resultMap="userResult" parameterType="string">
+        select t.*,t2.id as site_id,t2.name as site_name,t2.tag as site_tag,t2.status as site_status,t3.name as org_name ,t3.orgId,
+        t3.pid from t_si_User t left outer join t_si_site t2
+        on t.site_id = t2.id 
+        left outer join t_si_organization t3 
+        on t.org_id = t3.id 
+        where t.loginname = #{loginname};
+    </select>
+    
+    <update id="update" parameterType="map">
+		update t_si_User 
+		<set>
+			<if test="_parameter.containsKey('name') and name!=''.toString()">name=#{name},</if>
+			<if test="_parameter.containsKey('email')">email=#{email},</if>
+			<if test="_parameter.containsKey('phoneno')">phoneno=#{phoneno},</if>
+			<if test="_parameter.containsKey('modifydatetime') and modifydatetime!=''.toString()">modifydatetime=#{modifydatetime},</if>
+			<if test="_parameter.containsKey('modifyoper') and modifyoper!=''.toString()">modifyoper=#{modifyoper},</if>
+		</set>
+		where id=#{id};
+	</update>
+	
+	<update id="updatePwd" parameterType="map">
+		update t_si_User set password = #{newPwd1},lastupdatepwdtime = #{lastupdatepwdtime},lastlogintime = #{lastupdatepwdtime} where id = #{id}
+	</update>
+	
+	<update id="frozen" parameterType="string">
+		update t_si_User set status='1' ,frozentime = #{arg1} where id=#{arg0};
+	</update>
+	<update id="frozenUser1" parameterType="User">
+		update t_si_User set status='1' ,errortimes = #{errortimes},frozenreason = #{frozenreason} where id=#{id};
+	</update>
+	<update id="frozenUser" parameterType="string">
+		update t_si_User set status='1',frozenreason = #{arg1},frozentime = #{arg2} where id=#{arg0};
+	</update>
+	
+	<update id="unfrozen" parameterType="string">
+		update t_si_User set status='2' ,frozenreason = '',frozentime = '',errortimes='' where id=#{id};
+	</update>
+	<update id="updateErrortimes" parameterType="User">
+		update t_si_User set errortimes=#{errortimes} where id=#{id};
+	</update>
+	
+	<update id="cancel" parameterType="string">
+		update t_si_User set status='3'  where id=#{id};
+	</update>
+	
+	<delete id="delete" parameterType="string">
+		delete from t_si_User where id=#{id} and id != 1 ;
+	</delete>
+	
+	<update id="resetPwd" parameterType="map">
+		update t_si_User set password=#{password},salt=#{salt},lastlogintime ='',lastupdatepwdtime=#{lastupdatepwdtime} where id=#{id};
+	</update>
+	
+	<insert id="grantRoles" parameterType="map">
+        insert ignore into t_si_userrole(user_id,role_id) 
+        values
+        <foreach collection="roles" item="roleId" index="index" separator=",">
+            (
+            #{userId},#{roleId}
+            )
+        </foreach>
+    </insert>
+	
+	<delete id="deleteUserRoles" parameterType="string">
+		delete from t_si_userrole where user_id=#{id};
+	</delete>
+	
+	<delete id="deleteUserRoleModels" parameterType="string">
+		delete from t_si_userrolemodel where user_id=#{id};
+	</delete>
+	
+	<select id="findByLoginname" resultType="User" parameterType="string">
+		select * from t_si_user where loginname=#{arg0}
+	</select>
+	
+	<select id="getCountsByLoginName" resultType="int" parameterType="string">
+        select 
+        count(*)  
+        from t_si_user    
+        where loginname = #{arg0};
+    </select>
+    
+    <update id="updateLastlogintime" parameterType="User">
+    	update t_si_user set lastlogintime = #{lastlogintime},errortimes = '' where id = #{id}
+    </update>
+    
+    <select id="listAll" resultMap="userResult1">
+    	select * from t_si_user
+    </select>
+</mapper>

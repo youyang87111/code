@@ -1,0 +1,85 @@
+
+body{
+    font-family: 微软雅黑;
+}
+.my-top{
+    height: 50px;
+    line-height: 50px;
+    /*padding-left: 4%;*/
+    /*padding-right: 4%;*/
+    /*width: 90%;*/
+    margin: 0px auto;
+}
+.p-relative{
+    position: relative;
+}
+.login-wrap{
+    width: 350px;
+    height: 300px;
+    background-color:rgba(0,0,0,0.3);
+    /*opacity: 0.3;*/
+    position: absolute;
+    top:15%;
+    right: 18%;
+}
+.lf{
+    float: left;
+}
+.rt{
+    float:right;
+}
+.text-c{
+    text-align: center;
+}
+.color-w{
+    color: white;
+}
+.my-link,.my-link:hover{
+    display: inline-block;
+    /*padding: 4px;*/
+    margin-left: 20px;
+    background-color: #5ec8ec;
+    color: #fff;
+    height: 26px;
+    line-height: 26px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.word{
+    line-height: 24px;
+}
+.mt50{
+    margin-top: 30px;
+}
+.my-footer{
+    margin-top: 40px;
+    line-height: 60px;
+    border-top: 1px solid lightgray;
+}
+.alert-box{
+    position: absolute;
+    top: 0px;
+    right: 18%;
+    /*height:50px;*/
+    width:25%;
+    padding: 20px;
+    /*padding-top: 50px;*/
+    font-size: 14px;
+    z-index: 100;
+}
+.my-close{
+    position: absolute;
+    top:0px;
+    right: 0px;
+    font-size: 30px;
+}
+.i18n-sel-box {
+    /*position: absolute;*/
+    /*top: 20px;*/
+    /*right: 14px;*/
+    /*line-height: 14px;*/
+    font-size: 14px;
+}
+.bg-class{
+    height:530px;
+}

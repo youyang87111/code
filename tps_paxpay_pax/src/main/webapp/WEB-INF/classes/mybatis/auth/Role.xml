@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.auth.dao.RoleDao">
+
+	<select id="getNextId" resultType="int">
+        select case when count(id)= 0 then 1 else max(id)+1 end from t_si_role
+    </select>
+    
+    <select id="getSiteId" resultType="int" parameterType="string">
+        select site_id from t_si_role where id = #{id}
+    </select>
+    
+    <select id="getUsersCount" resultType="int" parameterType="string">
+        select 
+        count(1) 
+        from 
+        t_si_user u 
+        inner join t_si_userrole ur 
+        on u.id = ur.user_id 
+        inner join t_si_role r 
+        on ur.role_id = r.id 
+        where r.id = #{id}
+    </select>
+
+    <insert id="save" parameterType="map">
+        insert INTO t_si_role(id,site_id,name,org_id,buildoper,builddatetime,notes)
+        values(#{id},#{site_id},#{name},#{org_id},#{buildoper},#{builddatetime},#{notes})
+    </insert>
+    
+    <resultMap type="Role" id="roleResult">
+    	
+    	<id property="id" column="id" />
+    	
+    	<result property="site.id" column="site_id" />
+    	<result property="site.name" column="site_name" />
+    	<result property="name" column="name"/>
+    	<result property="org.id" column="org_id"/>
+    	<result property="org.name" column="org_name"/>
+    </resultMap>
+    
+    <select id="list" resultMap="roleResult" parameterType="com.pax.core.model.PageQueryParam">
+    
+        select t.*,t2.name as site_name,t3.name as org_name   
+        from t_si_role t left outer join t_si_site t2 
+        on t.site_id = t2.id 
+        left outer join t_si_organization t3 
+        on t.org_id = t3.id 
+        
+        <where>
+        	<choose>
+        		<when test="filterMap.containsKey('org_id') and filterMap.org_id !=''.toString()">
+        			 t.org_id = #{filterMap.org_id}
+        		</when>
+        		<otherwise>
+        			<choose>
+	        			<when test="filterMap.containsKey('orgs')">
+	        				t.org_id in 
+					        <foreach collection="filterMap.orgs" item="org" index="index"
+					            open="(" close=")" separator=",">
+					            #{org.id}
+					        </foreach>
+	        			</when>
+        			</choose>
+        		</otherwise>
+        	</choose>
+        	
+			<if test="filterMap.containsKey('name') and filterMap.name !=''.toString()"> and t.name like concat('%',#{filterMap.name},'%')</if>
+			<if test="filterMap.containsKey('site_id') and filterMap.site_id !=''.toString()"> and t.site_id = #{filterMap.site_id}</if>
+			<if test="!filterMap.containsKey('admin')"> and t.id != 1</if>
+			
+		</where>
+        
+		<choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key"  item="val" open="order by " separator="," close="  ">
+	                #{key} #{val}
+	        	</foreach>
+	        	, builddatetime desc
+            </when>
+            <otherwise>
+                  order by builddatetime desc
+             </otherwise>
+         </choose>
+		
+    </select>
+    
+    <select id="get" resultMap="roleResult" parameterType="string">
+        select t.*,t2.name as site_name,t3.name as org_name   
+        from t_si_role t left outer join t_si_site t2 
+        on t.site_id = t2.id 
+        left outer join t_si_organization t3 
+        on t.org_id = t3.id 
+        where t.id = #{id};
+    </select>
+    
+    <select id="getRolesByUser" resultMap="roleResult" parameterType="string">
+        select r.*,s.name as site_name,o.name as org_name   
+        from t_si_user u inner join t_si_userrole ur on u.id = ur.user_id 
+        inner join t_si_role r on ur.role_id = r.id left outer join t_si_site s 
+        on u.site_id = s.id 
+        left outer join t_si_organization o 
+        on u.org_id = o.id 
+        where u.id = #{userId};
+    </select>
+    
+    <select id="getRolesToUseByUser" resultMap="roleResult" parameterType="map">
+        select r.*,s.name as site_name,o.name as org_name   
+        from t_si_role r left outer join t_si_site s 
+        on r.site_id = s.id 
+        left outer join t_si_organization o 
+        on r.org_id = o.id 
+        <where>
+        	r.org_id = #{orgId} 
+        	and ( r.buildoper = #{loginname} 
+        	<choose>
+        		<when test="_parameter.containsKey('rolesOfLoginUser')">
+        			 or r.id in 
+		        	<foreach collection="rolesOfLoginUser" item="role" index="index"
+			            open="(" close=")" separator=",">
+			            #{role.id}
+			        </foreach>
+        		</when>
+        	</choose>	
+        	)
+			<if test="_parameter.containsKey('search_name') and search_name !=''.toString()"> and r.name like concat('%',#{search_name},'%')</if>
+			<if test="_parameter.containsKey('site_id') and site_id !=''.toString()"> and r.site_id = #{site_id}</if>
+			and r.id != 1 
+		</where>
+		
+    </select>
+    
+    <update id="update" parameterType="map">
+		update t_si_role
+		<set>
+			<if test="_parameter.containsKey('name') and name!=''.toString()">name=#{name},</if>
+			<if test="_parameter.containsKey('url') and url!=''.toString()">url=#{url},</if>
+			<if test="_parameter.containsKey('modifyoper') and modifyoper!=''.toString()">modifyoper=#{modifyoper},</if>
+			<if test="_parameter.containsKey('modifydatetime') and modifydatetime!=''.toString()">modifydatetime=#{modifydatetime},</if>
+		</set>
+		where id=#{id};
+	</update>
+	
+	<delete id="deleteRoleAuth" parameterType="string">
+		delete from t_si_roleauth where role_id=#{id};
+	</delete>
+	
+	<delete id="delete" parameterType="string">
+		delete from t_si_role where id=#{id};
+	</delete>
+	
+	<delete id="deleteAllAuths" parameterType="string">
+		delete from t_si_roleauth where role_id=#{id};
+	</delete>
+	
+	<insert id="grantAuths" parameterType="map">
+        insert ignore into t_si_roleauth(role_id,auth_id) 
+        values
+        <foreach collection="auths" item="authId" index="index" separator=",">
+            (
+            #{id},#{authId}
+            )
+        </foreach>
+    </insert>
+    
+    <select id="getRolesOutofSite" resultMap="roleResult" parameterType="int">
+     	select 
+     	
+     	t.*,
+     	t2.name as site_name,
+     	t3.name as org_name   
+     	
+        from 
+        
+        t_si_role t 
+        left outer join 
+        t_si_site t2 
+        on t.site_id = t2.id 
+        
+        where t.site_id != #{siteId}
+    </select>
+
+</mapper>

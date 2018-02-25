@@ -1,0 +1,29 @@
+server:
+  port: 8080
+spring: 
+  application:
+    name: activation
+  datasource: 
+    name: test
+    url: jdbc:mysql://192.168.13.202:3306/imspdb?useUnicode=true&characterEncoding=utf8
+    username: imspdbo
+    password: imspdbop
+    # 使用druid数据源
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver    
+    
+mybatis: 
+  mapper-locations: classpath:mybatis/*.xml
+  type-aliases-package: com.pax
+  config-location: classpath:mybatis-config.xml  
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.13.102:8761/eureka
+  instance:
+    prefer-ip-address: true
+    
+    
+
+  

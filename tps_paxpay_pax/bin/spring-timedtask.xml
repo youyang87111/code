@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+	
+    <!--配置定时任务start-->
+    <!--配置启动器-->
+    <bean id="quartzScheduler" lazy-init="false" autowire="no"
+          class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+            	
+                <ref bean="messageTimerTaskTrigger"></ref>
+                <ref bean="frozenUserTimerTaskTrigger"></ref>
+                <ref bean="cancleUserTimerTaskTrigger"></ref>
+                
+                <ref bean="lmerTimerTaskTrigger"></ref>
+                <ref bean="ltermTimerTaskTrigger"></ref>
+                <ref bean="mapTimerTaskTrigger"></ref>
+                <ref bean="qrcodeTimerTaskTrigger"></ref>
+                
+            </list>
+        </property>
+    </bean>
+    
+    
+    <!--配置任务-->
+    <bean id="messageTimerTaskTrigger" class="com.pax.core.common.factory.PaxTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="messageTimerTaskJob"></ref>
+        </property>
+        <property name="cronExpression" value="${quartz.cron.messageTimerTask}"/>
+    </bean>
+
+    <bean id="messageTimerTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="messageTimerTask"></ref>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    
+    <!--配置冻结未登录超过90天用户的定时任务-->
+    <bean id="frozenUserTimerTaskTrigger" class="com.pax.core.common.factory.PaxTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="frozenUserTimerTaskJob"></ref>
+        </property>
+        <property name="cronExpression" value="${quartz.cron.frozenUserTimerTask}"/>
+    </bean>
+    
+    <bean id="frozenUserTimerTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="frozenUserTimerTask"></ref>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    
+    <!--配置注销冻结超过30天用户的定时任务-->
+    <bean id="cancleUserTimerTaskTrigger" class="com.pax.core.common.factory.PaxTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="cancleUserTimerTaskJob"></ref>
+        </property>
+        <property name="cronExpression" value="${quartz.cron.cancleUserTimerTask}"/>
+    </bean>
+
+    <bean id="cancleUserTimerTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="cancleUserTimerTask"></ref>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    
+    <!--同步商户-->
+    <bean id="lmerTimerTaskTrigger" class="com.pax.core.common.factory.PaxTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="lmerTimerTaskJob"></ref>
+        </property>
+        <property name="cronExpression" value="${quartz.cron.lmerTimerTask}"/>
+    </bean>
+
+    <bean id="lmerTimerTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="lmerTimerTask"></ref>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    
+    <!--同步终端-->
+    <bean id="ltermTimerTaskTrigger" class="com.pax.core.common.factory.PaxTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="ltermTimerTaskJob"></ref>
+        </property>
+        <property name="cronExpression" value="${quartz.cron.ltermTimerTask}"/>
+    </bean>
+
+    <bean id="ltermTimerTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="ltermTimerTask"></ref>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    
+    <!--同步终端-->
+    <bean id="mapTimerTaskTrigger" class="com.pax.core.common.factory.PaxTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="mapTimerTaskJob"></ref>
+        </property>
+        <property name="cronExpression" value="${quartz.cron.mapTimerTask}"/>
+    </bean>
+
+    <bean id="mapTimerTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="mapTimerTask"></ref>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    
+    <!--同步二维码-->
+    <bean id="qrcodeTimerTaskTrigger" class="com.pax.core.common.factory.PaxTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="qrcodeTimerTaskJob"></ref>
+        </property>
+        <property name="cronExpression" value="${quartz.cron.qrcodeTimerTask}"/>
+    </bean>
+
+    <bean id="qrcodeTimerTaskJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject">
+            <ref bean="qrcodeTimerTask"></ref>
+        </property>
+        <property name="targetMethod">
+            <value>execute</value>
+        </property>
+        <property name="concurrent" value="false"/>
+    </bean>
+    
+</beans>

@@ -1,0 +1,10 @@
+{"success":"true","data":[{"value":"CNY","chinese":"[[cny]]","english":"Chinese Yuan","number":" 156"},
+  {"value":"USD","chinese":"[[usd]]","english":"United States Dollar","number":"840"},
+  {"value":"EUR","chinese":"[[eur]]","english":"Euro","number":"978"},
+  {"value":"JPY","chinese":"[[jpy]]","english":"Japanese Yen","number":"392"},
+  {"value":"CAD","chinese":"[[cad]]","english":"Canadian Dollar","number":"124"},
+  {"value":"KRW","chinese":"[[krw]]","english":"South Korean Won","number":"410"},
+  {"value":"RUB","chinese":"[[rub]]","english":"Russian Ruble","number":"643"},
+  {"value":"HKD","chinese":"[[hkd]]","english":"Hong Kong Dollar","number":"344"},
+  {"value":"AUD","chinese":"[[aud]]","english":"Australia Dollar","number":"036"},
+  {"value":"GBP","chinese":"[[gbp]]","english":"Pound Sterling","number":"826"}]}

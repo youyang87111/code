@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.auth.dao.OrganizationDao">
+    <insert id="insert" parameterType="Organization">
+        insert into t_si_organization(id,site_id,orgId,name,pid,orderno,buildoper,builddatetime)
+        VALUES (
+        #{id},#{site.id},#{orgId},#{name},#{parent.id},#{orderno},#{buildoper},#{builddatetime}
+        )
+    </insert>
+    <update id="update" parameterType="Organization">
+        update t_si_organization
+        <set>
+            orgId=#{orgId},
+            name=#{name},
+            pid=#{parent.id},
+            orderno=#{orderno},
+            modifyoper=#{modifyoper},
+            modifydatetime=#{modifydatetime}
+        </set>
+        where id=#{id}
+    </update>
+    <select id="getNextId" resultType="int">
+        select case when count(id)= 0 then 1 else max(id)+1 end from t_si_organization
+    </select>
+    <select id="list" parameterType="map" resultMap="orgResult">
+        select * 
+        from  t_si_organization t 
+        where t.site_id = #{site_id};
+    </select>
+
+    <select id="listAllOfSite" parameterType="int" resultMap="orgResult">
+        select * 
+        from  t_si_organization t 
+        where t.site_id != #{siteId};
+    </select>
+
+    <select id="get" parameterType="string" resultMap="orgResult">
+        select * 
+        from  t_si_organization t 
+        where t.id = #{id};
+    </select>
+    <select id="findByOrgId" parameterType="string" resultMap="orgResult">
+        select *
+        from  t_si_organization t
+        where t.orgId = #{0};
+    </select>
+    
+    <select id="findByUser" parameterType="java.util.Map" resultMap="orgResult">
+    	select *
+        from  t_si_organization t
+        <where>
+        	<if test="filterMap.containsKey('orgId') and filterMap.orgId !=''.toString()">
+        		orgId = #{orgId}
+        	</if>
+        	<if test="filterMap.containsKey('upperLevel1') and filterMap.upperLevel1 !=''.toString()">
+        		or upperLevel1 = #{orgId}
+        	</if>
+        </where>
+    </select>
+
+    <resultMap type="Organization" id="orgResult">
+
+        <id property="id" column="id"/>
+
+        <result property="name" column="name"/>
+        <result property="orgId" column="orgId"/>
+        <result property="orderno" column="orderno"/>
+        <result property="parent.id" column="pid"/>
+        <result property="site.id" column="site_id"/>
+    </resultMap>
+    <select id="findByMaps" resultType="Organization" parameterType="hashMap">
+        select * from t_si_organization
+        <where>
+            site_id=#{siteId}
+            <choose>
+                <when test="_parameter.containsKey('orgId')==false and pid==null">
+                    and pid is null
+                </when>
+                <otherwise>
+                    and orgId=#{orgId}
+                </otherwise>
+            </choose>
+        </where>
+        limit 1
+    </select>
+    <update id="updateOrgName" parameterType="hashMap">
+        update t_si_organization
+        <set>
+            name=#{name},
+            modifydatetime=#{modifydatetime},
+            modifyoper=#{modifyoper}
+        </set>
+        where orgId=#{orgId}
+    </update>
+</mapper>

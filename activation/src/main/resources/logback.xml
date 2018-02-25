@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    
+    <property name="LOG_DIR" value="./activation/logs"/>
+    
+    <!--控制台打印输出-->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</Pattern>
+        </layout>
+    </appender>
+    
+    <appender name="rollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/info/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+
+    <!-- ***************************************************日志输出配置***************************************************** -->
+    <root level="info">
+        <appender-ref ref="consoleAppender"/>
+    </root>
+    
+    <logger name="com.pax" level="info" additivity="false">
+        <appender-ref ref="rollingFileAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+    
+</configuration>

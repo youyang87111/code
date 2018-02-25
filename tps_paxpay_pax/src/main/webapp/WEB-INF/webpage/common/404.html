@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>404错误页面</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="js/includeCSS.js" type="text/javascript"></script>
+    <link href="css/jquery-ui.css" rel="stylesheet">
+    <link href="css/error.css" rel="stylesheet">
+</head>
+<div class="wrap">
+    <div class="left-box">
+        <p class="error-type">404</p>
+        <p>非常抱歉</p>
+        <p>您访问的页面 不存在或已删除</p>
+        <p class="return"><b id="time" class="counts">5</b>s后自动返回上一页面&nbsp;&nbsp;&nbsp;<a class="turn-back" href="">手动返回&gt;&gt;</a>
+        </p>
+    </div>
+    <div class="right-box">
+        <img src="images/error-img.png" alt="错误提示">
+    </div>
+</div>
+
+<!-- REQUIRED JS SCRIPTS -->
+<script src="js/includeJS.js" type="text/javascript"></script>
+<script type="text/javascript" src="plugins/jQueryUI/jquery-ui.min.js"></script>
+<!--<script type="text/javascript" src="js/busi/error.js"></script>-->
+<script>
+    $(".turn-back").on("click", function () {
+        window.history.back();
+        window.location.reload();
+    });
+    function delayURL() {
+        var delay = document.getElementById("time").innerHTML;
+        if (delay > 0) {
+            delay--;
+            document.getElementById("time").innerHTML = delay
+        } else {
+            window.history.back();
+            window.location.reload();
+        }
+        setTimeout(delayURL, 1000)
+    }
+    delayURL();
+</script>
+</body>
+</html>

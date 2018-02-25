@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.busi.common.dao.CommonDao">
+
+    
+    <select id="listAppClass"  resultType="AppClass" parameterType="string">
+        select * from t_bi_appclass where CLASSGROUP = #{classgroup};
+    </select>
+    
+    <select id="listBankInfo"  resultType="BankInfo">
+        select * from t_bi_bankinfo;
+    </select>
+    
+    <select id="listBmf"  resultType="Bmf">
+        select * from t_bi_bmf;
+    </select>
+    
+    <select id="listBranch"  resultType="Branch"  parameterType="string">
+        select * from t_bi_branch where type=#{type};
+    </select>
+    
+    <select id="listCardType"  resultType="CardType">
+        select * from t_bi_cardtype;
+    </select>
+    
+    <select id="listInntransdef"  resultType="Inntransdef" parameterType="string">
+        select * from t_bi_inntransdef def,t_bi_appclass cls 
+        where 
+        def.class = cls.id and cls.CLASSGROUP = #{classgroup};
+    </select>
+    
+    <select id="listAllInntransdef"  resultType="Inntransdef" parameterType="string">
+        select * from t_bi_inntransdef def;
+    </select>
+    
+    <select id="listMcr"  resultType="Mcr"  parameterType="string">
+        select * from t_bi_mcr where type=#{type};
+    </select>
+    
+    <select id="listMmf"  resultType="Mmf">
+        select * from t_bi_mmf;
+    </select>
+    
+    <select id="listTmf"  resultType="Tmf">
+        select * from t_bi_tmf;
+    </select>
+    
+    <select id="findLocales" resultType="Language">
+        select
+            lang.id,
+            lang.abbrname,
+            lang.disname,
+            lang.pkgpath,
+            lang.url
+        from t_b_language lang
+        where lang.status=1 and lang.type=0
+    </select>
+    
+    <select id="getBranch"  resultType="Branch" parameterType="string">
+        select * from t_bi_branch where id = #{bid};
+    </select>
+    
+    <select id="getAppClass"  resultType="AppClass" parameterType="string">
+       select * from t_bi_appclass where id = #{clsid};
+    </select>
+    
+    <select id="getBmf"  resultType="Bmf" parameterType="string">
+       select * from t_bi_bmf where id = #{bmf};
+    </select>
+    
+    <select id="getMmf"  resultType="Mmf" parameterType="string">
+       select * from t_bi_mmf where id = #{mmf};
+    </select>
+    
+    <select id="getCardType"  resultType="CardType" parameterType="string">
+       select * from t_bi_cardtype where id = #{cardtype};
+    </select>
+    
+    <select id="getBank"  resultType="BankInfo" parameterType="string">
+       select * from t_bi_bankinfo where id = #{bankinfo};
+    </select>
+    
+    <select id="getTmf"  resultType="Tmf" parameterType="string">
+       select * from t_bi_tmf where id = #{tmf};
+    </select>
+    
+    <select id="getMcr" resultType="Mcr" parameterType="string">
+    	select * from t_bi_mcr where id = #{mcr}
+    </select>
+    
+    <select id="listChintoeng"  resultType="Chintoeng">
+        select * from t_b_chintoeng;
+    </select>
+    
+</mapper>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.busi.resourcemgr.dao.RTermDao">
+	<resultMap type="RTerm" id="rTermMap">
+	
+		<id property="mer.mcr" column="mcr"/>  
+        <id property="mer.mid" column="mid"/>
+        <id property="mer.status" column="merstatus"/>
+    	<id property="tid" column="tid"/>
+        <result property="mer.name" column="name"/>
+    	<result property="orgName" column="orgname"/>
+    	<result property="mcrName" column="mcrname"/>
+    	<result property="status" column="status"/>
+    	<result property="auditstatus" column="auditstatus"/>
+    	
+	</resultMap>
+	<sql id="baseSql">
+		select t.*,t3.name,t2.name as mcrname,t1.name as orgname,t3.status as merstatus
+        from t_b_rterm t 
+        left join t_si_organization t1 on t.depid = t1.id
+        left join t_bi_mcr t2 on t.mcr = t2.id
+        left join t_b_rmer t3 on t.mid = t3.mid and t.mcr = t3.mcr 
+	</sql>
+    
+   <insert id="save" parameterType="RTerm">
+	insert 
+    into
+         t_b_rterm
+        (auditstatus, builddatetime, buildoper, status,  depid, mcr, mid, tid) 
+    values
+        (#{auditstatus}, #{builddatetime_short}, #{buildoper}, #{status}, #{depid}, #{mer.mcr}, #{mer.mid},#{tid} )
+	</insert>
+	
+	<insert id="saveBySyn" parameterType="RTerm">
+	insert 
+    into
+         t_b_rterm
+        (auditstatus, builddatetime, buildoper, status,  depid, mcr, mid, tid) 
+    values
+        (#{auditstatus}, #{builddatetime_short}, #{buildoper}, #{status}, #{mer.depid}, #{mer.mcr}, #{mer.mid},#{tid} )
+	</insert>
+	
+	<delete id="delete" parameterType="RTerm">
+		delete from t_b_rterm where mcr = #{mer.mcr} and mid = #{mer.mid} and tid = #{tid}
+	</delete>
+	
+	<update id="audit" parameterType="RTerm">
+     update t_b_rterm
+        <set>
+        auditdatetime=#{auditdatetime_short},
+        auditoper=#{auditoper},
+        auditstatus=#{auditstatus},
+        status = #{status}
+        </set>
+        where mcr = #{mer.mcr} and mid = #{mer.mid} and tid = #{tid}
+    </update>
+	<update id="updateTmk" parameterType="RTerm">
+     update t_b_rterm
+        <set>
+        tmk = #{tmk}
+        </set>
+        where mcr = #{mer.mcr} and mid = #{mer.mid} and tid = #{tid}
+    </update>
+    
+    <update id="updateBySyn" parameterType="RTerm">
+     update t_b_rterm
+        <set>
+        depid = #{depid} 
+        </set>
+        where mcr = #{mer.mcr} and mid = #{mer.mid} and tid = #{tid}
+    </update>
+    
+    <update id="frozen" parameterType="RTerm">
+		update t_b_rterm set status='1' where mcr = #{mer.mcr} and mid = #{mer.mid} and tid = #{tid}
+	</update>
+	
+	<update id="unfrozen" parameterType="RTerm">
+		update t_b_rterm set status='2' where mcr = #{mer.mcr} and mid = #{mer.mid} and tid = #{tid}
+	</update>
+	
+	<select id="get" parameterType="string" resultMap="rTermMap">
+	 	<include refid="baseSql"></include>
+	 	where t.mcr = #{arg0} and t.mid = #{arg1} and t.tid = #{arg2}
+	</select>
+	
+	<select id="list" parameterType="PageQueryParam" resultMap="rTermMap">
+		<include refid="baseSql"></include>
+        <where>
+        	<choose>
+	       		<when test="filterMap.containsKey('orgId') and filterMap.orgId !=''.toString()">
+	       			t.depid = #{filterMap.orgId}
+	       		</when>
+	       		<otherwise>
+	       			<choose>
+	        			<when test="filterMap.containsKey('orgs')">
+		        			t.depid in 
+					        <foreach collection="filterMap.orgs" item="org" index="index"
+					            open="(" close=")" separator=",">
+					            #{org.id}
+					        </foreach>
+					 	</when>
+	       			</choose>       
+	       		</otherwise>
+	        </choose>
+        	
+            <if test="filterMap.containsKey('mcr') and  filterMap.mcr != ''.toString()">
+               and t.mcr = #{filterMap.mcr}
+            </if>
+            <if test="filterMap.containsKey('mid') and  filterMap.mid != ''.toString()">
+                and t.mid like concat('%',#{filterMap.mid},'%')
+            </if>
+            <if test="filterMap.containsKey('tid') and  filterMap.tid != ''.toString()">
+                and t.tid like concat('%',#{filterMap.tid},'%')
+            </if>
+            <if test="filterMap.containsKey('name') and  filterMap.name != ''.toString()">
+                and t3.name like concat('%',#{filterMap.name},'%')
+            </if>
+            <if test="filterMap.containsKey('auditstatus') and filterMap.auditstatus !=''.toString()">
+                and t.auditstatus =#{filterMap.auditstatus}
+            </if>
+            <if test="filterMap.containsKey('status') and filterMap.status !=''.toString()">
+                and t.status =#{filterMap.status}
+            </if>
+			and t.status != '3'
+        </where>
+        <choose>
+            <when test="sortMap!=null">
+                <foreach collection="sortMap" index="key" item="val" open="order by " separator="," close="  ">
+                    #{key} #{val}
+                </foreach>
+                , t.builddatetime desc
+            </when>
+            <otherwise>
+                order by t.builddatetime desc
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.busi.syn.dao.SynDao">
+	
+	<insert id="saveMidToAppid" parameterType="MidToAppid">
+		insert 
+		into
+		    t_b_midtoappid
+		      (mid, storid, appid,  notes1, notes2, notes3, builddatetime) 
+		values
+	        (#{mid}, #{storid}, #{appid},  #{notes1}, #{notes2}, #{notes3}, #{builddatetime}) 
+    </insert>
+	
+    <update id="updateMidToAppid" parameterType="MidToAppid">
+		update t_b_midtoappid set storid = #{storid},appid =#{appid}  where mid = #{mid} 
+	</update>
+    
+	<select id="getMidToAppid"  resultType="MidToAppid">
+		select * from t_b_midtoappid where mid = #{arg0}
+	</select>
+	
+	<insert id="saveMidToSubmid" parameterType="MidToSubmid">
+		insert 
+		into
+		    t_b_midtosubmid
+		      (bid, mid, classid,submid, notes1, notes2, notes3, builddatetime) 
+		values
+	        (#{bid}, #{mid}, #{classId}, #{submid},  #{notes1}, #{notes2}, #{notes3}, #{builddatetime}) 
+    </insert>
+	
+    <update id="updateMidToSubmid" parameterType="MidToSubmid">
+		update t_b_midtosubmid set submid = #{submid},notes1 =#{notes1},notes2 =#{notes2},notes3 =#{notes3}  where bid = #{bid} and mid = #{mid} and classid = #{classId}  
+	</update>
+    
+	<select id="getMidToSubmid" resultType="MidToSubmid">
+		select * from t_b_midtosubmid where bid = #{arg0} and mid = #{arg1} and classid = #{arg2}
+	</select>
+	
+	<delete id="delete">
+		delete from t_b_midtosubmid where bid = #{bid} and mid = #{mid} and classid = #{classId}  
+	</delete>
+	
+	<insert id="saveAmcamsg" parameterType="Amcamsg">
+		insert 
+		into
+		    t_b_amcamsg
+		      (bid, mid, appid,alp_pubkey,amca_prikey, notes1, notes2, notes3, notes4,notes5) 
+		values
+	        (#{bid}, #{mid}, #{appid}, #{alp_pubkey},#{amca_prikey},  #{notes1}, #{notes2}, #{notes3}, #{notes4},#{notes5}) 
+    </insert>
+	
+    <update id="updateAmcamsg" parameterType="Amcamsg">
+		update t_b_amcamsg set appid = #{appid},alp_pubkey =#{alp_pubkey},amca_prikey =#{amca_prikey},notes1 =#{notes1},notes2 =#{notes2},notes3 =#{notes3},notes4 =#{notes4},notes5 =#{notes5}  where bid = #{bid} and mid = #{mid}   
+	</update>
+    
+	<select id="getAmcamsg" resultType="Amcamsg">
+		select * from t_b_amcamsg where bid = #{arg0} and mid = #{arg1}   
+	</select>
+	
+	<insert id="saveAmcrmsg" parameterType="Amcrmsg">
+		insert 
+		into
+		    t_b_amcrmsg
+		      (bid, mid, appid,amcr_mid,amcr_key,amcr_submid, notes1, notes2, notes3, notes4,notes5) 
+		values
+	        (#{bid}, #{mid}, #{appid}, #{amcr_mid},#{amcr_key},#{amcr_submid},  #{notes1}, #{notes2}, #{notes3}, #{notes4},#{notes5}) 
+    </insert>
+	
+    <update id="updateAmcrmsg" parameterType="Amcrmsg">
+		update t_b_amcrmsg set appid = #{appid},amcr_mid =#{amcr_mid},amcr_key =#{amcr_key},amcr_submid =#{amcr_submid},notes1 =#{notes1},notes2 =#{notes2},notes3 =#{notes3},notes4 =#{notes4},notes5 =#{notes5}  where bid = #{bid} and mid = #{mid}   
+	</update>
+    
+	<select id="getAmcrmsg" resultType="Amcrmsg">
+		select * from t_b_amcrmsg where bid = #{arg0} and mid = #{arg1}   
+	</select>
+	
+	<select id="getQrcode"  resultType="Qrcode">
+		select * from t_b_qrcode where QRTOKEN = #{arg0}
+	</select>
+	
+	<insert id="saveQrcode" parameterType="Qrcode">
+		insert 
+		into
+		    t_b_qrcode 
+		      (qrtoken, mid, tid,random,storename,createtime, createuser, expire, repay, paycheck,rbid) 
+		values
+	        (#{qrtoken}, #{mid}, #{tid}, #{random},#{storename},#{createtime},  #{createuser}, #{expire}, #{repay}, #{paycheck},#{rbid}) 
+    </insert>
+	
+</mapper>

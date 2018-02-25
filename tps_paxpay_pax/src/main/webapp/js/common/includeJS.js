@@ -1,0 +1,47 @@
+document.writeln(" 	<!-- jQuery 2.1.4 -->");
+document.writeln("    <script src=\"/js/plugin/jQuery/jQuery-2.1.4.min.js\" type=\"text/javascript\"></script>");
+document.writeln("    <!-- jquery i18n -->");
+document.writeln("    <script src=\"/js/common/jquery.i18n.properties-min-1.0.9.js\" type=\"text/javascript\"></script>");
+document.writeln("    ");
+document.writeln("    <!-- Bootstrap 3.3.2 JS -->");
+document.writeln("    <script src=\"/css/bootstrap/js/bootstrap.min.js\" type=\"text/javascript\"></script>");
+document.writeln("    <!-- AdminLTE App -->");
+document.writeln("    <script src=\"/dist/js/app.min.js\" type=\"text/javascript\"></script>");
+document.writeln("    <!--messenger-->");
+document.writeln("	  <script src=\"/js/plugin/messenger/js/messenger.min.js\"></script>");
+document.writeln("	  <script src=\"/js/plugin/messenger/js/messenger.js\"></script>");
+document.writeln("    <script src=\"/js/plugin/fileupload/ajaxfileupload.js\" type=\"text/javascript\"></script>");
+document.writeln("    <script src=\"/js/plugin/select2/select2.full.min.js\" type=\"text/javascript\"></script>");
+document.writeln(" ");
+document.writeln("	<!--禁用键-->");
+document.writeln("    <!-- Optionally, you can add Slimscroll and FastClick plugins.");
+document.writeln("          Both of these plugins are recommended to enhance the");
+document.writeln("          user experience. Slimscroll is required when using the");
+document.writeln("          fixed layout. -->");
+document.writeln("    <script src=\"/js/plugin/input-mask/jquery.inputmask.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/plugin/input-mask/jquery.inputmask.date.extensions.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/plugin/input-mask/jquery.inputmask.extensions.js\" type=\"text/javascript\"></script>	");
+document.writeln("	");
+document.writeln("	<!-- DATA TABES SCRIPT -->");
+document.writeln("	<script src=\"/js/plugin/datatables/jquery.dataTables.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/plugin/datatables/dataTables.bootstrap.min.js\" type=\"text/javascript\"></script>");
+document.writeln("	<!-- iCheck -->");
+document.writeln("    <script src=\"/js/plugin/iCheck/icheck.min.js\" type=\"text/javascript\"></script>");
+document.writeln("<!-- date-range-picker -->");
+document.writeln("   <script src=\"/js/plugin/daterangepicker/moment.min.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/plugin/daterangepicker/daterangepicker.js\" type=\"text/javascript\"></script>");
+
+document.writeln("	<script src=\"/js/plugin/datepicker/bootstrap-datepicker.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/plugin/datepicker/locales/bootstrap-datepicker.zh-CN.js\" type=\"text/javascript\"></script>");
+
+document.writeln("   <!-- bootstrap time picker -->");
+document.writeln("   <script src=\"/js/plugin/timepicker/bootstrap-timepicker.min.js\" type=\"text/javascript\"></script>");
+document.writeln("	<!--用于生成公共部分UI，如頭部、menu部等 -->");
+document.writeln("	<script src=\"/js/plugin/jQuery/jquery.cookie.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/common/common.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/common/commonUI.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/common/commonPlugins.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/plugin/layer/layer.js\" type=\"text/javascript\"></script>");
+document.writeln("	<script src=\"/js/plugin/layer/extend/layer.ext.js\" type=\"text/javascript\"></script>");
+
+document.writeln("");

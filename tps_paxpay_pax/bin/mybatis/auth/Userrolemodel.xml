@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pax.auth.dao.UserrolemodelDao">
+    <insert id="save" parameterType="hashMap">
+        insert into t_si_userrolemodel(user_id,role_id)VALUES(#{userId},#{roleId})
+    </insert>
+
+    <delete id="deleteByUserIds" parameterType="list">
+        delete from t_si_userrolemodel where user_id in
+        <foreach collection="list" item="userid" open="(" close=")" separator=",">
+            #{userid}
+        </foreach>
+    </delete>
+
+    <select id="findByTag" resultType="hashMap" parameterType="string">
+        select * from t_si_rolemodel where tag=#{arg0} limit 1
+    </select>
+</mapper>

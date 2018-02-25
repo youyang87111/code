@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>web_master</contextName>
+    <property name="LOG_DIR" value="${catalina.base}/logs"/>
+    
+    <!--控制台打印输出-->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="com.pax.core.common.filter.LogFilter"/>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</Pattern>
+        </layout>
+    </appender>
+    
+    <!-- 系统权限 -->
+    <appender name="authAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="com.pax.core.common.filter.AuthLogFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/auth/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+
+    <!--监控-->
+    <appender name="monitorAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="com.pax.core.common.filter.MonitorLogFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/busi-monitor/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+    
+    <!--映射管理-->
+    <appender name="mapmgrAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="com.pax.core.common.filter.MapmgrLogFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/busi-mapmgr/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+    
+    <!--资源管理-->
+    <appender name="resourcemgrAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="com.pax.core.common.filter.ResourcemgrLogFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/busi-resourcemgr/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+    
+    <!--交易报表-->
+    <appender name="transreportAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="com.pax.core.common.filter.TransreportLogFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/busi-transreport/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+    
+    <!--同步商户-->
+    <appender name="synlmerAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="com.pax.core.common.filter.SynLogFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/busi-syn-lmer/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+    
+    <!--同步终端-->
+    <appender name="synltermAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="com.pax.core.common.filter.SynLogFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/busi-syn-lterm/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+    
+    <!--同步映射-->
+    <appender name="synmapAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="com.pax.core.common.filter.SynLogFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/busi-syn-map/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+    
+    <!--同步二维码-->
+    <appender name="synqrcodeAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<filter class="com.pax.core.common.filter.SynLogFilter"/>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/busi-syn-qrcode/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>60</maxHistory>
+            <totalSizeCap>5GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] [%C.%M:%L] - %msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+
+
+    <!-- ***************************************************日志输出配置***************************************************** -->
+    <root level="info">
+        <appender-ref ref="consoleAppender"/>
+    </root>
+
+    <logger name="com.pax.auth" level="DEBUG" additivity="false">
+        <appender-ref ref="authAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+   
+    <logger name="com.pax.busi.monitor" level="DEBUG" additivity="false">
+        <appender-ref ref="monitorAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+    
+    <logger name="com.pax.busi.mapmgr" level="DEBUG" additivity="false">
+        <appender-ref ref="mapmgrAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+    
+    <logger name="com.pax.busi.resourcemgr" level="DEBUG" additivity="false">
+        <appender-ref ref="resourcemgrAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+    
+    <logger name="com.pax.busi.transreport" level="DEBUG" additivity="false">
+        <appender-ref ref="transreportAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+    
+    <logger name="com.pax.busi.syn.service.lmer" level="DEBUG" additivity="false">
+        <appender-ref ref="synlmerAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+    
+    <logger name="com.pax.busi.syn.service.lterm" level="DEBUG" additivity="false">
+        <appender-ref ref="synltermAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+    
+    <logger name="com.pax.busi.syn.service.map" level="DEBUG" additivity="false">
+        <appender-ref ref="synmapAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+    
+    <logger name="com.pax.busi.syn.service.qrcode" level="DEBUG" additivity="false">
+        <appender-ref ref="synqrcodeAppender"/>
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+    </logger>
+    
+    
+    <!-- 所有包里面执行的sql都记录日志 -->
+    <logger name="com.pax.core.common.interceptors.PaxMybatisInterceptor" level="info" additivity="false">
+        <appender-ref ref="consoleAppender"/><!--开发使用，部署可以注释，避免产生重复的日志-->
+        <appender-ref ref="authAppender"/>
+        <appender-ref ref="monitorAppender"/>
+        <appender-ref ref="mapmgrAppender"/>
+        <appender-ref ref="resourcemgrAppender"/>
+        <appender-ref ref="transreportAppender"/>
+        <appender-ref ref="synlmerAppender"/>
+        <appender-ref ref="synltermAppender"/>
+        <appender-ref ref="synmapAppender"/>
+        <appender-ref ref="synqrcodeAppender"/>
+    </logger>
+</configuration>

@@ -2,10 +2,17 @@ package com.pax.auth.shiro;
 
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.pax.auth.shiro.cache.SimpleMapCache;
 import com.pax.auth.shiro.realm.JdbcRealm;
+import com.pax.auth.shiro.realm.UrlPermissionResovler;
+import com.pax.auth.shiro.session.SessionDAO;
+
+import net.spy.memcached.MemcachedClient;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,12 +20,59 @@ import java.util.Map;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.ModularRealmAuthorizer;
 import org.apache.shiro.authz.permission.PermissionResolver;
+import org.apache.shiro.cache.Cache;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.session.mgt.SessionManager;
 
 @Configuration
 public class ShiroConfig {
+	
+	@Value("${shiro.deleteInvalidSessions:true}")
+	private boolean deleteInvalidSessions;
+	
+	@Value("${shiro.sessionValidationSchedulerEnabled:true}")
+	private boolean sessionValidationSchedulerEnabled;
+	
+	@Value("${shiro.sessionValidationInterval:60000}")
+	private long sessionValidationInterval;
+	
+	@Value("${shiro.globalSessionTimeout:70000}")
+	private long globalSessionTimeout;
+	
+	@Value("${shiro.sessionIdCookieName:paxSid}")
+	private String sessionIdCookieName;
+	
+	@Bean
+	public UrlPermissionResovler urlPermissionResovler() {
+		UrlPermissionResovler urlPermissionResovler = new UrlPermissionResovler();
+		return urlPermissionResovler;
+	}
+	
+	@Bean
+	public SessionDAO sessionDAO(MemcachedClient memcachedClient) {
+		SessionDAO sessionDAO = new SessionDAO(memcachedClient);
+		return sessionDAO;
+	}
+	
+	@Bean
+	public SimpleMapCache simpleMapCache(MemcachedClient memcachedClient) {
+		SimpleMapCache simpleMapCache = new SimpleMapCache(memcachedClient);
+		return simpleMapCache;
+	}
+	
+	@Bean
+	public SessionManager sessionManager(SessionDAO sessionDAO) {
+		DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+		sessionManager.setDeleteInvalidSessions(deleteInvalidSessions);
+		sessionManager.setSessionValidationSchedulerEnabled(sessionValidationSchedulerEnabled);
+		sessionManager.setSessionValidationInterval(sessionValidationInterval);
+		sessionManager.setSessionDAO(sessionDAO);
+		sessionManager.setGlobalSessionTimeout(globalSessionTimeout);
+		sessionManager.getSessionIdCookie().setName(sessionIdCookieName);
+		return sessionManager;
+	}
+	
 	
 	@Bean
 	public HashedCredentialsMatcher hashMatcher() {
@@ -28,10 +82,13 @@ public class ShiroConfig {
 	}
 	
 	@Bean
-    public JdbcRealm realm(HashedCredentialsMatcher hashMatcher){
+    public JdbcRealm realm(HashedCredentialsMatcher hashMatcher,Cache simpleMapCache){
 		JdbcRealm realm = new JdbcRealm();
 		realm.setCredentialsMatcher(hashMatcher);
 		realm.setCachingEnabled(true);
+		realm.setAuthenticationCache(simpleMapCache);
+		realm.setAuthorizationCache(simpleMapCache);
+		
         return realm;
     }
 

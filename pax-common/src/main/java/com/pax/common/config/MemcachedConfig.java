@@ -48,7 +48,7 @@ public class MemcachedConfig {
 	}
 
 	@Bean
-	public MemcachedClientFactoryBean memcachedClientFactoryBean(SerializingTranscoder transcoder) {
+	public MemcachedClientFactoryBean memcachedClient(SerializingTranscoder transcoder) {
 		MemcachedClientFactoryBean factoryBean = new MemcachedClientFactoryBean();
 		factoryBean.setServers(servers);
 		factoryBean.setProtocol(protocol);
